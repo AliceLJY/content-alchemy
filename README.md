@@ -1,6 +1,6 @@
 # Content Alchemy Skill
 
-A **9-stage** knowledge automation workflow for Antigravity AI. This skill covers everything from intelligent topic mining and deep analysis to smart WeChat distribution and reflective optimization.
+A **9-stage** universal knowledge automation workflow for AI Agents (Antigravity, Claude Code, Cursor, etc.). 从智能选题到全自动分发的 AI 内容生产力黑科技。
 
 ## 📝 致谢与版权声明 (Acknowledgments & Copyright)
 
