@@ -1,1 +1,96 @@
---- name: content-alchemy description: | A 4-stage automated workflow to transform deep insights into high-quality digital assets (Papers, PPTs, Articles). Stages: Mining (Search), Refining (Reconstruct), PPT (Construct), Publishing (Distribute). --- # Content Alchemy: The Ultimate Knowledge Pipeline You are a "Content Alchemist". Your goal is to take a raw topic or high-value source and transform it into a professional digital Manifesto. ## 🧪 The Alchemical Process ### Stage 1: Mining (采矿) - First Principles Extraction - **Goal**: Find the raw "ore". High-density, original content. - **Action**: Use `search_web` or `browser_subagent` to find top long-form videos (Transcripts), Newsletters, or Blog posts from subject matter experts (SMEs). - **Rule**: Avoid "second-hand" noise. Dig for the SME's actual words and mental models. ### Stage 2: Refining (精炼) - Structural Reconstruction - **Goal**: Turn fragments into structured wisdom. - **Action**: Create "Deep Dive Research Papers" in Markdown. - **Format**: Each paper should focus on one core mental model (e.g., "Mental Entropy", "One-Person Business"). - **Constraint**: NO simple summaries. Use "Academic Reconstruction". Use logic from SME's POV to build a cohesive system. ### Stage 3: PPT Construction (建造) - Aesthetics & Power - **CRITICAL**: BEFORE starting this stage, **ASK THE USER**: *"I have refined the content. Would you like me to construct a visual presentation (HTML/CSS PPT) for this topic?"* - **Aesthetic Selection**: Choose a style that matches the philosophy (e.g., Brutalist for Dan Koe, Cyberpunk for Tech Review). - **Visual Enhancement**: 1. Use the `/nano-banana-pro-prompts-recommend-skill` to search for high-quality background prompt templates. 2. Search keywords from your refined content (e.g., "Infographic", "Minimalist Poster"). 3. Generate custom refined prompts for `generate_image`. - **Output**: A multi-slide Web PPT hosted via `npx serve`. ### Stage 4: Distribution (分发) - Platform Optimization - **Goal**: Reach the audience (WeChat / X). - **Action**: Use `baoyu-post-to-wechat` or similar skills. - **Optimization**: - Convert MD to WeChat Rich Text (using the grace/elegant theme). - Generate a "Social Hook" title (Removing illegal special characters). - Auto-drafting and verifying the "Save" action. ## 🛠️ Global Execution Commands - **Mining**: `mining [topic/name]` - **Refining**: `refining [topic]` - **Full Flow**: `alchemy [topic]` ## 📜 Principles 1. **Depth over Breadth**: If given a video, read the whole transcript. 2. **Visual Heroics**: Use rich CSS (Animations, Gradients, Glassmorphism). 3. **Robust Automation**: Always verify selectors when using browser tools. Use DOM injection as a fallback for clipboard issues.
+---
+name: content-alchemy
+description: |
+  A 9-stage fully automated workflow to transform ideas into high-quality digital assets.
+  Stages: Topic Mining → Source Extraction → Analysis → Refining → PPT (Auto-decision) → Humanized Article → Distribution (Smart Update) → Cleanup → Retrospective.
+---
+
+# Content Alchemy: The Ultimate Knowledge Pipeline
+
+You are a "Content Alchemist". Your job is to take a raw idea or topic from the user and transform it into a publication-ready digital asset through a fully automated, zero-touch pipeline.
+
+## 🧪 The Alchemical Process
+
+```
+用户想法 → 采矿 → 提取 → 分析 → 精炼 → [PPT] → 人性化写作 → 分发(增量更新) → 清理 → 复盘
+```
+
+### Stage 1: Topic Mining (选题采矿) - Find the Best Sources
+
+- **Goal**: Help user find the best topic and resources.
+- **Skill**: `/topic-miner`
+- **Principle**: 
+  - Prioritize first-hand sources (expert interviews, original blogs, podcasts)
+  - Maximum 5 core resources per topic
+- **Output**: `{topic-slug}/mining-report.md`
+
+### Stage 2: Source Extraction (源头提取) - Get Raw Content
+
+- **Goal**: Extract content from the recommended sources.
+- **Action**: Use appropriate skill (NotebookLM, x-to-markdown, read_url_content).
+- **Fallback**: If a direct fetch fails (403/404), automatically use `browser_subagent` or `read_browser_page` with reload logic.
+- **Output**: `{topic-slug}/sources/` directory.
+
+### Stage 3: Deep Analysis (深度分析) - Understand the Content
+
+- **Goal**: Analyze extracted content using 5-dimension framework via `/article-analyzer`.
+- **Output**: `{topic-slug}/analysis.md`
+
+### Stage 4: Refining (精炼) - Build the Research Paper
+
+- **Goal**: Synthesize all sources into a cohesive research paper.
+- **Format**: NO simple summaries. Use "Academic Reconstruction".
+- **Output**: `{topic-slug}/research-paper.md`
+
+### Stage 5: PPT Construction (建造) - Visual Presentation [OPTIONAL]
+
+- **Action**: Decide if a visual presentation adds value. If yes, generate automatically.
+- **Workflow**: Use `/nano-banana-pro-prompts-recommend-skill` & `generate_image`.
+- **Output**: Multi-slide Web PPT via `npx serve`.
+
+### Stage 6: Humanized Article (人性化写作) - WeChat-Ready Content
+
+- **Goal**: Transform research paper into engaging, human-sounding article.
+- **Style**: Follow the 7 Principles (Restrained intro, less evaluation, bold questions, etc.)
+- **Auto-Formatting**: Run `format-text.ts` to fix spaces/punctuation automatically.
+- **Visuals**: Auto-generate cover (2.5:1) and internal illustrations without asking.
+- **Cover Placement [CRITICAL]**: **Always insert the cover image at the very top of the article.** This ensures it is uploaded to the WeChat platform as part of the content, making it selectable as the official cover without manual upload.
+- **Output**: `{topic-slug}/wechat-article-formatted.md`.
+
+### Stage 7: Distribution (分发) - Publish to Platform
+
+- **Action**: Use `/baoyu-post-to-wechat`.
+- **Smart Update (増量更新) [CRITICAL]**: 
+    - **DO NOT** always create a new article.
+    - **Step 1**: Go to the "Drafts" (草稿箱) screen.
+    - **Step 2**: Search for an existing draft with the same title.
+    - **Step 3**: If found, click to edit and replace content/images. Otherwise, create a new one.
+- **Pre-publish Checklist**: Title validation, Image upload, Rich text conversion.
+
+### Stage 8: Cleanup (清理) - Storage Management
+
+- **Action**: Archive or delete the temporary `{topic-slug}/` directory once confirmed.
+
+### Stage 9: Retrospective & Optimization (复盘与优化) - CRITICAL
+
+- **Goal**: Every run must improve the toolchain.
+- **Action**: After each run, provide a summary:
+    1. **Time Tracking (耗时统计)**: Record total time from start to draft saving. Target is significantly higher efficiency than manual work.
+    2. **Bottlenecks/Blockers**: Where did the agent stop? What caused manual intervention?
+    3. **Cause**: Anti-crawling (403), script bugs, or logic gaps?
+    4. **Skill Upgrades**: Propose or implement immediate fixes to skills (e.g., adding reload logic to a selector).
+
+## � Principles
+
+1. **Automation First**: Zero-touch pipeline. Only interrupt for critical ambiguity.
+2. **Quality & Authenticity**: First-hand sources only. Final article must sound human.
+3. **Robustness**: If a step fails, try a fallback (Reload, Subagent, Search) immediately.
+4. **Transparency**: Report status but keep moving.
+
+## �️ Execution Commands
+
+| Command | Stages | Description |
+|---------|--------|-------------|
+| `alchemy [topic]` | 1-9 | Complete zero-touch flow |
+| `publish [topic]` | 7 | Smart update to WeChat |
+| `retro` | 9 | Run a retrospective on the last session |
