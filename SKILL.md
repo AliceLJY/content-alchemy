@@ -36,11 +36,15 @@ You are a "Content Alchemist". Your job is to take a raw idea or topic from the 
 - **Goal**: Analyze extracted content using 5-dimension framework via `/article-analyzer`.
 - **Output**: `{topic-slug}/analysis.md`
 
-### Stage 4: Refining (精炼) - Build the Research Paper
+### Stage 4: Refining (精炼) - Intellectual Manifesto (智力宣言)
 
-- **Goal**: Synthesize all sources into a cohesive research paper.
-- **Format**: NO simple summaries. Use "Academic Reconstruction".
-- **Output**: `{topic-slug}/research-paper.md`
+- **Goal**: Synthesize sources into a **Powerful Thought Piece** or **Intellectual Manifesto**.
+- **Quality Standard [MANIFESTO LEVEL]**:
+    - **拒绝平庸归纳**: 严禁做“读书笔记”。必须输出具有“非共识”特质的深度洞察。
+    - **逻辑连贯性 [ANTI-JUMP]**: 严禁逻辑跳跃。每一个深刻结论（如“主体性坍塌”）必须有完整的论证链条支撑。
+    - **行动可落地性 [CONCRETE]**: 结论不仅仅是哲学口号，必须转化为 3-5 条可执行的、具体的认知或行为指南。
+    - **风格化表达**: 鼓励使用具有“冲击力”的概念（如：叙事通货膨胀、原生苦难护城河），但要避免学术黑话的无意义堆砌。
+- **Output**: `{topic-slug}/manifesto.md` (目标: 成为该话题下的顶级思想评论)
 
 ### Stage 5: PPT Construction (建造) - Visual Presentation [OPTIONAL]
 
