@@ -48,6 +48,14 @@ A **9-stage** knowledge automation workflow for Antigravity AI. This skill cover
 **本项目正处于活跃更新中！** 
 我们已将工作流全面升级为 9 阶段全自动体系。欢迎大家试用并提出宝贵意见（通过 Issue 或 PR）。你的每一个反馈都可能成为下次系统进化的输入。
 
+## 🌐 多 IDE 兼容性 (Cross-IDE Compatibility)
+
+虽然本项目的深度优化是在 **Antigravity** 环境下完成的，但其核心逻辑（SKILL.md）采用了通用的 **Open-Skill** 指令规范设计，具有极强的通用性：
+
+- **Claude Code**: 完全兼容。Claude 可以精准理解 9 阶段指令并调用相关工具。
+- **Cursor / Windsurf**: 兼容。通过将其作为 `Rules for AI` 或项目上下文，AI 助理可以严格按照此工作流执行任务。
+- **其他 Agentic IDEs**: 只要 AI 具备文件读写、网页抓取和命令执行能力，均可无缝加载此 Skill。
+
 ## 🤖 自动化协作声明
 
 本仓库及其配套 Skill 的深度升级由 **Antigravity AI** 与用户协作完成。我们固化了 9 阶段自动化架构，实现了从“寻找灵感”到“数字资产分发”的完整闭环。
