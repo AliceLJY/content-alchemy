@@ -41,21 +41,6 @@ A **7-stage** universal knowledge automation workflow for AI Agents (Antigravity
 
 *   **致敬**：感谢所有为 AI 生态贡献智力资产的先行者，是你们的开源精神让“提词即生产”成为可能。
 
-## 💡 自动化实战避坑指南 (Troubleshooting)
-
-在实际全自动运行过程中，我们总结了以下核心经验，请使用者留意：
-
-1. **微信发布脚本无反应/报错 (Stage 7)**：
-   - **根本原因**：Baoyu 的 CDP 脚本必须连接到**开放了 9222 调试端口**的 Chrome 实例。
-   - **必杀技**：在使用发布功能前，请务必在终端运行以下命令重启 Chrome（建议加入 .zshrc）：
-     ```bash
-     /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222
-     ```
-2. **自动配图原理**：
-   - 本功能的“图文匹配”逻辑由 `Content Alchemy` 独家实现（基于 Antigravity 生图能力），但“图片上传”动作依赖 Baoyu 的选择器逻辑。这是完美的上下游配合。
-3. **效率基准 (Performance Benchmark)**：
-   - 目标：从选题到保存草稿的全程耗时应控制在 **15 分钟以内**。
-   - 如果 AI 产出速度超过人工，但质量不降，这才是成功的“炼金”。
 
 ## ⚙️ 设计路径 (Design Concept)
 
