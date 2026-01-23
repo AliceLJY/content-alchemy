@@ -92,6 +92,14 @@ A **7-stage** universal knowledge workflow for AI Agents. 从智能选题到内�
   2. 保存图片到项目目录（如`./images/cover.png`）
   3. 在Markdown中手动引用：`![封面](./images/cover.png)`
 
+### 💻 官方验证环境 (Verified Specs)
+
+本项目已在以下配置中通过完整测试（Stable）：
+
+- **Hardware**: MacBook Air (13-inch, M4, 2025) / 16GB RAM / Apple M4 Chip
+- **System**: macOS Tahoe (26.3 Beta)
+- **Environment**: Antigravity IDE (Native Support)
+
 ## 🤖 自动化协作声明
 
 本仓库及其配套 Skill 的深度升级由 **Antigravity AI** 与用户协作完成。我们固化了 7 阶段自动化架构，实现了从“寻找灵感”到“数字资产分发”的完整闭环。

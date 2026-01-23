@@ -82,6 +82,12 @@ To avoid "temporary loading" lag, this skill references the following local or r
   /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222
   ```
 - **Action**: Connect to Chrome, auto-paste content/images, and click "Save".
+- **Reference Coordinates (1440px width)**:
+  - *Keep these for manual fallback or CDP debugging*:
+  - **Material Library (Images)**: Left Sidebar `x: 90, y: 360`
+  - **Insert Image Button**: Top Toolbar `~ x: 450, y: 80`
+  - **Pyramid Image Position**: ~80% down, below "注意力阶级金字塔" title
+  - **Algorithm Image Position**: ~40% down, near "超级计算机集群" keyword
 - **Human Input Required**: 
   1. Review the generated draft for formatting.
   2. Set the cover image (select from content).
@@ -97,3 +103,11 @@ To avoid "temporary loading" lag, this skill references the following local or r
 - `alchemy [topic]`: Full flow with confirmations.
 - `alchemy-setup`: Download all external dependencies into `./scripts/`.
 - `publish`: Run Stage 7 only.
+
+## 💻 Verified Environment & Hardware
+*(Verified by @AliceLJY)*
+
+- **Model**: MacBook Air (13-inch, M4, 2025)
+- **Chip**: Apple M4 (16 GB Memory)
+- **OS**: macOS Tahoe (Version 26.3 Beta)
+- **IDE**: Antigravity (Powered by Google Gemini)
