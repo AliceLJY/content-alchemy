@@ -1,6 +1,14 @@
 # Content Alchemy Skill
 
-A **9-stage** universal knowledge automation workflow for AI Agents (Antigravity, Claude Code, Cursor, etc.). 从智能选题到全自动分发的 AI 内容生产力黑科技。
+🚀 **新手必看**: [完整安装指南 SETUP.md](./SETUP.md) | [技术文档 SKILL.md](./SKILL.md)
+
+A **7-stage** universal knowledge automation workflow for AI Agents (Antigravity, Claude Code, Cursor, etc.). 从智能选题到全自动分发的 AI 内容生产力黑科技。
+
+**v2.5 核心特性**:
+- ✅ **YouTube-First 采矿策略** → 彻底解决B站451封锁
+- ✅ **素材真实性强制核查** → 杜绝AI幻觉，每个来源都可追溯
+- ✅ **本地依赖优先** → 调用Baoyu完整仓库，避免依赖地狱
+- ✅ **Fail-Safe发布** → 明确前置条件（Chrome端口），失败即报错
 
 ## 📝 致谢与版权声明 (Acknowledgments & Copyright)
 
@@ -27,11 +35,14 @@ A **9-stage** universal knowledge automation workflow for AI Agents (Antigravity
 
 在实际全自动运行过程中，我们总结了以下核心经验，请使用者留意：
 
-1. **微信 403 Access Denied 解决**：
-   - **症状**：发布时浏览器报错 `HTTP ERROR 403`。
-   - **对策**：这通常是微信后台的 Session 冲突或 403 频率保护。**只需在浏览器窗口手动点击“Reload/重新加载”一次**，通常即可恢复。若依然不行，请先手动退出登录再重新扫码。
-2. **封面图不生效问题**：
-   - 微信后台要求封面图必须在正文中手动勾选。本 Skill 已改为**强制将封面图插入文章首行**，发布后你只需在草稿箱“选择封面”并勾选正文第一张图即可。
+1. **微信发布脚本无反应/报错 (Stage 7)**：
+   - **根本原因**：Baoyu 的 CDP 脚本必须连接到**开放了 9222 调试端口**的 Chrome 实例。
+   - **必杀技**：在使用发布功能前，请务必在终端运行以下命令重启 Chrome（建议加入 .zshrc）：
+     ```bash
+     /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222
+     ```
+2. **自动配图原理**：
+   - 本功能的“图文匹配”逻辑由 `Content Alchemy` 独家实现（基于 Antigravity 生图能力），但“图片上传”动作依赖 Baoyu 的选择器逻辑。这是完美的上下游配合。
 3. **效率基准 (Performance Benchmark)**：
    - 目标：从选题到保存草稿的全程耗时应控制在 **15 分钟以内**。
    - 如果 AI 产出速度超过人工，但质量不降，这才是成功的“炼金”。
@@ -65,9 +76,26 @@ A **9-stage** universal knowledge automation workflow for AI Agents (Antigravity
 
 虽然本项目的深度优化是在 **Antigravity** 环境下完成的，但其核心逻辑（SKILL.md）采用了通用的 **Open-Skill** 指令规范设计，具有极强的通用性：
 
-- **Claude Code**: 完全兼容。Claude 可以精准理解 9 阶段指令并调用相关工具。
-- **Cursor / Windsurf**: 兼容。通过将其作为 `Rules for AI` 或项目上下文，AI 助理可以严格按照此工作流执行任务。
-- **其他 Agentic IDEs**: 只要 AI 具备文件读写、网页抓取和命令执行能力，均可无缝加载此 Skill。
+- **Antigravity**: ⭐ **完全兼容** - 包括自动生图功能（Stage 5）
+- **Claude Code**: ✅ 兼容 - 但需手动配图（无`generate_image`工具）
+- **Cursor / Windsurf**: ✅ 兼容 - 需手动配图
+- **其他 Agentic IDEs**: 视工具集而定
+
+### ⚠️ 重要差异说明
+
+| 功能 | Antigravity | 其他 IDE |
+|------|-------------|----------|
+| 素材采集 | ✅ 自动 | ✅ 自动 |
+| 深度分析 | ✅ 自动 | ✅ 自动 |
+| 文章撰写 | ✅ 自动 | ✅ 自动 |
+| **配图生成** | ✅ **AI自动生成** | ⚠️ **需手动准备** |
+| 微信发布 | ✅ 自动 | ✅ 自动 |
+
+**如果使用非Antigravity环境**：
+- 请在Stage 5跳过自动生图，改为：
+  1. 使用Midjourney/DALL-E等外部工具生成图片
+  2. 保存图片到项目目录（如`./images/cover.png`）
+  3. 在Markdown中手动引用：`![封面](./images/cover.png)`
 
 ## 🤖 自动化协作声明
 
