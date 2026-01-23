@@ -38,37 +38,32 @@ To avoid "temporary loading" lag, this skill references the following local or r
 2. **Semi-Automation**: Automate the grind, but **pause for user confirmation** for every decision.
 3. **Traceability**: If a script (e.g., Baoyu's publisher) fails, the agent must visit the **Source URL** to check for updated CSS selectors.
 4. **Transparency**: Report all search failures. **Never fabricate content.**
+5. **Human-in-the-Loop**: Each output (mining report, truth table, draft) **MUST** be shown to the USER for approval before the next stage.
+
+### 🧩 Modular Starting Points
+- **Topic Mode**: Start from Stage 1.
+- **Source Mode**: Start from Stage 3 (If you already have text/transcripts).
+- **Draft Mode**: Start from Stage 7 (If you only need to publish an existing MD).
 
 ---
 
 ## 📋 Stage-by-Stage Workflow
 
-### Stage 0: Setup & Dependency Check (Initialization)
-- **Action**: Verify if `scripts/` contains: `wechat-article.ts`, `video_processor.py`, etc.
-- **Update**: If versions are outdated or missing, prompt user to download/update from source URLs.
-
 ### Stage 1: Topic Mining ⏸
-- **Skill**: `/topic-miner` (Multi-channel search: GitHub, X, RED, etc.)
-- **Error**: If 0 results, ask user to [Retry / Skip / Abort].
-- **Output**: `{topic-slug}/mining-report.md`. Confirm with user to proceed.
+- **Action**: Multi-channel search (GitHub, YouTube, etc.).
+- **Checkpoint**: Present `{topic-slug}/mining-report.md`. **User must approve topics.**
 
 ### Stage 2: Source Extraction ⏸
-- **Strategy: YouTube-First Mirroring** [CRITICAL]: 
-  - If source is **Bilibili**: FIRST search YouTube for the same title.
-  - **Why**: YouTube offers accessible transcripts (CC) and fewer anti-bot 451/Captcha blocks. Bilibili extraction is slow/fragile.
-  - **Fallback**: Only use Bilibili browser simulation if YouTube search fails.
-- **Action**: Extract raw text/transcripts. If video detected, use local `video_processor.py`.
-- **Quality Gate**: Must output a **Source Authenticity Report** (Table: Source Type | Content Completeness | Extraction Method).
-- **Output**: `{topic-slug}/sources/` + `{topic-slug}/source-authenticity-report.md`. Confirm with user.
+- **Strategy: YouTube-First Mirroring** [CRITICAL]
+- **Checkpoint**: Present **Source Authenticity Report** (Table: Source | Fact Status | Method). **User must verify sources.**
 
-### Stage 3: Deep Analysis ⏸
-- **Action**: 5-dimension analysis (Social, Power, Culture, Economy, Tech).
-- **Skill**: `/article-analyzer`.
-- **Output**: `{topic-slug}/analysis.md`. Confirm with user.
+### Stage 3: Deep Analysis & Truth Check ⏸
+- **Action**: 5-dimension analysis.
+- **Checkpoint**: Present **Source Truth Table** (Core Claims vs. Real Sources). **User must confirm accuracy before writing.**
 
-### Stage 4: Refining (精炼) - Intellectual Manifesto ⏸
-- **Action**: Synthesize sources into a **Powerful Thought Piece**. Avoid plain summaries. Use high-impact concepts.
-- **Output**: `{topic-slug}/manifesto.md`. Confirm with user.
+### Stage 4: Refining (Intellectual Manifesto) ⏸
+- **Action**: Synthesize verified sources into a **Powerful Piece**.
+- **Checkpoint**: Present `{topic-slug}/manifesto.md`. **User must approve the logic.**
 
 ### Stage 5: Humanized Article (WeChat-Ready) ⏸
 - **Image Generation** (⭐ Antigravity Only):
@@ -80,15 +75,18 @@ To avoid "temporary loading" lag, this skill references the following local or r
   3. **Signature**: Append: `本文由 [Content Alchemy](https://github.com/AliceLJY/content-alchemy) 自动生成。`
 - **Output**: `{topic-slug}/wechat-article-formatted.md`. Confirm with user.
 
-### Stage 7: Distribution (Smart Post) ⏸
-- **Strategy: Strict Automation**
+### Stage 7: Distribution (Draft Preparation) ⏸
+- **Boundary**: Automation only goes up to **Saving as Draft**.
 - **Prerequisite**: Chrome MUST be started with debugging port:
   ```bash
   /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222
   ```
-- **Action**: Run `baoyu-wechat` or local script via `npx`.
-- **Success Criteria**: Command returns Exit Code 0 and drafts appear in WeChat.
-- **On Failure**: STOP and report error. User must fix environment per prerequisite.
+- **Action**: Connect to Chrome, auto-paste content/images, and click "Save".
+- **Human Input Required**: 
+  1. Review the generated draft for formatting.
+  2. Set the cover image (select from content).
+  3. **Manually click "Publish/Send"** to go live.
+- **Fail-Safe**: If Chrome port is not detected or script fails, STOP and report.
 
 ### Stage 8+9: Cleanup & Retrospective
 - Archive files and track time per stage to find bottlenecks.

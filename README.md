@@ -8,7 +8,17 @@ A **7-stage** universal knowledge automation workflow for AI Agents (Antigravity
 - ✅ **YouTube-First 采矿策略** → 彻底解决B站451封锁
 - ✅ **素材真实性强制核查** → 杜绝AI幻觉，每个来源都可追溯
 - ✅ **本地依赖优先** → 调用Baoyu完整仓库，避免依赖地狱
-- ✅ **Fail-Safe发布** → 明确前置条件（Chrome端口），失败即报错
+- ✅ **Fail-Safe发布** → 明确前置条件（Chrome端口），针对微信公众号**仅自动执行至“保存草稿”**
+
+### 🤝 人机协作：90/10 黄金比例
+本项目不追求“盲目全自动”，而是追求“极速交付，人工把关”：
+- **AI (90%)**: 选题、采集、分析、**素材核查表生成**、撰写、配图、自动保存。
+- **HUMAN (10%)**: 
+  1. **素材确认**: 动笔前审核 **Source Truth Table**，确保引用真实。
+  2. **草稿微调**: 在微信中进行最后的审美把关（封面、特殊排版）。
+  3. **模块化启动**: 你可以从**任何一个阶段**（选题/素材/草稿）随时切入，AI 会根据现状自动补完剩余链条。
+
+> **核心逻辑**：AI 负责繁琐的“数字化搬砖”，人负责最有价值的“真实性确认”与“审美决策”。
 
 ## 📝 致谢与版权声明 (Acknowledgments & Copyright)
 
@@ -59,7 +69,7 @@ A **7-stage** universal knowledge automation workflow for AI Agents (Antigravity
 本 Skill 支持**任意阶段启动**。你不必每次都从第一步开始，可以根据需求灵活组合：
 
 - **全流程自动化**：
-  `alchemy "你的话题/灵感"` (执行 Stage 1-9)
+  `alchemy "你的话题/灵感"` (执行 Stage 1-7)
 - **直接从现有文档生成文章并发布**：
   `alchemy --start-at stage-6 --input "./你的初稿.md"` (直接执行写作、配图与分发)
 - **爆款改写指令示例**：
