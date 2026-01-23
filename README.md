@@ -1,55 +1,51 @@
 # Content Alchemy Skill
 
-🚀 **新手必看**: [完整安装指南 SETUP.md](./SETUP.md) | [技术文档 SKILL.md](./SKILL.md)
+🚀 **新手必看**: [完整安装指南 SETUP.md](./SETUP.md) | [技术文档 SKILL.md](./SKILL.md)  
+📘 **完全不懂技术？** [新手补充指南 BEGINNER-GUIDE.md](./BEGINNER-GUIDE.md)
 
 A **7-stage** universal knowledge workflow for AI Agents. 从智能选题到内容分发的端到端闭环生产力工具。
 
-**v2.5 核心特性**:
-- ✅ **YouTube-First 采矿策略** → 彻底解决B站451封锁
-- ✅ **素材真实性强制核查** → 杜绝AI幻觉，每个来源都可追溯
-- ✅ **本地依赖优先** → 调用Baoyu完整仓库，避免依赖地狱
-- ✅ **Fail-Safe发布** → 明确前置条件（Chrome端口），针对微信公众号**仅自动执行至“保存草稿”**
-
 ### 🤝 人机协作：90/10 黄金比例
-本项目不追求“盲目全自动”，而是追求“极速交付，人工把关”：
-- **AI (90%)**: 选题、采集、分析、**素材核查表生成**、撰写、配图、自动保存。
+
+本项目追求"极速交付，人工把关"：
+- **AI (90%)**: 选题、采集、分析、素材核查、撰写、配图、保存草稿
 - **HUMAN (10%)**: 
-  1. **素材确认**: 动笔前审核 **Source Truth Table**，确保引用真实。
-  2. **草稿微调**: 在微信中进行最后的审美把关（封面、特殊排版）。
-  3. **模块化启动**: 你可以从**任何一个阶段**（选题/素材/草稿）随时切入，AI 会根据现状自动补完剩余链条。
+  1. 素材确认：审核 Source Truth Table，确保引用真实
+  2. 草稿微调：在微信中进行审美把关（封面、排版）
+  3. 模块化启动：可从任何阶段切入，AI 自动补完剩余流程
 
-> **核心逻辑**：AI 负责繁琐的“数字化搬砖”，人负责最有价值的“真实性确认”与“审美决策”。
+> **核心逻辑**：AI 负责繁琐的数字化工作，人负责真实性确认与审美决策。
 
-## 📝 致谢与版权声明 (Acknowledgments & Copyright)
+## 📝 致谢与版权声明
 
 本项目的核心逻辑是基于开源社区多位开发者贡献的优秀 Skill 和提示词思路进行的二次编排与场景化串联。特此感谢以下项目的原始作者：
 
-*   **微信发布流程 (WeChat Automation)**:
+*   **微信发布流程**:
     *   **Skill**: `baoyu-post-to-wechat`
-    *   **Author**: **Baoyu (宝玉)** — 感谢提供了微信公众号 CDP 自动化操作的核心代码与 DOM 选择器逻辑。
+    *   **Author**: **Baoyu (宝玉)** — 感谢提供了微信公众号 CDP 自动化操作的核心代码与 DOM 选择器逻辑
 
-*   **图像提示词推荐 (Prompt Recommendation)**:
-    *   **Skill**: [nano-banana-pro-prompts-recommend-skill](cci:7://file:///Users/anxianjingya/.gemini/skills/nano-banana-pro-prompts-recommend-skill:0:0-0:0)
-    *   **Author**: **YouMind-OpenLab** — 感谢提供了高质量的 Prompt 库与推荐算法，为内容配图提供了美学支撑。
+*   **图像提示词推荐**:
+    *   **Skill**: nano-banana-pro-prompts-recommend-skill
+    *   **Author**: **YouMind-OpenLab** — 感谢提供了高质量的 Prompt 库与推荐算法
 
-*   **思维链提示词 (Chain of Thought / Chained Instructions)**:
-    *   **Prompt**: **链式指令 (Chained Instructions)**
+*   **思维链提示词**:
+    *   **Prompt**: 链式指令 (Chained Instructions)
     *   **Author**: **Lynne Liu**
-    *   **Source**: [YouMind Shortcut](https://youmind.com/zh-CN/shortcuts/P5cdEZdDzG51jA) — 感谢提供了“Mining -> Refining -> Building”这一核心内容炼金术的 Prompt 结构灵感。
+    *   **Source**: [YouMind Shortcut](https://youmind.com/zh-CN/shortcuts/P5cdEZdDzG51jA) — 感谢提供了"Mining -> Refining -> Building"这一核心内容炼金术的 Prompt 结构灵感
 
 *   **版权声明**：本项目所调用的基础工具版权归原作者所有。我（AliceLJY）仅根据个人实际业务需求，将这些原子化的功能进行了串联、重构与场景化适配，旨在提供一种多 Skill 协同工作的思路。
 
-*   **致敬**：感谢所有为 AI 生态贡献智力资产的先行者，是你们的开源精神让“提词即生产”成为可能。
+*   **致敬**：感谢所有为 AI 生态贡献智力资产的先行者，是你们的开源精神让"提词即生产"成为可能。
 
 
-## ⚙️ 设计路径 (Design Concept)
+## ⚙️ 设计路径
 
-本仓库的主要目的是提供一种**“多 Skill 协同作战”**的思路：
-1.  **端到端闭环**：通过 7 阶段炼金术，实现从灵感采集到草稿保存的完整生产链。
-2.  **智能增量更新**：能自动识别并更新现有草稿，避免重复发文，保持创作流的一致性。
-3.  **自我进化架构**：新增 Stage 9 复盘机制，根据每次运行的异常情况自动更新 Skill 逻辑，实现真正的“越用越好用”。
+本仓库的主要目的是提供一种**"多 Skill 协同作战"**的思路：
+1.  **端到端闭环**：通过 7 阶段炼金术，实现从灵感采集到草稿保存的完整生产链
+2.  **智能增量更新**：能自动识别并更新现有草稿，避免重复发文，保持创作流的一致性
+3.  **自我进化架构**：新增 Stage 9 复盘机制，根据每次运行的异常情况自动更新 Skill 逻辑，实现真正的"越用越好用"
 
-## 🧠 设计决策 (Design Decisions)
+## 🧠 设计决策
 
 本章节解释一些"看起来奇怪"的设计背后的深层原因。
 
@@ -140,7 +136,7 @@ AI只拿到视频标题+简介+评论 → 基于这些"二手信息"编故事。
 - 图像识别定位
 - 配置文件自定义
 
-## 🛠️ 模块化指令与灵活性 (Modular Usage)
+## 🛠️ 模块化指令与灵活性
 
 本 Skill 支持**任意阶段启动**。你不必每次都从第一步开始，可以根据需求灵活组合：
 
@@ -153,12 +149,12 @@ AI只拿到视频标题+简介+评论 → 基于这些"二手信息"编故事。
 - **纯分发模式**：
   `publish "文章标题"` (仅执行 Stage 7 智能同步)
 
-## 🚀 持续进化与反馈 (Continuous Evolution)
+## 🚀 持续进化与反馈
 
 **本项目正处于活跃更新中！** 
-我们已将工作流全面升级为 7 阶段端到端协作体系（v2.5）。欢迎大家试用并提出宝贵意见（通过 Issue 或 PR）。你的每一个反馈都可能成为下次系统进化的输入。
+欢迎大家试用并提出宝贵意见（通过 Issue 或 PR）。你的每一个反馈都可能成为下次系统进化的输入。
 
-## 🌐 多 IDE 兼容性 (Cross-IDE Compatibility)
+## 🌐 多 IDE 兼容性
 
 虽然本项目的深度优化是在 **Antigravity** 环境下完成的，但其核心逻辑（SKILL.md）采用了通用的 **Open-Skill** 指令规范设计，具有极强的通用性：
 
@@ -183,7 +179,7 @@ AI只拿到视频标题+简介+评论 → 基于这些"二手信息"编故事。
   2. 保存图片到项目目录（如`./images/cover.png`）
   3. 在Markdown中手动引用：`![封面](./images/cover.png)`
 
-### 💻 官方验证环境 (Verified Specs)
+### 💻 官方验证环境
 
 本项目已在以下配置中通过完整测试（Stable）：
 
@@ -193,10 +189,10 @@ AI只拿到视频标题+简介+评论 → 基于这些"二手信息"编故事。
 
 ## 🤖 自动化协作声明
 
-本仓库及其配套 Skill 的深度升级由 **Antigravity AI** 与用户协作完成。我们固化了 7 阶段自动化架构，实现了从“寻找灵感”到“数字资产分发”的完整闭环。
+本仓库及其配套 Skill 的深度升级由 **Antigravity AI** 与用户协作完成。我们固化了 7 阶段自动化架构，实现了从"寻找灵感"到"数字资产分发"的完整闭环。
 
 
-## 📲 关注公众号 (Follow Me)
+## 📲 关注公众号
 
 欢迎关注我的公众号，获取更多 AI踩坑经历！！
 

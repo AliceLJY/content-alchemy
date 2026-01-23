@@ -2,6 +2,15 @@
 
 > 本指南确保小白用户也能在10分钟内完成环境配置
 
+## 💻 环境兼容性
+
+本工具已在以下环境完整测试：
+- ✅ **macOS** (Apple Silicon/Intel)：完全支持（需 macOS 13+）
+- ⚠️ **Windows**：需要 WSL2（未充分测试）
+- ⚠️ **Linux**：理论支持但未充分测试
+
+---
+
 ## 📋 前置要求
 
 ### 必须安装
@@ -14,47 +23,329 @@
 
 ---
 
+## 📖 新手术语表
+
+如果你从未接触过命令行，这个章节会帮助你理解文档中的专业术语。
+
+### 基础概念
+
+| 术语 | 解释 | 示例 |
+|------|------|------|
+| **终端** | Mac自带的黑色窗口程序，用于输入命令 | 打开方式：`Command+空格` 搜索"Terminal" |
+| **命令行** | 在终端中输入的文字指令 | `cd Documents` = 进入文档文件夹 |
+| **路径** | 文件或文件夹在电脑中的位置 | `/Users/alice/Documents` |
+| **~** | 你的用户文件夹的简写 | `~/Documents` = 你的文档文件夹 |
+| **cd** | 切换到某个文件夹 | `cd ~/Desktop` = 进入桌面 |
+| **ls** | 查看当前文件夹里有什么文件 | `ls` 会列出所有文件 |
+| **pwd** | 显示当前所在的文件夹路径 | `pwd` 告诉你在哪里 |
+
+### 符号说明
+
+| 符号 | 意思 | 注意事项 |
+|------|------|----------|
+| `$` | 命令提示符（不需要复制） | 文档中 `$ ls` 你只需复制 `ls` |
+| `#` | 注释（不会执行） | `# 这是说明` 不会被执行 |
+| `\` | 转义符（保留空格） | `Google\ Chrome` 中间的空格会保留 |
+| `"` | 英文引号（正确） | ✅ `pkill "Google Chrome"` |
+| `"` | 中文引号（错误） | ❌ `pkill "Google Chrome"` |
+
+### 重要提醒
+
+⚠️ **引号陷阱**：从文档复制命令时，务必确保引号是**英文的**（直的 `"`），而不是**中文的**（弯的 `"`）。建议直接复制粘贴，不要手打。
+
+⚠️ **大小写敏感**：在命令行中，`Documents` 和 `documents` 是不同的。请严格按照文档中的大小写输入。
+
+---
+
 ## ⚡ 快速安装（3步搞定）
 
 ### Step 1: 安装Bun运行时
 
-在终端执行：
-```bash
-curl -fsSL https://bun.sh/install | bash
-```
+**Bun是什么？**  
+一个快速的JavaScript运行时环境（你不需要理解细节，照做就行）。
 
-安装完成后，重启终端，验证安装：
+**安装步骤：**
+
+1. **打开终端**  
+   按 `Command + 空格`，输入"Terminal"，按回车
+
+2. **执行安装命令**  
+   复制下面这行，粘贴到终端，按回车：
+   ```bash
+   curl -fsSL https://bun.sh/install | bash
+   ```
+
+3. **等待安装完成（1-2分钟）**  
+   你会看到类似这样的输出：
+   ```
+   ######################################################################## 100.0%
+   bun was installed successfully to ~/.bun/bin/bun
+   ```
+
+4. **重启终端（非常重要！）**  
+   选择以下任一方法（推荐方法1）：
+   
+   **方法1：完全关闭并重新打开（推荐）**
+   - 点击终端窗口左上角的红色按钮
+   - 重新打开终端（Command+空格 → Terminal）
+   
+   **方法2：新建窗口**
+   - 按 `Command + N` 打开新终端窗口
+   - 关闭旧窗口
+   
+   **方法3：手动加载配置**
+   ```bash
+   source ~/.zshrc
+   ```
+
+5. **验证安装成功**  
+   ```bash
+   bun --version
+   ```
+   
+   **✅ 成功示例：**
+   ```
+   1.0.25
+   ```
+   
+   **❌ 失败示例：**
+   ```
+   zsh: command not found: bun
+   ```
+   如果看到这个错误，回到第4步，确保重启了终端。
+
+**常见问题：**
+
+<details>
+<summary><b>Q: 出现 "command not found: bun"</b></summary>
+
+**原因：** 路径没有加载，或者终端没有重启
+
+**解决方法：**
 ```bash
-bun --version
+# 方法1：手动加载
+source ~/.zshrc
+
+# 方法2：检查是否真的安装了
+ls ~/.bun/bin/bun
+# 如果有输出，说明安装成功，用方法1加载
+
+# 方法3：完全重启终端窗口
 ```
+</details>
+
+<details>
+<summary><b>Q: 出现 "Permission denied"</b></summary>
+
+**原因：** 没有写入权限
+
+**解决方法：**
+```bash
+# 检查用户目录权限
+ls -la ~ | grep .bun
+
+# 如果.bun文件夹不存在或权限不对，手动创建
+mkdir -p ~/.bun/bin
+```
+</details>
+
 
 ### Step 2: 克隆Content Alchemy仓库
 
+**选择安装位置：**
+
+推荐安装在 `~/Documents`（文档文件夹），当然你也可以选择其他位置：
+- `~/Desktop`（桌面）
+- `~/Projects`（自定义项目文件夹）
+
+**安装步骤：**
+
+1. **进入安装目录**  
+   ```bash
+   cd ~/Documents
+   ```
+   
+   💡 如果选择其他位置，替换 `Documents` 为对应文件夹名
+
+2. **克隆仓库**  
+   ```bash
+   git clone https://github.com/AliceLJY/content-alchemy.git
+   ```
+   
+   **✅ 成功输出示例：**
+   ```
+   Cloning into 'content-alchemy'...
+   remote: Enumerating objects: 50, done.
+   remote: Counting objects: 100% (50/50), done.
+   remote: Compressing objects: 100% (35/35), done.
+   Receiving objects: 100% (50/50), 15.20 KiB | 5.06 MiB/s, done.
+   Resolving deltas: 100% (18/18), done.
+   ```
+
+3. **进入项目目录**  
+   ```bash
+   cd content-alchemy
+   ```
+
+4. **验证目录结构**  
+   ```bash
+   ls
+   ```
+   
+   **✅ 应该看到：**
+   ```
+   README.md  SETUP.md  SKILL.md  scripts/  assets/
+   ```
+
+**常见问题：**
+
+<details>
+<summary><b>Q: 出现 "git: command not found"</b></summary>
+
+**原因：** Mac没有安装Git
+
+**解决方法：**
 ```bash
-cd ~/Documents  # 或你喜欢的任意目录
-git clone https://github.com/AliceLJY/content-alchemy.git
-cd content-alchemy
+# 执行这个命令，Mac会自动弹出安装提示
+git --version
+
+# 点击"安装"按钮，等待安装完成（约5分钟）
+# 安装完成后重新执行 Step 2
 ```
+</details>
+
+<details>
+<summary><b>Q: 出现 "Permission denied (publickey)"</b></summary>
+
+**原因：** 使用了SSH方式但没有配置密钥
+
+**解决方法：**
+```bash
+# 使用HTTPS方式克隆（推荐）
+git clone https://github.com/AliceLJY/content-alchemy.git
+
+# 而不是SSH方式
+# git clone git@github.com:AliceLJY/content-alchemy.git
+```
+</details>
+
+<details>
+<summary><b>Q: 出现 "destination path '...' already exists"</b></summary>
+
+**原因：** 目录已经存在
+
+**解决方法：**
+```bash
+# 方法1：删除旧目录重新克隆
+rm -rf content-alchemy
+git clone https://github.com/AliceLJY/content-alchemy.git
+
+# 方法2：更新现有目录
+cd content-alchemy
+git pull origin main
+```
+</details>
+
 
 ### Step 3: 下载Baoyu发布工具（必需）
 
-```bash
-# 在content-alchemy根目录下执行
-git clone https://github.com/JimLiu/baoyu-skills.git dependencies/baoyu-skills
-```
+⚠️ **非常重要：确认你在正确的目录！**
 
-**路径说明：**
+**步骤：**
+
+1. **确认当前目录**  
+   ```bash
+   pwd
+   ```
+   
+   **✅ 应该看到：**
+   ```
+   /Users/你的用户名/Documents/content-alchemy
+   ```
+   
+   ❌ 如果不是这个路径，先执行：
+   ```bash
+   cd ~/Documents/content-alchemy
+   ```
+
+2. **下载Baoyu工具**  
+   ```bash
+   git clone https://github.com/JimLiu/baoyu-skills.git dependencies/baoyu-skills
+   ```
+   
+   **✅ 成功输出示例：**
+   ```
+   Cloning into 'dependencies/baoyu-skills'...
+   remote: Enumerating objects: 150, done.
+   Receiving objects: 100% (150/150), done.
+   ```
+
+3. **验证下载成功**  
+   ```bash
+   ls dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/
+   ```
+   
+   **✅ 应该看到：**
+   ```
+   wechat-article.ts
+   ```
+
+**最终路径结构：**
 ```
-content-alchemy/
+content-alchemy/                    ← 你应该在这里
 ├── SKILL.md
 ├── README.md
-└── dependencies/
-    └── baoyu-skills/  ← 发布脚本在这里
+├── SETUP.md
+├── scripts/
+│   ├── doctor.sh
+│   └── setup.sh
+└── dependencies/                    ← 新创建的文件夹
+    └── baoyu-skills/                ← Baoyu工具在这里
         └── skills/
             └── baoyu-post-to-wechat/
                 └── scripts/
-                    └── wechat-article.ts
+                    └── wechat-article.ts  ← 发布脚本
 ```
+
+**常见问题：**
+
+<details>
+<summary><b>Q: 出现 "destination path 'dependencies/baoyu-skills' already exists"</b></summary>
+
+**原因：** 之前已经下载过
+
+**解决方法：**
+```bash
+# 方法1：删除后重新下载
+rm -rf dependencies/baoyu-skills
+git clone https://github.com/JimLiu/baoyu-skills.git dependencies/baoyu-skills
+
+# 方法2：更新现有目录
+cd dependencies/baoyu-skills
+git pull origin main
+cd ../..
+```
+</details>
+
+<details>
+<summary><b>Q: 路径验证失败，找不到 wechat-article.ts</b></summary>
+
+**原因：** 不在正确的目录，或者下载不完整
+
+**解决方法：**
+```bash
+# 1. 确认当前位置
+pwd
+# 应该显示 /Users/xxx/Documents/content-alchemy
+
+# 2. 如果不对，回到正确目录
+cd ~/Documents/content-alchemy
+
+# 3. 重新下载
+rm -rf dependencies/baoyu-skills
+git clone https://github.com/JimLiu/baoyu-skills.git dependencies/baoyu-skills
+```
+</details>
 
 ---
 
@@ -156,25 +447,71 @@ kill -9 [进程ID]
 
 ## ✅ 验证安装
 
-运行以下命令，确保所有依赖就绪：
+### 方法1：自动检查（推荐）
+
+运行诊断脚本，一键检查所有配置：
 
 ```bash
-# 检查Bun
+cd ~/Documents/content-alchemy
+./scripts/doctor.sh
+```
+
+**✅ 成功输出示例：**
+```
+🔍 Content Alchemy Environment Check
+====================================
+
+📦 Checking Bun...
+   ✅ Bun installed: v1.3.6
+
+🌐 Checking Chrome Debug Port...
+   ✅ Chrome debug port (9222) is open
+
+📚 Checking Baoyu Scripts...
+   ✅ Baoyu scripts found at: ~/.gemini/skills/baoyu-post-to-wechat/scripts/wechat-article.ts
+
+📁 Checking Project Structure...
+   ✅ SKILL.md
+   ✅ README.md
+   ✅ SETUP.md
+
+====================================
+✅ Environment check complete!
+```
+
+如果全部✅，可以直接跳到"首次运行测试"。
+
+---
+
+### 方法2：手动逐项验证
+
+如果 doctor.sh 无法运行，按以下步骤手动检查：
+
+**1. 检查Bun**
+```bash
 bun --version
+```
+✅ 应显示：`1.0.25`（或其他版本号）
 
-# 检查Baoyu脚本是否存在
+**2. 检查项目文件**
+```bash
+cd ~/Documents/content-alchemy
+ls
+```
+✅ 应看到：`README.md  SETUP.md  SKILL.md  scripts/`
+
+**3. 检查Baoyu脚本**
+```bash
 ls dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts
+```
+✅ 应显示：`wechat-article.ts`（文件存在）
 
-# 检查Chrome调试端口（在启动Chrome后）
+**4. 检查Chrome调试端口**（需先启动Chrome）
+```bash
 lsof -i :9222
 ```
+✅ 应显示包含 `Google` 和 `9222` 的进程信息
 
-**如果全部成功**：
-```
-✅ Bun: v1.x.x
-✅ Baoyu脚本: 文件存在
-✅ Chrome端口: 显示进程ID
-```
 
 ---
 
@@ -182,18 +519,64 @@ lsof -i :9222
 
 ### 快速测试发布流程
 
-1. 启动调试Chrome并登录微信
-2. 在Antigravity/Claude中执行：
+**步骤1：创建测试文章**
+
+```bash
+cat > ~/Documents/test.md << 'EOF'
+# 测试文章
+
+这是测试内容。
+
+本文由 Content Alchemy 自动生成。
+EOF
+```
+
+**步骤2：启动Chrome并登录微信**
+
+```bash
+# 启动Chrome调试模式（如果还没启动）
+chrome-debug
+
+# 或完整命令：
+# /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 &
+```
+
+在Chrome中：
+1. 访问：https://mp.weixin.qq.com
+2. 扫码登录
+3. 保持浏览器打开
+
+**步骤3：在Antigravity中发布**
+
+打开 Antigravity，输入以下指令：
 
 ```
-我有一篇Markdown文章在 ~/Documents/test.md，请帮我发布到微信公众号。
+帮我把 ~/Documents/test.md 发布到微信公众号草稿箱。
 
-使用Content Alchemy的Stage 7流程，
-文章路径：~/Documents/test.md
-Baoyu脚本：~/Documents/content-alchemy/dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts
+使用项目路径：~/Documents/content-alchemy
+Baoyu脚本路径：dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts
 ```
 
-3. 如果成功，微信后台草稿箱会出现文章
+**步骤4：验证结果**
+
+**✅ 成功的表现：**
+1. Antigravity 显示："草稿已保存"或类似消息
+2. Chrome 自动切换到微信后台
+3. 在微信后台的"草稿箱"中能看到测试文章
+
+**⚠️ 需要手动完成的步骤：**
+1. 打开草稿进行编辑
+2. 设置封面图（如果有图片，选择文章中的第一张）
+3. 检查格式（段落、标点等）
+4. 手动点击"发送"按钮发布
+
+**❌ 失败的表现：**
+- 浏览器窗口没有动
+- 终端显示错误信息
+- 草稿箱中没有新文章
+
+如果失败，查看下面的"常见问题"章节。
+
 
 ---
 
