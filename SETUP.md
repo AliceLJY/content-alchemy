@@ -619,7 +619,7 @@ pkill -9 "Google Chrome"
 
 **答：坐标定位与屏幕分辨率强相关**
 
-Stage 7使用的坐标（如`x: 90, y: 360`）是基于以下环境测试的：
+Stage 6使用的坐标（如`x: 90, y: 360`）是基于以下环境测试的：
 - MacBook Air 13-inch (1440px 宽度)
 - Chrome 100% 缩放
 - macOS 默认字体大小
@@ -649,8 +649,8 @@ Stage 7使用的坐标（如`x: 90, y: 360`）是基于以下环境测试的：
 - ✅ Stage 2: Source Extraction  
 - ✅ Stage 3: Truth Check
 - ✅ Stage 4: Refining
-- ✅ Stage 6: Writing
-- ✅ Stage 7: Distribution
+- ✅ Stage 5: Writing
+- ✅ Stage 6: Distribution
 
 **需要手动处理的功能：**
 - ⚠️ Stage 5: Image Generation
@@ -658,9 +658,9 @@ Stage 7使用的坐标（如`x: 90, y: 360`）是基于以下环境测试的：
   - Claude Code/Cursor: 无图像生成工具
   - **解决方案：**
     1. 用Midjourney/DALL-E生成图片
-    2. 保存到`./images/cover.png`
+    2. 保存到 `./images/cover.png`
     3. 在Markdown中引用：`![封面](./images/cover.png)`
-    4. 跳过Stage 5，直接执行Stage 6
+    4. 直接执行 Stage 5（Writing）
 
 **启动命令：**
 ```bash
@@ -753,7 +753,7 @@ bun ./scripts/format-markdown.ts ./output/article.md
 ## 📚 下一步
 
 安装完成后，阅读：
-- **SKILL.md**：完整的9阶段工作流说明
+- **SKILL.md**：完整的7阶段工作流说明
 - **README.md**：Skill特性和设计理念
 - **示例文章**：`/examples/`目录下的参考案例
 

@@ -53,10 +53,21 @@ if [ "$BAOYU_FOUND" = false ]; then
     exit 1
 fi
 
-# Check 4: Project Structure
+# Check 4: Git
+echo ""
+echo "🔧 Checking Git..."
+if command -v git &> /dev/null; then
+    GIT_VERSION=$(git --version)
+    echo "   ✅ $GIT_VERSION"
+else
+    echo "   ❌ Git not found"
+    echo "   → Install via Xcode Command Line Tools or https://git-scm.com/"
+fi
+
+# Check 5: Project Structure
 echo ""
 echo "📁 Checking Project Structure..."
-REQUIRED_FILES=("SKILL.md" "README.md" "SETUP.md")
+REQUIRED_FILES=("SKILL.md" "README.md" "SETUP.md" "scripts/format-text.ts" "scripts/setup.sh")
 for file in "${REQUIRED_FILES[@]}"; do
     if [ -f "$file" ]; then
         echo "   ✅ $file"
