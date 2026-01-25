@@ -4,7 +4,47 @@
 
 ---
 
-## [v3.1] - 2025-01-25
+## [v3.2] - 2026-01-25
+
+### ✨ 新功能
+
+- **视频采集 Fallback 机制** - 多种方法自动切换
+  - 方法 1：yt-dlp 直接提取（首选）
+  - 方法 2：NotebookLM 自动化导入（YouTube 最佳方案）
+  - 方法 3：Browser DOM 提取
+  - 方法 4：Live Search 替代视频
+  - 方法 5：YouTube-First 策略（B站备用）
+
+- **NotebookLM 自动化验证** - Chrome MCP 实测
+  - ✅ 可获取 YouTube 完整 transcript（不只是摘要）
+  - ❌ B站/小红书 仅能抓取页面文本，不能提取视频字幕
+
+- **测试话术文档** - 复制即用
+  - 完整流程测试
+  - YouTube 视频提取（NotebookLM vs yt-dlp）
+  - Fallback 链测试
+  - 微信发布测试
+  - 平台支持速查表
+
+### 🔧 改进
+
+- **写作风格指南重构**
+  - 明确区分"个人示例" vs "通用框架"
+  - 七大去 AI 味原则（通用）
+  - 搜索策略按话题类型（通用）
+
+- **移除坐标定位方案** - 微信有 2 种页面布局，坐标不稳定
+
+- **README 亮点表格** - "你可能遇到的问题 → 我已经帮你解决了"
+
+### 📚 贡献者
+
+- **Claude Code (Opus 4.5)** - 主要开发：Fallback 机制、NotebookLM 测试、测试话术、文档重构
+- **Antigravity** - 流程验证：实际运行 yt-dlp、微信发布等功能测试
+
+---
+
+## [v3.1] - 2026-01-25
 
 ### ✨ 新功能
 
@@ -43,102 +83,65 @@
   - 保留 6 个核心文档
   - 所有文档重写为新手友好风格
 
-### 📚 文档变更
+### 📚 贡献者
 
-**新增**:
-- `WECHAT-PUBLISH.md` - 微信发布完整指南（新手友好）
-- `PROJECT-STRUCTURE.md` - 项目结构说明
-- `CHANGELOG.md` - 更新日志（本文件）
-
-**更新**:
-- `README.md` - 添加微信发布功能介绍
-- `BEGINNER-GUIDE.md` - 优化新手指南
-
-**删除**:
-- `scripts/修复粘贴问题.md`
-- `scripts/修复说明.md`
-- `scripts/普通用户自动化发布方案.md`
-- `scripts/测试报告.md`
-- `scripts/简易发布方案.md`
-- `scripts/粘贴问题修复完成.md`
-- `scripts/问题诊断报告.md`
-- `scripts/如何发布到微信.md`
-
-### 🗂️ 文件变更
-
-**核心脚本** (scripts/):
-- ✅ `publish.sh` - 新增（统一的发布脚本）
-- ✅ `simple-md-to-html.ts` - 新增（简化 Markdown 转换器）
-- ✅ `setup.sh` - 保留（安装脚本）
-- ✅ `doctor.sh` - 保留（健康检查）
-- ✅ `fix-baoyu-dependencies.sh` - 保留（依赖修复）
-- ✅ `format-text.ts` - 保留（格式化工具）
-- ✅ `preprocess_article.py` - 保留（预处理脚本）
-
-**已归档** (.archive/old-scripts/):
-- 📦 `test-publish.sh`
-- 📦 `publish-fixed.sh`
-- 📦 `publish-v2.sh`
-- 📦 15 个调试/测试脚本
-
-### ⚙️ 技术细节
-
-**修复的核心问题**:
-
-1. **粘贴问题**
-   ```
-   旧流程: 打开新标签 → 复制 → 关闭标签 → 焦点变化 → 微信拒绝
-   新流程: 系统剪贴板 → 直接粘贴 → 无焦点变化 → 成功
-   ```
-
-2. **依赖缺失**
-   ```
-   问题: package.json 不存在
-   修复: 创建 package.json，包含 marked, fflate, katex 等
-   ```
-
-3. **中文符号支持**
-   ```
-   Antigravity 格式: ！【图片】（路径。png）
-   标准格式: ![图片](路径.png)
-   修复: 两种格式都支持
-   ```
-
-**修改的文件**:
-- `wechat-article.ts` - 替换 `copyHtmlFromBrowser()` 为 `copyHtmlDirectly()`
-- `md-to-wechat.ts` - 改为调用简化版转换器
-- `package.json` - 新建，包含所有依赖
+- **Claude Code (Opus 4.5)** - Bug 修复、Markdown 转换器、文档重构
+- **Antigravity** - 流程测试、微信发布验证
 
 ---
 
-## [v2.6] - 2025-01-23
+## [v2.6] - 2026-01-24
 
 ### 文档优化
 
 - 优化安装文档
 - 添加新手指南
 - 改进工作流说明
+- 添加 doctor.sh 环境检测脚本
+
+### 📚 贡献者
+
+- **Claude Code** - 文档优化
+- **Antigravity** - 初始工作流设计
 
 ---
 
-## [v2.0-v2.5] - 2024-2025
+## [v2.5] - 2026-01-23
 
 ### 功能迭代
 
-- 实现 7 阶段 Alchemy 工作流
-- 添加 Source Truth Table
-- 改进 Mining → Refining → Building 流程
-- 优化图片生成
+- Production Ready 版本
+- 完善 7 阶段 Alchemy 工作流
+- 添加 Source Truth Table（防 AI 幻觉）
+- 优化图片生成流程
+- 添加微信公众号二维码
+- 重新定义自动化边界："端到端协作"而非"全自动化"
+
+### 📚 贡献者
+
+- **Antigravity** - 主要开发：工作流设计、微信集成
 
 ---
 
-## [v1.0] - 2024
+## [v2.0] - 2026-01-22
 
 ### 初始版本
 
-- 基础 Alchemy 工作流
+- 基础 7 阶段 Alchemy 工作流
+  - Stage 1: 选题挖掘
+  - Stage 2: 素材采集
+  - Stage 3: 深度分析
+  - Stage 4: 知识炼化
+  - Stage 5: 人性化写作
+  - Stage 6: 分发（Flash-Publish）
+  - Stage 7: 清理
 - 集成 Baoyu 微信发布
 - 多 Skill 协同架构
+- 跨 IDE 兼容性说明
+
+### 📚 贡献者
+
+- **Antigravity** - 项目初始化、核心工作流设计
 
 ---
 
@@ -151,14 +154,17 @@
 
 ---
 
-## 贡献者
+## 贡献者总览
 
-- **AliceLJY** - 项目维护者
-- **Claude Code (Anthropic)** - v3.1 修复和文档优化
-- **Baoyu (宝玉)** - 微信 CDP 自动化核心代码
-- **YouMind-OpenLab** - 图像提示词推荐
-- **Lynne Liu** - 思维链提示词灵感
+| 贡献者 | 角色 | 主要贡献 |
+|-------|------|---------|
+| **AliceLJY** | 项目维护者 | 需求定义、测试验证、最终审核 |
+| **Claude Code (Opus 4.5)** | v3.1-3.2 主要开发 | Bug 修复、Fallback 机制、NotebookLM 测试、测试话术、文档重构 |
+| **Antigravity** | v2.0-2.5 主要开发 | 工作流设计、微信集成、流程测试 |
+| **Baoyu (宝玉)** | 核心依赖 | 微信 CDP 自动化核心代码 |
+| **YouMind-OpenLab** | 核心依赖 | 图像提示词推荐 |
+| **Lynne Liu** | 灵感来源 | 思维链提示词结构 |
 
 ---
 
-*查看完整提交记录: [GitHub Commits](https://github.com/你的用户名/content-alchemy-repo/commits)*
+*查看完整提交记录: [GitHub Commits](https://github.com/AliceLJY/content-alchemy/commits)*
