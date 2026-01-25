@@ -735,14 +735,40 @@ bun ./scripts/format-markdown.ts ./output/article.md
 
 ## 🔄 更新Skill
 
+### 方法1：一键更新（推荐）
+
+```bash
+cd ~/Documents/content-alchemy
+
+# 更新项目 + 所有依赖（submodule）
+git pull origin main
+git submodule update --remote --merge
+```
+
+### 方法2：分步更新
+
 ```bash
 cd ~/Documents/content-alchemy
 git pull origin main
 
-# 同时更新依赖
+# 单独更新 Baoyu 依赖
 cd dependencies/baoyu-skills
 git pull origin main
 ```
+
+### 首次克隆时初始化依赖
+
+如果你是首次克隆这个项目，需要初始化 submodule：
+
+```bash
+git clone https://github.com/AliceLJY/content-alchemy.git
+cd content-alchemy
+
+# 初始化并拉取所有依赖
+git submodule update --init --recursive
+```
+
+> 💡 **什么是 submodule？** 简单说就是"项目中嵌套的项目"。我们用它来追踪 Baoyu 等外部依赖，这样你更新的时候不用手动去各个仓库拉代码。
 
 ---
 
