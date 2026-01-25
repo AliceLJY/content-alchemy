@@ -208,9 +208,11 @@ yt-dlp --write-auto-sub --sub-format vtt --skip-download [URL]
 
 ---
 
-**方法 2：NotebookLM 自动化导入（推荐 Fallback）**
+**方法 2：NotebookLM 自动化导入（YouTube 最佳方案）**
 
 > ✅ **已验证可自动化**：通过 Chrome MCP 可以完全自动操作 NotebookLM 网页版。
+>
+> ✅ **可获取完整 transcript**：向 NotebookLM 提问"请给我完整文字稿"即可获取原文。
 
 **前提条件**：
 - 用户已登录 Google 账号
@@ -223,11 +225,12 @@ yt-dlp --write-auto-sub --sub-format vtt --skip-download [URL]
 4. 在输入框粘贴 YouTube 链接
 5. 点击 "插入" 按钮
 6. 等待 NotebookLM 自动提取视频内容
-7. 从生成的摘要中提取关键信息
+7. **关键步骤**：向 NotebookLM 提问 "请给我这个视频的完整文字稿/transcript，不要总结，要原文"
+8. NotebookLM 会返回带引用标记的完整 transcript
 
 **优势**：
 - 绕过 yt-dlp 的 Bot 检测问题
-- 自动生成结构化摘要
+- **可以获取完整 transcript，不只是摘要**
 - 支持多视频交叉引用
 - 可以针对内容提问
 - 减少 AI 幻觉（答案基于实际视频内容）
@@ -235,7 +238,19 @@ yt-dlp --write-auto-sub --sub-format vtt --skip-download [URL]
 **限制**：
 - 免费版有每日导入次数限制
 - 需要用户已登录 Google 账号
-- 仅支持公开的 YouTube 视频
+- **仅 YouTube 视频支持 transcript 提取**
+
+**⚠️ 平台支持情况（实测）**：
+
+| 平台 | transcript 提取 | 说明 |
+|-----|----------------|------|
+| **YouTube** | ✅ 完美支持 | 可获取完整原文 |
+| **B站** | ❌ 不支持 | 只能抓取页面文本，不能提取视频字幕 |
+| **小红书** | ❌ 不支持 | 同上，只能抓取页面文本 |
+| **普通网页** | ✅ 支持 | 抓取网页可见文本 |
+
+**B站/小红书视频怎么办？**
+→ 使用方法 3（Browser Subagent DOM 提取）或方法 5（YouTube-First 策略寻找镜像）
 
 ---
 
