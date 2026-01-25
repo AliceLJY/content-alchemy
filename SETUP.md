@@ -247,105 +247,104 @@ git pull origin main
 </details>
 
 
-### Step 3: 下载Baoyu发布工具（必需）
+### Step 3: 安装 Baoyu 发布工具（必需）
 
-⚠️ **非常重要：确认你在正确的目录！**
+⚠️ **这一步必须在运行任何发布命令之前完成！** 否则会出现"边跑边装"的问题。
 
-**步骤：**
+**选择安装方式：**
 
-1. **确认当前目录**  
-   ```bash
-   pwd
-   ```
-   
-   **✅ 应该看到：**
-   ```
-   /Users/你的用户名/Documents/content-alchemy
-   ```
-   
-   ❌ 如果不是这个路径，先执行：
-   ```bash
-   cd ~/Documents/content-alchemy
-   ```
+#### 方式 A：全局安装（推荐，一次安装到处可用）
 
-2. **下载Baoyu工具**  
-   ```bash
-   git clone https://github.com/JimLiu/baoyu-skills.git dependencies/baoyu-skills
-   ```
-   
-   **✅ 成功输出示例：**
-   ```
-   Cloning into 'dependencies/baoyu-skills'...
-   remote: Enumerating objects: 150, done.
-   Receiving objects: 100% (150/150), done.
-   ```
+```bash
+# 创建全局 skills 目录
+mkdir -p ~/.gemini/skills
 
-3. **验证下载成功**  
-   ```bash
-   ls dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/
-   ```
-   
-   **✅ 应该看到：**
-   ```
-   wechat-article.ts
-   ```
+# 克隆 Baoyu 工具
+git clone https://github.com/JimLiu/baoyu-skills.git ~/.gemini/skills/baoyu-skills
 
-**最终路径结构：**
+# 创建符号链接（方便访问）
+ln -s ~/.gemini/skills/baoyu-skills/skills/baoyu-post-to-wechat ~/.gemini/skills/baoyu-post-to-wechat
 ```
-content-alchemy/                    ← 你应该在这里
-├── SKILL.md
-├── README.md
-├── SETUP.md
-├── scripts/
-│   ├── doctor.sh
-│   └── setup.sh
-└── dependencies/                    ← 新创建的文件夹
-    └── baoyu-skills/                ← Baoyu工具在这里
-        └── skills/
-            └── baoyu-post-to-wechat/
-                └── scripts/
-                    └── wechat-article.ts  ← 发布脚本
+
+**验证安装：**
+```bash
+ls ~/.gemini/skills/baoyu-post-to-wechat/scripts/wechat-article.ts
 ```
+✅ 应该显示文件路径，没有报错
+
+#### 方式 B：项目本地安装
+
+```bash
+# 确认在项目目录
+cd ~/Documents/content-alchemy
+
+# 克隆到 dependencies 目录
+git clone https://github.com/JimLiu/baoyu-skills.git dependencies/baoyu-skills
+```
+
+**验证安装：**
+```bash
+ls dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts
+```
+
+**安装位置对照表：**
+
+| 安装方式 | 路径 | 适用场景 |
+|---------|------|---------|
+| 全局安装 | `~/.gemini/skills/baoyu-post-to-wechat/` | 多项目共用、Antigravity 用户 |
+| 本地安装 | `./dependencies/baoyu-skills/` | 单项目、想保持项目独立 |
 
 **常见问题：**
 
 <details>
-<summary><b>Q: 出现 "destination path 'dependencies/baoyu-skills' already exists"</b></summary>
-
-**原因：** 之前已经下载过
+<summary><b>Q: 出现 "destination path already exists"</b></summary>
 
 **解决方法：**
 ```bash
-# 方法1：删除后重新下载
+# 全局安装的情况
+rm -rf ~/.gemini/skills/baoyu-skills
+git clone https://github.com/JimLiu/baoyu-skills.git ~/.gemini/skills/baoyu-skills
+
+# 本地安装的情况
 rm -rf dependencies/baoyu-skills
 git clone https://github.com/JimLiu/baoyu-skills.git dependencies/baoyu-skills
-
-# 方法2：更新现有目录
-cd dependencies/baoyu-skills
-git pull origin main
-cd ../..
 ```
 </details>
 
 <details>
-<summary><b>Q: 路径验证失败，找不到 wechat-article.ts</b></summary>
+<summary><b>Q: doctor.sh 报错找不到 Baoyu 脚本</b></summary>
 
-**原因：** 不在正确的目录，或者下载不完整
+**原因：** 安装路径与 doctor.sh 检查的路径不匹配
 
-**解决方法：**
-```bash
-# 1. 确认当前位置
-pwd
-# 应该显示 /Users/xxx/Documents/content-alchemy
+**解决方法：** doctor.sh 会检查以下位置（按顺序）：
+1. `./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/`
+2. `~/.gemini/skills/baoyu-post-to-wechat/scripts/`
+3. `~/.gemini/antigravity/scratch/baoyu-skills/skills/baoyu-post-to-wechat/scripts/`
 
-# 2. 如果不对，回到正确目录
-cd ~/Documents/content-alchemy
-
-# 3. 重新下载
-rm -rf dependencies/baoyu-skills
-git clone https://github.com/JimLiu/baoyu-skills.git dependencies/baoyu-skills
-```
+确保 Baoyu 安装在其中一个位置即可。
 </details>
+
+---
+
+### Step 4: 安装 yt-dlp（可选，用于视频字幕提取）
+
+如果你需要从 YouTube 视频提取字幕作为素材，需要安装 yt-dlp：
+
+```bash
+# macOS (使用 Homebrew)
+brew install yt-dlp
+
+# 验证安装
+yt-dlp --version
+```
+
+**使用示例：**
+```bash
+# 提取 YouTube 视频字幕（不下载视频）
+yt-dlp --write-auto-sub --sub-lang zh,en --skip-download "https://youtube.com/watch?v=xxx"
+```
+
+> 💡 如果不需要视频素材采集功能，可以跳过这一步。
 
 ---
 

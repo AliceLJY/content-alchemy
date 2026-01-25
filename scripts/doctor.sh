@@ -64,7 +64,18 @@ else
     echo "   → Install via Xcode Command Line Tools or https://git-scm.com/"
 fi
 
-# Check 5: Project Structure
+# Check 5: yt-dlp (Optional)
+echo ""
+echo "🎬 Checking yt-dlp (optional)..."
+if command -v yt-dlp &> /dev/null; then
+    YTDLP_VERSION=$(yt-dlp --version)
+    echo "   ✅ yt-dlp installed: v$YTDLP_VERSION"
+else
+    echo "   ⚠️  yt-dlp not found (optional, for YouTube subtitle extraction)"
+    echo "   → Install: brew install yt-dlp"
+fi
+
+# Check 6: Project Structure
 echo ""
 echo "📁 Checking Project Structure..."
 REQUIRED_FILES=("SKILL.md" "README.md" "SETUP.md" "scripts/format-text.ts" "scripts/setup.sh")

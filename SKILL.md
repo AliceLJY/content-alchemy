@@ -88,33 +88,141 @@ To avoid "temporary loading" lag, this skill references the following local or r
   - **Level 4**: AI Hallucination/Knowledge base (No specific source found).
 
 
+---
+
+## 🔍 素材来源全景图（按内容类型）
+
+> 💡 **关于分类方式**
+>
+> 下面的"类型 A"和"类型 B"是作者公众号的分类方式。你可以根据自己的内容定位重新划分，但**具体的搜索源清单是通用的**——技术内容优先搜 Google/GitHub，社会话题优先搜微博/小红书/知乎，这个逻辑不变。
+
+### 📌 类型 A：技术踩坑实录 — 优先搜索顺序
+
+| 优先级 | 来源 | 适合内容 | 工具/方法 |
+|:---:|-----|---------|----------|
+| 1 | **Google Search** | 报错信息、技术问题 | `search_web` / 直接搜索 |
+| 2 | **GitHub** | 开源项目、Issue、讨论 | README, Issues, Discussions |
+| 3 | **Stack Overflow** | 具体技术问题解答 | `site:stackoverflow.com` |
+| 4 | **YouTube** | 教程、演示、发布会 | `yt-dlp` 提取字幕 |
+| 5 | **官方文档** | API、框架用法 | 直接访问 docs 站点 |
+| 6 | **技术博客** | 深度分析、最佳实践 | Medium, Dev.to, 个人博客 |
+| 7 | **中文技术社区** | 中文教程、本土化问题 | 掘金、思否、CSDN、V2EX |
+| 8 | **Twitter/X** | 最新动态、作者观点 | 搜索项目名/作者名 |
+| 9 | **Reddit/HN** | 社区讨论、真实评价 | r/programming, Hacker News |
+| 10 | **arXiv/Papers** | 学术论文、前沿研究 | Google Scholar |
+
+### 📌 类型 B：AI视角观察人间 — 优先搜索顺序
+
+| 优先级 | 来源 | 适合内容 | 搜索技巧 |
+|:---:|-----|---------|----------|
+| 1 | **微博热搜** | 社会情绪、热点事件 | 热搜榜 + 评论区 |
+| 2 | **小红书** | 年轻人真实生活状态 | 搜索关键词 + 看评论 |
+| 3 | **知乎** | 深度讨论、多元观点 | 高赞回答 + 争议评论 |
+| 4 | **豆瓣** | 文艺青年、生活记录 | 小组讨论、日记 |
+| 5 | **B站评论区** | Z世代真实想法 | 弹幕 + 热评 |
+| 6 | **微信公众号** | 深度文章、观点输出 | 搜狗微信搜索 |
+| 7 | **播客/音频** | 深度对话、个人叙事 | 小宇宙、喜马拉雅 |
+| 8 | **Twitter/X** | 国际视角、学者观点 | 搜索话题标签 |
+| 9 | **Reddit** | 匿名真实故事 | r/antiwork, r/LifeProTips 等 |
+| 10 | **新闻深度报道** | 社会调查、数据报告 | 澎湃、界面、财新 |
+
+### 🎯 按话题类型的搜索策略（通用）
+
+> ✅ **这是通用的搜索逻辑**，不限于特定公众号风格。根据话题性质选择合适的信息源。
+
+**技术工具类**：Google → GitHub → 官方文档 → Stack Overflow → YouTube教程
+
+**AI产品评测**：官网 → Twitter作者动态 → YouTube演示 → Reddit讨论 → 中文测评
+
+**行业趋势类**：arXiv论文 → 科技媒体(TechCrunch/The Verge) → Twitter KOL → 投资报告
+
+**社会观察类**：微博热搜 → 小红书/知乎评论区 → 豆瓣小组 → 深度报道 → 学术研究
+
+**个人成长/情绪类**：小红书真实分享 → 知乎高赞回答 → 播客访谈 → Reddit匿名帖
+
+---
+
+### 📋 素材来源详细说明
+
 1. **视频内容** (YouTube/Bilibili)
    - 优先 YouTube（自动字幕可用）
    - Bilibili 作为补充（需检查字幕）
    - 使用 `yt-dlp` 提取字幕
 
 2. **技术文章/博客**
-   - Medium, Dev.to, 个人博客
-   - 技术社区（掘金、思否）
+   - 英文：Medium, Dev.to, 个人博客, Substack
+   - 中文：掘金、思否、CSDN、少数派
 
 3. **开源项目** (GitHub)
    - README, Issues, Discussions
    - Release Notes, Documentation
+   - Awesome Lists（快速找到领域资源）
 
 4. **学术论文** (arXiv, Google Scholar)
    - 最新研究成果
    - 引用关键发现
 
 5. **新闻/报道**
-   - 科技媒体（TechCrunch, The Verge）
-   - 行业报告
+   - 英文：TechCrunch, The Verge, Ars Technica, Wired
+   - 中文：36氪、极客公园、量子位、机器之心
 
-### 🎯 视频采集：YouTube-First 策略
+6. **社交媒体/社区**
+   - Twitter/X：作者动态、行业讨论
+   - Reddit：r/MachineLearning, r/LocalLLaMA, r/programming
+   - Hacker News：技术深度讨论
+   - 知乎：中文深度问答
+   - 小红书：真实用户体验
 
-**仅适用于视频素材采集时**
+7. **播客/音频**
+   - 英文：Lex Fridman, AI Podcast
+   - 中文：小宇宙上的科技/AI播客
 
-**问题：** Bilibili 视频常无字幕 API
-**方案：** 优先搜索 YouTube 镜像内容
+8. **社会观察类特殊来源**（仅用于"AI视角观察人间"）
+   - 微博热搜 + 评论区情绪
+   - 豆瓣小组（如"躺平小组"、"上班这件事"）
+   - 脉脉职言（职场真实吐槽）
+   - NGA/虎扑（特定群体声音）
+
+### 🎯 视频采集：三种方法
+
+**方法 1：yt-dlp 直接提取字幕（推荐）**
+
+最快速、最可控的方式，适合有字幕的 YouTube 视频。
+
+```bash
+# 仅提取字幕（不下载视频）
+yt-dlp --write-auto-sub --sub-lang zh,en --skip-download [URL]
+
+# 提取字幕并转为纯文本
+yt-dlp --write-auto-sub --sub-format vtt --skip-download [URL]
+```
+
+**方法 2：NotebookLM 智能摘要（深度理解）**
+
+适合需要深度分析、交叉引用多个视频的场景。
+
+**工作流：**
+1. 打开 [NotebookLM](https://notebooklm.google.com/)
+2. 创建新 Notebook，添加 YouTube 链接作为 Source
+3. NotebookLM 自动提取视频内容并生成摘要
+4. 可以向 NotebookLM 提问，获取基于视频内容的回答
+5. 导出关键内容到本地
+
+**优势**：
+- 自动生成结构化摘要
+- 支持多视频交叉引用
+- 可以针对内容提问
+- 减少 AI 幻觉（答案基于实际视频内容）
+
+**配合 notebooklm-skill 使用**：
+```
+# 如果已安装 notebooklm-skill，可以直接在 Claude Code 中查询
+# 前提：已在 NotebookLM 中添加了相关视频/文档
+```
+
+**方法 3：YouTube-First 策略（B站视频备用）**
+
+当 Bilibili 视频无字幕时，搜索 YouTube 镜像。
 
 **工作流：**
 1. 搜索 Bilibili 原始内容
@@ -133,6 +241,36 @@ To avoid "temporary loading" lag, this skill references the following local or r
 ```
 
 💡 **这不是审查绕过，而是数据可得性优先**
+
+---
+
+### 📚 NotebookLM 深度整合（可选）
+
+NotebookLM 是 Google 的 AI 研究助手，特别适合处理大量素材。
+
+**适用场景**：
+- 需要分析 5+ 个视频/文档
+- 需要交叉引用多个来源
+- 需要生成播客式音频摘要
+- 想要减少 AI 幻觉
+
+**支持的 Source 类型**：
+- YouTube 视频链接（自动提取内容）
+- Google Docs / Google Slides
+- PDF 文件
+- 网页链接
+- 纯文本 / Markdown
+
+**与 Content Alchemy 的配合**：
+
+| 阶段 | NotebookLM 用法 |
+|-----|----------------|
+| Stage 1 选题 | 把多个候选视频扔进去，让它总结共同主题 |
+| Stage 2 采集 | 把所有素材链接添加为 Source |
+| Stage 3 分析 | 向 NotebookLM 提问，生成初步分析 |
+| Stage 4 汇总 | 让它生成 FAQ 或 Briefing Doc |
+
+**注意**：NotebookLM 的输出仍需人工审核，它只是加速素材处理，不能替代 Source Truth Table 的事实核查。
 
 ### Stage 3: Deep Analysis & Truth Check ⏸
 - **Action**: 5-dimension analysis.
@@ -172,22 +310,212 @@ AI cannot judge source credibility. Only humans can decide:
 
 ### Stage 5: Humanized Article (人性化写作) - WeChat-Ready Content ⏸
 
-- **Goal**: Transform research paper into engaging, human-sounding article.
-- **Style**: Follow the 7 Principles (Restrained intro, less evaluation, bold questions, etc.)
-- **Auto-Formatting** [CRITICAL]:
-  1. Run `format-text.ts` to fix spaces/punctuation.
-  2. **Chinese Punctuation Check** [MANDATORY]:
-     - Replace ALL English punctuation with Chinese equivalents.
-     - ❌ Forbidden: . , ! ? : ; " " ' ' ( )
-     - ✅ Required: 。，！？：；“”‘’（）
-     - Exception: Code blocks, URLs, English sentences only.
-  3. Apply humanizer-zh rules (remove AI patterns).
+- **Goal**: Transform research into engaging, human-sounding article with genuine voice.
+- **Checkpoint**: Present `{topic-slug}/article.md`. **User must approve the article.**
+
+---
+
+## ✍️ 写作风格指南
+
+> ⚠️ **个人示例，非通用模板**
+>
+> 以下是本项目作者的公众号风格定位，仅作参考。**请根据你自己的公众号调性修改这部分内容**，或直接删除，使用你自己的写作指南。
+
+### 📌 示例：作者的公众号定位
+
+本公众号有两类内容，写作风格需匹配：
+
+**内容类型 A：技术踩坑实录**
+
+记录真实的 AI 技术实践、工具使用、Bug 修复过程。
+
+风格要求：
+- 像给朋友讲故事一样还原踩坑过程
+- 保留真实的情绪起伏（困惑→尝试→失败→顿悟→解决）
+- 技术细节要准确，但表达要口语化
+- 可以自嘲，可以吐槽，不要端着
+
+**内容类型 B：AI视角观察人间**
+
+> "当AI开始理解人类，它看见了什么？"
+
+用 AI 的"局外人"视角切入时代情绪：躺平、内卷、猝死、孤独、焦虑……
+
+风格要求：
+- 不贩卖焦虑，不兜售答案
+- 不是冰冷的分析，而是温柔的凝视
+- 像一个刚学会"懂"的 AI，带着好奇和困惑观察人类
+- 留白比填满重要，问题比答案重要
+
+---
+
+## 🎯 七大写作原则（去 AI 味核心）
+
+> ✅ **通用原则**
+>
+> 以下去 AI 味原则适用于所有中文写作，不限于特定公众号风格。
+
+### 原则 1：克制的开场——不要"宏大叙事"
+❌ **禁止**：
+- "在这个信息爆炸的时代..."
+- "随着AI技术的飞速发展..."
+- "众所周知..."
+- "毫无疑问..."
+
+✅ **推荐**：
+- 直接抛出一个场景："凌晨三点，我盯着报错信息发呆。"
+- 从一个细节切入："我注意到一个奇怪的现象——"
+- 用问题开头："你有没有那种感觉，明明什么都没做，却累得要死？"
+
+### 原则 2：少评价，多呈现——让读者自己得出结论
+❌ **禁止**：
+- "这个方法非常有效"
+- "这是一个绝妙的解决方案"
+- "令人印象深刻"
+- "至关重要"、"不可或缺"
+
+✅ **推荐**：
+- 用数据说话："从 4 小时缩短到 30 分钟"
+- 用对比呈现：展示 before/after，让差异自己说话
+- 用细节证明：具体描述发生了什么，而不是总结"很好"
+
+### 原则 3：大胆提问——制造认知缺口
+✅ **技巧**：
+- 在段落间插入真实的困惑："但这就引出一个问题——"
+- 用反问引导思考："可是，真的是这样吗？"
+- 承认自己的不确定："说实话，我也不太确定答案。"
+
+### 原则 4：口语化过渡——像说话，不像写论文
+❌ **删除这些机械连接词**：
+- "首先...其次...最后..."
+- "综上所述"、"由此可见"
+- "不难看出"、"显而易见"
+- "值得注意的是"
+
+✅ **替换为**：
+- "说白了"、"换句话说"
+- "这就像..."、"打个比方"
+- "后来我才发现"、"结果呢"
+- "有意思的是"、"诡异的地方在于"
+
+### 原则 5：具体胜过抽象——拒绝空洞的形容词
+❌ **禁止**：
+- "提升效率"、"优化流程"、"赋能"
+- "强大的"、"显著的"、"卓越的"
+- "深度"、"全面"、"系统性"
+
+✅ **推荐**：
+- 用数字量化："减少 3 个手动步骤"
+- 用场景具象化："不用再手动复制粘贴 20 次了"
+- 用比喻降维："就像给代码装了个自动挡"
+
+### 原则 6：保留人味——允许不完美
+✅ **可以有**：
+- 偶尔的口语化表达和语气词（"嗯"、"啊"、"吧"）
+- 自嘲和幽默（"我当时就是个傻子"）
+- 思维的跳跃和转折（"扯远了，说回正题"）
+- 未解决的困惑（"这个问题我到现在也没想明白"）
+- 个人偏好和立场（"我个人更喜欢..."）
+
+### 原则 7：结尾要轻——不要强行升华
+❌ **禁止**：
+- "让我们拭目以待"
+- "希望本文对您有所帮助"
+- "总的来说，XXX是一个很有价值的工具"
+- 强行拔高到"时代意义"、"行业趋势"
+
+✅ **推荐**：
+- 留一个开放的问题
+- 回到开头的那个细节
+- 轻轻收住，像对话结束时的沉默
+- 或者干脆不总结，故事讲完就完了
+
+---
+
+## 🚫 Humanizer-ZH 去 AI 味检查清单
+
+写完文章后，逐项检查并删除/替换：
+
+### 【开头模板】立即删除
+- [ ] "在当今...的背景下"
+- [ ] "随着...的不断发展"
+- [ ] "近年来..."
+- [ ] "众所周知"、"毋庸置疑"
+
+### 【过度评价】替换为具体描述
+- [ ] "非常重要" → 说明为什么重要
+- [ ] "令人惊讶" → 描述你惊讶时的反应
+- [ ] "强大的功能" → 列出具体是哪个功能
+
+### 【机械连接词】替换为口语化表达
+- [ ] "首先/其次/最后" → 打散结构，自然过渡
+- [ ] "因此/所以" → "结果呢"、"后来"
+- [ ] "然而/但是"（连续出现）→ 合并或删除
+
+### 【空洞总结】直接删除
+- [ ] "总而言之"、"综上所述"
+- [ ] "希望对你有帮助"
+- [ ] "让我们一起期待"
+
+### 【AI 高频词】替换或删除
+- [ ] "赋能"、"助力"、"加持"
+- [ ] "痛点"、"抓手"、"闭环"
+- [ ] "深度"、"全面"、"系统性"
+- [ ] "旨在"、"致力于"、"专注于"
+
+### 【情感注入检查】
+- [ ] 文章里有没有至少一处真实的情绪？（困惑/沮丧/惊喜/释然）
+- [ ] 有没有一个具体的场景或画面？
+- [ ] 读起来像一个人在说话，还是一份报告？
+
+---
+
+## 🎨 三层叠加法（增加人味的技巧）
+
+当一段话太"AI"时，用这三层叠加增加人味：
+
+1. **场景层**：加入具体环境
+   - Before: "我在调试代码时遇到了问题"
+   - After: "凌晨两点，咖啡凉了第三杯，我盯着屏幕上的红色报错"
+
+2. **情感层**：注入真实感受
+   - Before: "这个bug很难解决"
+   - After: "那一刻我是真的想砸键盘"
+
+3. **细节层**：加入感官描写
+   - Before: "最后我找到了解决方案"
+   - After: "当终端终于跑出绿色的 PASSED，窗外天都快亮了"
+
+---
+
+## 🔄 反套路公式（打破 AI 的顺向思维）
+
+AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
+
+**公式**：常规观点 + "但" + 意外细节
+
+**示例**：
+- "所有人都在说要提高效率，但我这周最大的收获是学会了按时下班"
+- "AI 可以写出完美的总结，但它永远不会在写到一半时突然想吃火锅"
+- "这个工具确实很强大。强大到我花了三小时研究它，只为了完成一个五分钟的任务"
+
+---
+
+## 📝 Auto-Formatting 自动格式化 [CRITICAL]
+
+1. Run `format-text.ts` to fix spaces/punctuation.
+2. **Chinese Punctuation Check** [MANDATORY]:
+   - Replace ALL English punctuation with Chinese equivalents.
+   - ❌ Forbidden: . , ! ? : ; " " ' ' ( )
+   - ✅ Required: 。，！？：；""''（）
+   - Exception: Code blocks, URLs, English sentences only.
+3. Apply above humanizer-zh checklist.
+
 - **Rules**:
   1. **Punctuation**: 100% full-width Chinese style (`，` `。` `！`).
   2. **Cover**: Insert as the first element.
   3. **Signature**: Append: `本文由 [Content Alchemy](https://github.com/AliceLJY/content-alchemy) 自动生成。`
 - **Visuals**: Auto-generate cover (2.5:1) and internal illustrations without asking.
-- **Checkpoint**: Present `{topic-slug}/article.md`. **User must approve the article.**
 
 ### 🛡️ Why Manual Cover & Formatting?
 **Problem**: Automated cover setting often fails due to WeChat's UI changes or hover-only buttons.
