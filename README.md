@@ -2,6 +2,7 @@
 
 🚀 **新手必看**: [安装指南](./SETUP.md) | [新手指南](./BEGINNER-GUIDE.md) | [微信发布](./WECHAT-PUBLISH.md)
 📚 **深入了解**: [技术文档](./SKILL.md) | [项目结构](./PROJECT-STRUCTURE.md)
+🔄 **一键更新**: `git pull && git submodule update --remote --merge`
 
 **一句话说明**：让 AI 帮你完成"调研 → 分析 → 写作 → 配图 → 发布"的任意环节，或全部。
 
