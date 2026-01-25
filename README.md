@@ -229,7 +229,9 @@ AI只拿到视频标题+简介+评论 → 基于这些"二手信息"编故事。
 
 | 版本 | 主要贡献者 | 角色 |
 |------|-----------|------|
-| v2.0-2.5 | **Antigravity** | 项目初始化、7 阶段工作流设计、微信集成 |
+| v1.0 | **Antigravity** | 项目创始、4 阶段工作流设计 |
+| v1.5 | **Antigravity** | 扩展到 9 阶段工作流 |
+| v2.0-2.5 | **Antigravity** | 精简为 7 阶段、微信集成 |
 | v3.1-3.2 | **Claude Code (Opus 4.5)** | Bug 修复、Fallback 机制、NotebookLM 测试、文档重构 |
 
 > 详细更新历史请查看 [CHANGELOG.md](./CHANGELOG.md)
@@ -241,4 +243,4 @@ AI只拿到视频标题+简介+评论 → 基于这些"二手信息"编故事。
 <img src="./assets/wechat_qr.jpg" width="200" alt="WeChat QR Code">
 
 ---
-*v2.0-2.5 by Antigravity | v3.1-3.2 by Claude Code (Opus 4.5)*
+*v1.0-2.5 by Antigravity | v3.1-3.2 by Claude Code (Opus 4.5)*
