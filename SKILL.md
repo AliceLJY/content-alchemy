@@ -643,6 +643,95 @@ ls ~/.agent/skills/content-alchemy/SKILL.md
 Ask Antigravity: "帮我写个公众号文章，话题是XXX"
 Should automatically invoke this skill.
 
+---
+
+## 🧪 测试话术（验证各功能模块）
+
+> 以下是实际验证过的测试话术，复制粘贴即可测试对应功能。
+
+### 1. 完整流程测试（端到端）
+
+```
+帮我写一篇公众号文章，话题是"Cursor vs Windsurf 2025对比"，
+从搜索素材开始，完成后保存到微信草稿箱。
+```
+
+### 2. YouTube 视频提取测试
+
+**方案 A：有 NotebookLM（推荐，获取完整 transcript）**
+```
+帮我用 NotebookLM 提取这个 YouTube 视频的完整文字稿：
+https://www.youtube.com/watch?v=XXXXX
+
+步骤：
+1. 打开 notebooklm.google.com
+2. 创建新 notebook
+3. 添加这个视频链接
+4. 提问"请给我这个视频的完整文字稿/transcript，不要总结，要原文"
+```
+
+**方案 B：没有 NotebookLM（使用 yt-dlp）**
+```
+帮我提取这个 YouTube 视频的字幕：
+https://www.youtube.com/watch?v=XXXXX
+
+使用 yt-dlp 命令：
+yt-dlp --write-auto-sub --sub-lang zh,en --skip-download [URL]
+```
+
+### 3. 视频采集 Fallback 测试
+
+```
+帮我从这个 YouTube 视频采集素材：
+https://www.youtube.com/watch?v=XXXXX
+
+如果 yt-dlp 失败，请：
+1. 尝试 NotebookLM 自动化导入
+2. 如果仍失败，使用 Browser 直接访问页面提取 Transcript
+3. 如果视频不可用，搜索同主题替代视频
+```
+
+### 4. 微信发布测试
+
+```
+帮我把这个文件发布到微信公众号草稿箱：
+~/Documents/test.md
+
+前提：Chrome 已用 --remote-debugging-port=9222 启动
+```
+
+### 5. 从现有文档生成文章
+
+```
+跳过素材采集，直接用这份文档作为输入，
+从 Stage 5 开始生成公众号文章并发布草稿：
+
+./my-draft.md
+```
+
+### 6. 纯分发模式
+
+```
+publish "我的文章标题"
+
+# 仅执行 Stage 6，自动处理图片路径转换
+```
+
+---
+
+### ⚠️ 平台支持速查
+
+| 视频来源 | NotebookLM | yt-dlp | Browser DOM |
+|---------|------------|--------|-------------|
+| YouTube | ✅ 完整 transcript | ✅ 字幕 | ✅ Transcript |
+| B站 | ❌ 仅页面文本 | ❌ 不支持 | ⚠️ 有字幕才行 |
+| 小红书 | ❌ 仅页面文本 | ❌ 不支持 | ❌ 无字幕 |
+
+**B站/小红书视频怎么办？**
+→ 搜索 YouTube 镜像：`{视频标题} site:youtube.com`
+
+---
+
 ## 💻 Verified Environment & Hardware
 *(Verified by @AliceLJY)*
 
