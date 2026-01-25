@@ -676,7 +676,51 @@ yt-dlp --write-auto-sub --skip-download [YouTube URL]
 - 使用视频转录工具：Whisper / AssemblyAI
 - 或者手动总结视频要点（跳过Stage 2，直接从Stage 6开始）
 
-### Q7: 草稿保存成功但格式混乱
+### Q7: Claude Code 不识别 SKILL.md 工作流？
+
+**症状：**
+- 在 Claude Code 中打开项目
+- 发送指令后，AI 不按照 Content Alchemy 的 7 阶段流程执行
+- 只识别了 Baoyu 的 X/Twitter 发布 skill，没有识别本项目的工作流
+
+**原因：Antigravity vs Claude Code 的差异**
+
+| IDE | SKILL.md 加载方式 | 用户操作 |
+|-----|------------------|----------|
+| **Antigravity** | ✅ 自动加载 | 直接发指令即可 |
+| **Claude Code** | ❌ 不自动加载 | 需要手动引用文件 |
+
+Antigravity 会自动读取项目根目录的 `SKILL.md` 作为系统指令，但 Claude Code 不会。这不是 bug，而是两个 IDE 的设计差异。
+
+**解决方法：**
+
+在 Claude Code 中，需要在指令开头显式引用 SKILL.md：
+
+```
+请先阅读 SKILL.md，然后按照里面的 Stage 1-2 帮我搜索今天的热点新闻作为公众号素材。
+```
+
+或者使用 `@` 引用语法：
+
+```
+@SKILL.md 按照 Stage 1-2 帮我搜索 AI 算力相关的素材。
+```
+
+**完整示例指令：**
+
+```
+# 调研任务
+请先阅读 SKILL.md，然后按照 Stage 1-2 帮我搜索"Cursor vs Windsurf 2025"的对比素材。
+
+# 全流程任务
+请先阅读 SKILL.md，从 Stage 1 开始，帮我写一篇关于 AI 编程助手的公众号文章，完成后保存到微信草稿箱。
+```
+
+**建议：** 如果你经常使用 Claude Code，可以将这段开场白保存为模板，每次新对话时粘贴使用。
+
+---
+
+### Q8: 草稿保存成功但格式混乱
 
 **症状：**
 - 段落合并

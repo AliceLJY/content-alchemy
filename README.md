@@ -226,20 +226,31 @@ AI只拿到视频标题+简介+评论 → 基于这些"二手信息"编故事。
 
 虽然本项目的深度优化是在 **Antigravity** 环境下完成的，但其核心逻辑（SKILL.md）采用了通用的 **Open-Skill** 指令规范设计，具有极强的通用性：
 
-- **Antigravity**: ⭐ **完全兼容** - 包括自动生图功能（Stage 5）
-- **Claude Code**: ✅ 兼容 - 但需手动配图（无`generate_image`工具）
-- **Cursor / Windsurf**: ✅ 兼容 - 需手动配图
+- **Antigravity**: ⭐ **完全兼容** - 自动加载 SKILL.md + 自动生图
+- **Claude Code**: ✅ 兼容 - 需手动引用 SKILL.md（见下方说明）
+- **Cursor / Windsurf**: ✅ 兼容 - 需手动引用 SKILL.md
 - **其他 Agentic IDEs**: 视工具集而定
 
 ### ⚠️ 重要差异说明
 
 | 功能 | Antigravity | 其他 IDE |
 |------|-------------|----------|
+| **SKILL.md 加载** | ✅ **自动加载** | ⚠️ **需手动引用** |
 | 素材采集 | ✅ 自动 | ✅ 自动 |
 | 深度分析 | ✅ 自动 | ✅ 自动 |
 | 文章撰写 | ✅ 自动 | ✅ 自动 |
 | **配图生成** | ✅ **AI自动生成** | ⚠️ **需手动准备** |
 | 微信发布 | ✅ 自动 | ✅ 自动 |
+
+**Claude Code / Cursor 用户必读：**
+
+这些 IDE 不会自动加载 SKILL.md，需要在指令开头手动引用：
+
+```
+请先阅读 SKILL.md，然后按照 Stage 1-2 帮我搜索今天的热点新闻作为公众号素材。
+```
+
+> 💡 详细说明请查看 [SETUP.md 的 Q7](./SETUP.md#q7-claude-code-不识别-skillmd-工作流)
 
 **如果使用非Antigravity环境**：
 - 请在Stage 5跳过自动生图，改为：
