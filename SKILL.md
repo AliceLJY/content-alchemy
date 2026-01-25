@@ -183,9 +183,11 @@ To avoid "temporary loading" lag, this skill references the following local or r
    - 脉脉职言（职场真实吐槽）
    - NGA/虎扑（特定群体声音）
 
-### 🎯 视频采集：三种方法
+### 🎯 视频采集：四种方法（带 Fallback）
 
-**方法 1：yt-dlp 直接提取字幕（推荐）**
+> ⚠️ **实战经验**：yt-dlp 不是万能的，会被 YouTube 识别为 Bot 屏蔽。以下策略按优先级排列，前一种失败时自动尝试下一种。
+
+**方法 1：yt-dlp 直接提取字幕（首选）**
 
 最快速、最可控的方式，适合有字幕的 YouTube 视频。
 
@@ -197,54 +199,101 @@ yt-dlp --write-auto-sub --sub-lang zh,en --skip-download [URL]
 yt-dlp --write-auto-sub --sub-format vtt --skip-download [URL]
 ```
 
-**方法 2：NotebookLM 智能摘要（深度理解）**
+**⚠️ 常见失败情况**：
+- `Video unavailable` - IP 被 YouTube 识别为 Bot
+- `403 Forbidden` - 地区限制或反爬虫
+- 无字幕文件生成 - 视频没有字幕
 
-适合需要深度分析、交叉引用多个视频的场景。
+**失败时 → 自动切换到方法 2**
 
-**工作流：**
-1. 打开 [NotebookLM](https://notebooklm.google.com/)
-2. 创建新 Notebook，添加 YouTube 链接作为 Source
-3. NotebookLM 自动提取视频内容并生成摘要
-4. 可以向 NotebookLM 提问，获取基于视频内容的回答
-5. 导出关键内容到本地
+---
+
+**方法 2：NotebookLM 自动化导入（推荐 Fallback）**
+
+> ✅ **已验证可自动化**：通过 Chrome MCP 可以完全自动操作 NotebookLM 网页版。
+
+**前提条件**：
+- 用户已登录 Google 账号
+- Chrome 已安装 Claude in Chrome 扩展（或其他 MCP 浏览器控制）
+
+**自动化流程**（AI Agent 可执行）：
+1. 导航到 `https://notebooklm.google.com/`
+2. 点击 "+ 创建新的" 按钮
+3. 在弹出的对话框中选择 "网站" 选项
+4. 在输入框粘贴 YouTube 链接
+5. 点击 "插入" 按钮
+6. 等待 NotebookLM 自动提取视频内容
+7. 从生成的摘要中提取关键信息
 
 **优势**：
+- 绕过 yt-dlp 的 Bot 检测问题
 - 自动生成结构化摘要
 - 支持多视频交叉引用
 - 可以针对内容提问
 - 减少 AI 幻觉（答案基于实际视频内容）
 
-**配合 notebooklm-skill 使用**：
+**限制**：
+- 免费版有每日导入次数限制
+- 需要用户已登录 Google 账号
+- 仅支持公开的 YouTube 视频
+
+---
+
+**方法 3：Browser Subagent DOM 提取（yt-dlp 失败时的备选）**
+
+当 yt-dlp 被屏蔽时，通过浏览器直接访问 YouTube 页面提取 Transcript。
+
+**工作流**：
+1. 使用 Browser Subagent 打开 YouTube 视频页面
+2. 点击视频下方的 "显示转录稿" 按钮
+3. 通过 DOM 操作提取完整 Transcript
+4. 同时提取 Description 作为补充
+
+**优势**：模拟真实用户访问，不易被屏蔽
+**劣势**：速度较慢，依赖页面结构稳定
+
+---
+
+**方法 4：Live Search 策略（指定 URL 失效时）**
+
+当指定的视频 URL 不可用时（如视频被删除、地区限制），不要直接报错退出。
+
+**工作流**：
+1. 提取原视频的标题/关键词
+2. 在 YouTube 搜索相关视频：`{video_title} site:youtube.com`
+3. 找到高度相关的替代视频
+4. 标记来源："Alternative source for [Original URL]"
+5. 用上述方法 1-3 提取替代视频内容
+
+**示例**：
 ```
-# 如果已安装 notebooklm-skill，可以直接在 Claude Code 中查询
-# 前提：已在 NotebookLM 中添加了相关视频/文档
+原始 URL: youtube.com/watch?v=abc123 (Video unavailable)
+搜索: "Cursor vs Windsurf 2025 AI IDE"
+找到: youtube.com/watch?v=xyz789 (Qodo 发布的对比视频)
+标记: "Alternative source, original video unavailable"
 ```
 
-**方法 3：YouTube-First 策略（B站视频备用）**
+💡 **核心原则：数据可得性优先，但必须标注来源变更**
+
+---
+
+**方法 5：YouTube-First 策略（B站视频备用）**
 
 当 Bilibili 视频无字幕时，搜索 YouTube 镜像。
 
-**工作流：**
+**工作流**：
 1. 搜索 Bilibili 原始内容
 2. 如字幕不可用：
    - 搜索 YouTube：`{video_title} site:youtube.com`
-   - 使用 `yt-dlp` 提取字幕
+   - 使用上述方法 1-3 提取字幕
    - 标记来源："YouTube Mirror of [Bilibili URL]"
 3. 验证字幕质量后进入分析
-
-**示例：**
-```bash
-# B站视频: BV1xx411c7mD (无字幕)
-# YouTube 搜索: "Llama 4 发布会 site:youtube.com"
-# 找到: youtube.com/watch?v=xxxxx (有自动字幕)
-# 提取: yt-dlp --write-auto-sub --skip-download [URL]
-```
 
 💡 **这不是审查绕过，而是数据可得性优先**
 
 ---
 
-### 📚 NotebookLM 深度整合（可选）
+### 📚 NotebookLM 深度整合
 
 NotebookLM 是 Google 的 AI 研究助手，特别适合处理大量素材。
 
@@ -253,6 +302,7 @@ NotebookLM 是 Google 的 AI 研究助手，特别适合处理大量素材。
 - 需要交叉引用多个来源
 - 需要生成播客式音频摘要
 - 想要减少 AI 幻觉
+- yt-dlp 被屏蔽时的可靠备选
 
 **支持的 Source 类型**：
 - YouTube 视频链接（自动提取内容）
@@ -266,9 +316,15 @@ NotebookLM 是 Google 的 AI 研究助手，特别适合处理大量素材。
 | 阶段 | NotebookLM 用法 |
 |-----|----------------|
 | Stage 1 选题 | 把多个候选视频扔进去，让它总结共同主题 |
-| Stage 2 采集 | 把所有素材链接添加为 Source |
+| Stage 2 采集 | 把所有素材链接添加为 Source（可自动化） |
 | Stage 3 分析 | 向 NotebookLM 提问，生成初步分析 |
 | Stage 4 汇总 | 让它生成 FAQ 或 Briefing Doc |
+
+**自动化支持**（通过 Chrome MCP）：
+- ✅ 创建新 Notebook
+- ✅ 添加 YouTube/网页链接
+- ✅ 读取生成的摘要
+- ⚠️ 向 NotebookLM 提问（需要额外交互）
 
 **注意**：NotebookLM 的输出仍需人工审核，它只是加速素材处理，不能替代 Source Truth Table 的事实核查。
 
