@@ -264,7 +264,9 @@ AI只拿到视频标题+简介+评论 → 基于这些"二手信息"编故事。
 
 - **Hardware**: MacBook Air (13-inch, M4, 2025) / 16GB RAM / Apple M4 Chip
 - **System**: macOS Tahoe (26.3 Beta)
-- **Environment**: Antigravity IDE (Native Support)
+- **IDE**:
+  - **Claude Code (Opus 4.5)** — 主力开发环境，代码编写与调试
+  - **Antigravity (Gemini)** — 测试验证环境，多环境兼容性测试
 
 ## 🤖 AI 协作声明
 
@@ -286,4 +288,4 @@ AI只拿到视频标题+简介+评论 → 基于这些"二手信息"编故事。
 <img src="./assets/wechat_qr.jpg" width="200" alt="WeChat QR Code">
 
 ---
-*v1.0-2.5 by Antigravity | v3.1-3.2 by Claude Code (Opus 4.5)*
+*v1.0-2.5 by Antigravity | v3.1+ by Claude Code (Opus 4.5)*

@@ -539,6 +539,38 @@ AI cannot judge source credibility. Only humans can decide:
 
 ---
 
+## ⚠️ 微信排版避坑指南
+
+> 这些是在实际发布过程中踩过的坑，写文章时请注意避免。
+
+### 有序列表序号重复问题
+
+**症状**：Markdown 的有序列表 `1. 2. 3.` 在微信编辑器里显示为 `1. 1. 2. 2. 3. 3.`
+
+**原因**：微信编辑器会自动给有序列表添加序号，但 Markdown 转 HTML 后文本里已经有序号了，导致重复。
+
+**解决方案**：
+
+❌ **避免这样写**：
+```markdown
+1. **开源的意义就是共建**——我踩过的坑，别人可能也会踩
+2. **提建议不是指责**——我可以写得礼貌一点
+3. **最坏的结果**——作者觉得没必要改，关掉 Issue
+```
+
+✅ **改成这样**：
+```markdown
+**开源的意义就是共建**——我踩过的坑，别人可能也会踩
+
+**提建议不是指责**——我可以写得礼貌一点
+
+**最坏的结果**——作者觉得没必要改，关掉 Issue
+```
+
+**总结**：微信文章里尽量用粗体段落代替有序列表，或者用无序列表（`-`）。
+
+---
+
 ## 🚫 Humanizer-ZH 去 AI 味检查清单
 
 写完文章后，逐项检查并删除/替换：
@@ -635,12 +667,13 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 - 情绪基调（理性冷静 / 温暖治愈 / 犀利讽刺 / 轻松幽默）
 - 视觉关键词（从文章中提取 3-5 个可视化的核心概念）
 
-**Step 2: 参考 nano-banana-pro 风格库**
+**Step 2: 编写图片 Prompt**
 
-在生成 Prompt 前，**必须**检索 [nano-banana-pro](https://github.com/YouMind-OpenLab/nano-banana-pro-prompts-recommend-skill) 的参考库：
-- 搜索与文章主题相关的风格参考（如 "cinematic", "cyberpunk", "minimalist", "surreal" 等）
-- 提取匹配的参数描述（构图、光影、色调、质感）
-- 基于参考案例构建定制化 Prompt
+根据文章内容直接编写描述性 Prompt，确保与文章情绪和场景一致。
+
+**可选参考**：[nano-banana-pro](https://github.com/YouMind-OpenLab/nano-banana-pro-prompts-recommend-skill) 风格库
+- 如需特定艺术风格（如 "cinematic", "cyberpunk", "minimalist" 等），可检索参考
+- 但**不强制要求**——根据文章上下文即时编写 Prompt 同样有效
 
 **Step 3: 推荐风格选项（⏸ Checkpoint）**
 
@@ -652,7 +685,7 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 **风格 A：[风格名称]**
 - 适合：[适用场景]
 - 特点：[视觉特征描述]
-- 参考：[nano-banana-pro 库中的参考案例]
+- 参考：[nano-banana-pro 库中的参考案例]（可选）
 
 **风格 B：[风格名称]**
 ...
@@ -677,7 +710,10 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 | 情感随笔 | 水彩手绘 / 温暖插画 | watercolor, soft, warm tones |
 | 产品评测 | 产品渲染 / 干净背景 | product shot, clean, studio |
 
-> 💡 **Antigravity 专属**：Antigravity 内置 `generate_image` 工具（基于 Gemini），可直接生成高质量图片。其他 IDE 需要用户手动使用 Midjourney/DALL-E 等工具。
+> 💡 **图片生成工具说明**：
+> - **Antigravity**：内置 `generate_image` 工具（基于 Gemini），可直接生成高质量图片
+> - **Claude Code**：可调用 `baoyu-danger-gemini-web` skill（需登录 Google 账号，cookie 可能过期）
+> - **其他 IDE**：需用户手动使用 Midjourney/DALL-E 等工具
 
 ### 🛡️ Why Manual Cover & Formatting?
 **Problem**: Automated cover setting often fails due to WeChat's UI changes or hover-only buttons.
@@ -696,6 +732,48 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
   2. **Title-Body Atomic Injection**: Use a single script heartbeat to inject both Title and Body. No more split copy-paste.
   3. **Immediate Recovery**: If the editor fails to load or formatting breaks, immediately redirect to: `https://mp.weixin.qq.com/cgi-bin/appmsg?t=media/appmsg_edit&action=edit&type=77`.
   4. **Timeout Logic**: If any automation step hangs >30s, refresh and retry "New Post".
+
+> ⚠️ **Antigravity 用户注意**：脚本运行期间（尤其是看到 "Pasting..." 时），**不要点击任何窗口**！
+> - 脚本通过模拟 Cmd+V 粘贴内容，依赖 Chrome 保持焦点
+> - 如果你点击了 Antigravity 对话框，焦点会转移，内容会粘贴到对话框里而不是微信编辑器
+> - Claude Code 用户不受影响（终端进程不抢焦点）
+
+### 🔬 多环境兼容性发现：图片占位符格式
+
+> 💡 **Content Alchemy 贡献**：以下是我们在 Antigravity + Claude Code 双环境测试中发现的优化方案。
+
+**背景**：baoyu-post-to-wechat 使用 `[[IMAGE_PLACEHOLDER_x]]` 格式的占位符。在大多数环境下工作正常，但在多环境适配过程中可能遇到兼容性问题。
+
+**症状**：脚本日志显示 `Placeholder not found: [[IMAGE_PLACEHOLDER_1]]`，草稿中缺少图片。
+
+**我们的发现**：
+
+| 格式 | marked 渲染 | 微信编辑器粘贴 | 兼容性 |
+|------|------------|--------------|--------|
+| `[[IMAGE_PLACEHOLDER_x]]` | ✅ 保留 | ⚠️ 偶发问题 | 良好 |
+| `__IMAGE_PLACEHOLDER_x__` | ❌ 变粗体 | - | 不可用 |
+| `WECHATIMGPH_x` | ✅ 保留 | ✅ 稳定 | **最佳** |
+
+**推荐方案**：使用 `WECHATIMGPH_x` 格式（纯字母数字 + 下划线）
+- 不含 Markdown 特殊字符（`[`、`]` 等）
+- 无论经过什么转换都能保持原样
+- 已在 Antigravity 适配版 `simple-md-to-html.ts` 中验证
+
+**状态**：已向 [baoyu-skills](https://github.com/JimLiu/baoyu-skills) 提交兼容性建议（感谢 @JimLiu 的优秀开源项目！）
+
+**发布后确认（⏸ Checkpoint）[MANDATORY]**：
+
+草稿保存后，**必须**让用户确认以下内容：
+```
+已保存到草稿箱。请检查：
+1. 标题是否正确？
+2. 正文是否完整显示？
+3. 图片是否全部插入？（预期 X 张）
+
+确认无误后回复"确认"，如有问题请说明。
+```
+
+只有用户确认后，Stage 6 才算完成。
 
 ### 🌐 Why Chrome Debug Port (9222)?
 **CDP Mode vs. API Mode**:
@@ -846,4 +924,6 @@ publish "我的文章标题"
 - **Model**: MacBook Air (13-inch, M4, 2025)
 - **Chip**: Apple M4 (16 GB Memory)
 - **OS**: macOS Tahoe (Version 26.3 Beta)
-- **IDE**: Antigravity (Powered by Google Gemini)
+- **IDE**:
+  - **Claude Code (Opus 4.5)** — 主力开发环境，代码编写与调试
+  - **Antigravity (Gemini)** — 测试验证环境，多环境兼容性测试
