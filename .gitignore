@@ -1,0 +1,15 @@
+# 文章内容（只保留在本地，不上传 GitHub）
+ai-fomo-anxiety/
+ai-agent-content-creation/
+ai-entry-level-jobs/
+content-alchemy-promo/
+first-github-issue/
+mock-test/
+wechat-paste-fix-story/
+research/
+
+# 系统文件
+.DS_Store
+
+# 依赖
+node_modules/
