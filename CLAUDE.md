@@ -1,0 +1,36 @@
+# Content Alchemy — Claude Code 项目记忆
+
+> 本文件供 Claude Code 每次启动时自动读取，避免重复踩坑。
+
+## 项目概述
+
+- **工作流定义**：`SKILL.md`（7 阶段内容炼金术），必须严格按流程执行
+- **公众号**：ai照见众生（四个板块：AI实操手账、AI随心分享、AI照见众生、AI踩坑实录）
+- **作者人设**：医学出身，文化口饭碗，AI 是野路子。不贩卖焦虑，不兜售答案
+
+## 踩坑清单（每次必读）
+
+### Stage 5：配图
+
+- **图片位置**：`![alt](path)` 必须嵌入正文对应位置——封面图紧跟标题后，插图放章节转折处。**禁止堆在文末**
+- **nano-banana-pro**：生图前必须主动询问用户是否要用 `nano-banana-pro-prompts-recommend-skill` 优化 Prompt，不能默默跳过
+
+### Stage 6：发布
+
+- **调用路径**：必须用项目本地路径 `bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --markdown <file> --theme <theme>`。**禁止**直接调用 `baoyu-post-to-wechat` skill
+- **Chrome 144+**：`--remote-debugging-port=9222` 必须搭配非默认 `--user-data-dir`（如 `$HOME/chrome-debug-profile`），否则端口不绑定
+- **焦点抢占**：发布过程中剪贴板操作会抢焦点，所有用户（包括 Claude Code）均受影响。发布前提醒用户不要切换窗口
+- **发布完成后**：脚本输出 `Done` 后，必须**立刻回复用户**进入 Checkpoint 确认，不要继续自行操作
+
+### 文档维护
+
+- **中英文同步**：每次改 README.md 必须同步更新 README-EN.md，一起提交
+- **改了就推**：每次修改都要提交到 GitHub，不要攒着
+
+## 环境信息
+
+- **Hardware**: MacBook Air M4, 16GB
+- **System**: macOS Tahoe
+- **IDE**: Claude Code (Opus 4.5) 主力 / Antigravity (Gemini) 测试
+- **Chrome**: 144+（调试端口行为已变）
+- **npm 依赖**：baoyu-skills 作为 git submodule 无自己的 package.json，宿主项目 package.json 必须包含所有依赖
