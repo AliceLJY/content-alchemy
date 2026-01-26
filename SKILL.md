@@ -667,13 +667,16 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 - 情绪基调（理性冷静 / 温暖治愈 / 犀利讽刺 / 轻松幽默）
 - 视觉关键词（从文章中提取 3-5 个可视化的核心概念）
 
-**Step 2: 编写图片 Prompt**
+**Step 2: 编写图片 Prompt（⏸ Checkpoint）**
 
-根据文章内容直接编写描述性 Prompt，确保与文章情绪和场景一致。
+在编写 Prompt 前，**必须主动询问用户**：
 
-**可选参考**：[nano-banana-pro](https://github.com/YouMind-OpenLab/nano-banana-pro-prompts-recommend-skill) 风格库
-- 如需特定艺术风格（如 "cinematic", "cyberpunk", "minimalist" 等），可检索参考
-- 但**不强制要求**——根据文章上下文即时编写 Prompt 同样有效
+> 是否需要先调用 `nano-banana-pro-prompts-recommend-skill` 来优化图片 Prompt？
+> 它会根据风格库推荐更高质量的提示词，你确认后再用于生图。
+> 如果赶时间，也可以跳过，我直接根据文章内容编写 Prompt。
+
+- 用户选择**使用**：调用 `nano-banana-pro-prompts-recommend-skill`，将推荐的 Prompt 展示给用户确认后再生图
+- 用户选择**跳过**：根据文章内容直接编写描述性 Prompt，确保与文章情绪和场景一致
 
 **Step 3: 推荐风格选项（⏸ Checkpoint）**
 
