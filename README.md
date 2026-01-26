@@ -1,5 +1,7 @@
 # Content Alchemy Skill
 
+**[English](./README-EN.md)** | 中文
+
 🚀 **新手必看**: [安装指南](./SETUP.md) | [新手指南](./BEGINNER-GUIDE.md) | [微信发布](./WECHAT-PUBLISH.md)
 📚 **深入了解**: [技术文档](./SKILL.md) | [项目结构](./PROJECT-STRUCTURE.md)
 🔄 **一键更新**: `git pull && git submodule update --remote --merge`
@@ -283,7 +285,15 @@ AI只拿到视频标题+简介+评论 → 基于这些"二手信息"编故事。
 
 ## 📲 关注公众号
 
-欢迎关注我的公众号，获取更多 AI 踩坑经历！
+专业劈叉式跨界选手：🧬 医学出身，🎭 文化口饭碗，🤖 AI 是我的野路子。
+
+不卷参数，不追新模型，只关心一个问题：AI 啥时候能装进我脑子，替我不开心？
+
+欢迎围观我与 AI 相爱相杀的日常。
+
+——AI不会取代你，但会用AI的人会。所以我先学了，你随意。
+
+🔧 踩坑副产品已开源 → [content-alchemy](https://github.com/AliceLJY/content-alchemy)
 
 <img src="./assets/wechat_qr.jpg" width="200" alt="WeChat QR Code">
 

@@ -326,6 +326,29 @@ git clone https://github.com/JimLiu/baoyu-skills.git dependencies/baoyu-skills
 
 ---
 
+### Step 3.5: 安装 npm 依赖（必需）
+
+⚠️ **这一步容易被忽略！** Baoyu 的发布脚本依赖一些 npm 包（`front-matter`、`highlight.js` 等），需要在项目根目录安装。
+
+```bash
+# 确认在项目目录
+cd ~/Documents/content-alchemy   # 或你的项目路径
+
+# 安装依赖
+bun install
+```
+
+**验证安装：**
+```bash
+ls node_modules/front-matter
+```
+✅ 应该显示文件列表，没有报错
+
+**为什么需要这一步？**
+Baoyu 脚本作为 git submodule 没有自己的 `package.json`，它的 npm 依赖（`front-matter`、`highlight.js`、`reading-time`、`fflate`、`katex` 等）需要由宿主项目提供。如果跳过这步，发布时会报 `Cannot find package 'front-matter'` 之类的错误。
+
+---
+
 ### Step 4: 安装 yt-dlp（可选，用于视频字幕提取）
 
 如果你需要从 YouTube 视频提取字幕作为素材，需要安装 yt-dlp：

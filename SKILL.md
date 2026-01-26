@@ -726,17 +726,30 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 
 ### Stage 6: Distribution (Flash-Publish Mode) ⏸
 - **Boundary**: Automation to "Saved Draft".
-- **Prerequisite**: Chrome Debug Port 9222.
+- **Prerequisites**:
+  - Chrome Debug Port 9222（**必须**以 `--remote-debugging-port=9222` 启动 Chrome。若 Chrome 已在运行但未带此参数，**必须先关闭再重启**，已运行的 Chrome 不会接受新的启动参数）
+  - npm 依赖已安装（运行 `bun install` 确认）
+
+- **Pre-flight Check [MANDATORY]**:
+  1. 检查端口 9222：`curl -s http://localhost:9222/json/version`，无响应则提示用户关闭重启 Chrome
+  2. 检查依赖：`ls node_modules/front-matter` 是否存在，不存在则先运行 `bun install`
+  3. 检查图片同步：确认 `{topic-slug}/` 和 `Desktop/wechat_assets/` 中图片一致
+
+- **调用路径 [FORCE]**:
+  - ✅ **必须**使用项目本地路径：`bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --markdown <article.md> --theme grace`
+  - ❌ **禁止**直接调用 `baoyu-post-to-wechat` skill（它不知道 Content Alchemy 的上下文，会走自己的 SKILL.md 流程，导致依赖找不到、占位符不匹配等问题）
+
 - **Execution Protocol [FORCE]**:
   1. **Window Lock**: Search for active `mp.weixin.qq.com` tab. Activate it. Do NOT open new windows unless none exist.
   2. **Title-Body Atomic Injection**: Use a single script heartbeat to inject both Title and Body. No more split copy-paste.
   3. **Immediate Recovery**: If the editor fails to load or formatting breaks, immediately redirect to: `https://mp.weixin.qq.com/cgi-bin/appmsg?t=media/appmsg_edit&action=edit&type=77`.
   4. **Timeout Logic**: If any automation step hangs >30s, refresh and retry "New Post".
 
-> ⚠️ **Antigravity 用户注意**：脚本运行期间（尤其是看到 "Pasting..." 时），**不要点击任何窗口**！
-> - 脚本通过模拟 Cmd+V 粘贴内容，依赖 Chrome 保持焦点
-> - 如果你点击了 Antigravity 对话框，焦点会转移，内容会粘贴到对话框里而不是微信编辑器
-> - Claude Code 用户不受影响（终端进程不抢焦点）
+> ⚠️ **所有用户注意**：脚本运行期间（尤其是看到 "Pasting..." 或 "Inserting images..." 时），**不要点击任何窗口**！
+> - 脚本通过系统剪贴板 + 模拟 Cmd+V 粘贴内容，**依赖 Chrome 保持焦点**
+> - 如果你切换到任何其他窗口（对话框、终端、编辑器等），焦点转移会导致内容粘贴到错误的窗口
+> - **Antigravity 和 Claude Code 用户均受影响**——底层使用的是系统级剪贴板操作（NSPasteboard + osascript），与 IDE 无关
+> - 建议：脚本运行期间去倒杯水，回来再操作
 
 ### 🔬 多环境兼容性发现：图片占位符格式
 

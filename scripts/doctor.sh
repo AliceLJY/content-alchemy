@@ -75,7 +75,29 @@ else
     echo "   → Install: brew install yt-dlp"
 fi
 
-# Check 6: Project Structure
+# Check 6: npm Dependencies (for Baoyu scripts)
+echo ""
+echo "📦 Checking npm dependencies..."
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+REQUIRED_MODULES=("front-matter" "highlight.js" "reading-time" "markdown-it" "fflate" "katex" "marked")
+MISSING_MODULES=()
+
+for mod in "${REQUIRED_MODULES[@]}"; do
+    if [ -d "$PROJECT_DIR/node_modules/$mod" ]; then
+        echo "   ✅ $mod"
+    else
+        echo "   ❌ $mod missing"
+        MISSING_MODULES+=("$mod")
+    fi
+done
+
+if [ ${#MISSING_MODULES[@]} -gt 0 ]; then
+    echo ""
+    echo "   ⚠️  Missing npm dependencies! Run:"
+    echo "   → cd $PROJECT_DIR && bun install"
+fi
+
+# Check 7: Project Structure
 echo ""
 echo "📁 Checking Project Structure..."
 REQUIRED_FILES=("SKILL.md" "README.md" "SETUP.md" "scripts/format-text.ts" "scripts/setup.sh")
