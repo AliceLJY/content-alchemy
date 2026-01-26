@@ -696,12 +696,14 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 请选择一个风格，或描述你想要的其他风格。
 ```
 
-**Step 4: 生成图片**
+**Step 4: 生成图片并嵌入正文**
 
 用户确认风格后：
 1. **封面图**：比例 2.5:1（或 16:9），作为文章第一张图
 2. **内文插图**：2-3 张，放置在文章关键转折处
 3. 保存到 `{topic-slug}/` 和 `Desktop/wechat_assets/`
+
+> ⚠️ **图片位置 [FORCE]**：`![alt](path)` 必须嵌入到 article.md 正文的对应位置——封面图紧跟标题后，插图放在对应章节的转折处。**禁止**将所有图片引用堆在文章末尾，否则发布后图片全部挤在文末。
 
 **风格库快速参考**
 
@@ -730,11 +732,11 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 ### Stage 6: Distribution (Flash-Publish Mode) ⏸
 - **Boundary**: Automation to "Saved Draft".
 - **Prerequisites**:
-  - Chrome Debug Port 9222（**必须**以 `--remote-debugging-port=9222` 启动 Chrome。若 Chrome 已在运行但未带此参数，**必须先关闭再重启**，已运行的 Chrome 不会接受新的启动参数）
+  - Chrome Debug Port 9222（**必须**以 `--remote-debugging-port=9222` 启动 Chrome。若 Chrome 已在运行但未带此参数，**必须先关闭再重启**，已运行的 Chrome 不会接受新的启动参数。⚠️ **Chrome 144+ 新要求**：必须使用非默认的 `--user-data-dir`，否则调试端口不会绑定。示例：`--user-data-dir="$HOME/chrome-debug-profile"`）
   - npm 依赖已安装（运行 `bun install` 确认）
 
 - **Pre-flight Check [MANDATORY]**:
-  1. 检查端口 9222：`curl -s http://localhost:9222/json/version`，无响应则提示用户关闭重启 Chrome
+  1. 检查端口 9222：`curl -s http://localhost:9222/json/version`，无响应则提示用户关闭重启 Chrome（Chrome 144+ 需使用非默认 `--user-data-dir`，如 `$HOME/chrome-debug-profile`）
   2. 检查依赖：`ls node_modules/front-matter` 是否存在，不存在则先运行 `bun install`
   3. 检查图片同步：确认 `{topic-slug}/` 和 `Desktop/wechat_assets/` 中图片一致
 

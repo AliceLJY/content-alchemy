@@ -22,8 +22,10 @@ if lsof -i :9222 &> /dev/null; then
     echo "   ✅ Chrome debug port (9222) is open"
 else
     echo "   ⚠️  Chrome debug port not detected"
-    echo "   → Start Chrome: chrome-debug"
-    echo "   → Or run: /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 &"
+    echo "   → Chrome 144+ 需要非默认 user-data-dir 才能绑定调试端口"
+    echo "   → 启动命令："
+    echo "     /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --user-data-dir=\"\$HOME/chrome-debug-profile\" &"
+    echo "   → 注意：必须先完全退出 Chrome（Cmd+Q），再用上述命令启动"
 fi
 
 # Check 3: Baoyu Dependencies
