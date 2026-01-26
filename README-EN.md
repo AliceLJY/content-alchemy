@@ -290,7 +290,7 @@ Not chasing parameters or new models. Only one question matters: When can AI plu
 
 Welcome to witness my love-hate relationship with AI.
 
-— AI won't replace you, but people who use AI will. So I learned first. Your call.
+— AI won't replace you, but people who use AI will. So I learned first. No pressure.
 
 🔧 Pitfall byproducts open-sourced → [content-alchemy](https://github.com/AliceLJY/content-alchemy)
 
