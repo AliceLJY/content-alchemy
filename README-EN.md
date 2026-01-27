@@ -2,8 +2,8 @@
 
 English | **[中文](./README.md)**
 
-🚀 **Getting Started**: [Setup Guide](./SETUP.md) | [Beginner Guide](./BEGINNER-GUIDE.md) | [WeChat Publishing](./WECHAT-PUBLISH.md)
-📚 **Deep Dive**: [Technical Docs](./SKILL.md) | [Project Structure](./PROJECT-STRUCTURE.md)
+🚀 **Getting Started**: [Setup Guide](./docs/SETUP.md) | [Beginner Guide](./docs/BEGINNER-GUIDE.md) | [WeChat Publishing](./docs/WECHAT-PUBLISH.md)
+📚 **Deep Dive**: [Technical Docs](./SKILL.md) | [Project Structure](./docs/PROJECT-STRUCTURE.md)
 🔄 **Quick Update**: `git pull && git submodule update --remote --merge`
 
 **One-liner**: Let AI handle any or all stages of your content pipeline — Research → Analysis → Writing → Illustration → Publishing.
@@ -74,7 +74,7 @@ If you use WeChat Official Account, one-click publish to drafts:
 - ✅ Runs locally, no third-party servers
 - ✅ Time saved: 13 min → 3.5 min
 
-> 💡 See [WECHAT-PUBLISH.md](./WECHAT-PUBLISH.md) for detailed tutorial
+> 💡 See [WECHAT-PUBLISH.md](./docs/WECHAT-PUBLISH.md) for detailed tutorial
 
 **Don't use WeChat? No problem!** The core value is in research, analysis, and writing — output can be any Markdown file.
 
@@ -251,7 +251,7 @@ These IDEs don't auto-load SKILL.md. Reference it at the start of your command:
 Please read SKILL.md first, then follow Stage 1-2 to search for today's hot topics as article material.
 ```
 
-> 💡 See [SETUP.md Q7](./SETUP.md#q7-claude-code-不识别-skillmd-工作流) for details
+> 💡 See [SETUP.md Q7](./docs/SETUP.md#q7-claude-code-不识别-skillmd-工作流) for details
 
 **If not using Antigravity**:
 - Skip auto image generation in Stage 5, instead:
@@ -280,7 +280,7 @@ This project was built collaboratively by multiple AI Agents and the user:
 | v2.0-2.5 | **Antigravity** | Refined to 7 stages, WeChat integration |
 | v3.1-3.2 | **Claude Code (Opus 4.5)** | Bug fixes, fallback mechanisms, NotebookLM testing, doc restructuring |
 
-> See [CHANGELOG.md](./CHANGELOG.md) for detailed update history
+> See [CHANGELOG.md](./docs/CHANGELOG.md) for detailed update history
 
 ## 📲 Follow the Author
 

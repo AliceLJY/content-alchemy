@@ -363,8 +363,8 @@ chmod +x batch-publish.sh
 
 - [SETUP.md](./SETUP.md) - 完整安装指南
 - [BEGINNER-GUIDE.md](./BEGINNER-GUIDE.md) - 新手补充指南
-- [SKILL.md](./SKILL.md) - Alchemy 工作流技术文档
-- [README.md](./README.md) - 项目总览
+- [SKILL.md](../SKILL.md) - Alchemy 工作流技术文档
+- [README.md](../README.md) - 项目总览
 
 ---
 

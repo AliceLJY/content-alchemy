@@ -8,6 +8,9 @@ mock-test/
 wechat-paste-fix-story/
 research/
 
+# 测试文件
+test-article.md
+
 # 系统文件
 .DS_Store
 

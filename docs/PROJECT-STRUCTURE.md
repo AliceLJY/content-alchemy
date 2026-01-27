@@ -169,7 +169,7 @@ content-alchemy-repo/
 
 ### 场景 2: 我想了解 Alchemy 工作流
 
-1. 阅读 [SKILL.md](./SKILL.md) 了解 7 阶段工作流
+1. 阅读 [SKILL.md](../SKILL.md) 了解 7 阶段工作流
 2. 查看 `ai-agent-content-creation/` 目录的示例输出
 3. 参考 [README.md](./README.md) 的设计决策部分
 

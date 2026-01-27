@@ -2,8 +2,8 @@
 
 **[English](./README-EN.md)** | 中文
 
-🚀 **新手必看**: [安装指南](./SETUP.md) | [新手指南](./BEGINNER-GUIDE.md) | [微信发布](./WECHAT-PUBLISH.md)
-📚 **深入了解**: [技术文档](./SKILL.md) | [项目结构](./PROJECT-STRUCTURE.md)
+🚀 **新手必看**: [安装指南](./docs/SETUP.md) | [新手指南](./docs/BEGINNER-GUIDE.md) | [微信发布](./docs/WECHAT-PUBLISH.md)
+📚 **深入了解**: [技术文档](./SKILL.md) | [项目结构](./docs/PROJECT-STRUCTURE.md)
 🔄 **一键更新**: `git pull && git submodule update --remote --merge`
 
 **一句话说明**：让 AI 帮你完成"调研 → 分析 → 写作 → 配图 → 发布"的任意环节，或全部。
@@ -74,7 +74,7 @@
 - ✅ 本地运行，不经过第三方服务器
 - ✅ 节省时间：13 分钟 → 3.5 分钟
 
-> 💡 详细教程请查看 [WECHAT-PUBLISH.md](./WECHAT-PUBLISH.md)
+> 💡 详细教程请查看 [WECHAT-PUBLISH.md](./docs/WECHAT-PUBLISH.md)
 
 **不用微信？没关系！** 这套工作流的核心价值在于调研、分析、写作，输出格式可以是任何 Markdown 文件。
 
@@ -252,7 +252,7 @@ AI只拿到视频标题+简介+评论 → 基于这些"二手信息"编故事。
 请先阅读 SKILL.md，然后按照 Stage 1-2 帮我搜索今天的热点新闻作为公众号素材。
 ```
 
-> 💡 详细说明请查看 [SETUP.md 的 Q7](./SETUP.md#q7-claude-code-不识别-skillmd-工作流)
+> 💡 详细说明请查看 [SETUP.md 的 Q7](./docs/SETUP.md#q7-claude-code-不识别-skillmd-工作流)
 
 **如果使用非Antigravity环境**：
 - 请在Stage 5跳过自动生图，改为：
@@ -281,7 +281,7 @@ AI只拿到视频标题+简介+评论 → 基于这些"二手信息"编故事。
 | v2.0-2.5 | **Antigravity** | 精简为 7 阶段、微信集成 |
 | v3.1-3.2 | **Claude Code (Opus 4.5)** | Bug 修复、Fallback 机制、NotebookLM 测试、文档重构 |
 
-> 详细更新历史请查看 [CHANGELOG.md](./CHANGELOG.md)
+> 详细更新历史请查看 [CHANGELOG.md](./docs/CHANGELOG.md)
 
 ## 📲 关注公众号
 

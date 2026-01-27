@@ -102,7 +102,7 @@ fi
 # Check 7: Project Structure
 echo ""
 echo "📁 Checking Project Structure..."
-REQUIRED_FILES=("SKILL.md" "README.md" "SETUP.md" "scripts/format-text.ts" "scripts/setup.sh")
+REQUIRED_FILES=("SKILL.md" "README.md" "docs/SETUP.md" "scripts/format-text.ts" "scripts/setup.sh")
 for file in "${REQUIRED_FILES[@]}"; do
     if [ -f "$file" ]; then
         echo "   ✅ $file"
