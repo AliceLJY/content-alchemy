@@ -4,6 +4,44 @@
 
 ---
 
+## [v4.0] - 2026-01-27
+
+### ✨ 新功能
+
+- **Chrome 复用** — 不再需要关闭所有 Chrome 窗口
+  - 自动检测已有 Chrome 调试端口并复用
+  - 优先找已登录的微信标签（`token=` 识别），避免新标签丢失登录态
+  - 无调试端口时用独立 profile 启动新实例，不干扰用户浏览器
+  - 新增 `--cdp-port <port>` 手动指定端口
+  - 修复脚本完成后进程不退出的问题
+  - 已提交 PR 到上游 baoyu-skills（[#23](https://github.com/JimLiu/baoyu-skills/pull/23)）
+
+- **全 IDE 配图生成** — Claude Code 也能自动生图了
+  - 通过 `baoyu-danger-gemini-web` skill（Gemini Web 反向 API）实现
+  - 配合 `nano-banana-pro-prompts-recommend-skill` 优化 Prompt
+  - Antigravity 不再是"唯一能自动生图"的 IDE
+
+- **占位符格式统一** — 上游采纳了我们的兼容性建议
+  - baoyu v1.23.0 将 `[[IMAGE_PLACEHOLDER_x]]` 改为 `WECHATIMGPH_x`
+  - 解决了不同 Markdown 解析器对双方括号处理不一致的问题
+
+### 🔧 改进
+
+- **搜索效果说明** — 明确搜索结果质量受 AI 模型、提示词和搜索范围共同影响
+  - 提示词的作用是限定搜索范围和内容类型，不保证结果质量
+  - 不同 AI 模型对同一搜索指令的理解和执行能力不同
+
+- **Skill 安装说明** — 新增懒人安装话术，降低入门门槛
+
+- **项目文件整理** — 根目录临时文件清理，gitignore 更新
+
+### 📚 贡献者
+
+- **Claude Code (Opus 4.5)** — Chrome 复用开发、测试、PR 提交、文档更新
+- **AliceLJY** — 需求定义、测试验证、Issue/PR 提交
+
+---
+
 ## [v3.2] - 2026-01-25
 
 ### ✨ 新功能
@@ -214,7 +252,7 @@
 | 贡献者 | 角色 | 主要贡献 |
 |-------|------|---------|
 | **AliceLJY** | 项目维护者 | 需求定义、测试验证、最终审核 |
-| **Claude Code (Opus 4.5)** | v3.1-3.2 主要开发 | Bug 修复、Fallback 机制、NotebookLM 测试、测试话术、文档重构 |
+| **Claude Code (Opus 4.5)** | v3.1-v4.0 主要开发 | Bug 修复、Fallback 机制、NotebookLM 测试、Chrome 复用、全 IDE 配图、上游 PR、文档重构 |
 | **Antigravity** | v1.0-v2.5 主要开发 | 项目创始、工作流演进（4→9→7阶段）、微信集成 |
 | **Baoyu (宝玉)** | 核心依赖 | 微信 CDP 自动化核心代码 |
 | **YouMind-OpenLab** | 核心依赖 | 图像提示词推荐 |

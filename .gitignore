@@ -8,10 +8,15 @@ content-alchemy-promo/
 first-github-issue/
 mock-test/
 wechat-paste-fix-story/
+open-source-joy/
 research/
 
 # 测试文件
 test-article.md
+
+# 临时/调试文件
+scripts/wechat-styles.css
+scripts/排版效果对比.md
 
 # 系统文件
 .DS_Store

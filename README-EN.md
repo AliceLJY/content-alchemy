@@ -35,16 +35,18 @@ English | **[中文](./README.md)**
 
 > Not "just another template" — this is **battle-tested wisdom from countless pitfalls**.
 
-**v3.2 Highlights (for serious users):**
+**v4.0 Highlights (for serious users):**
 
 | Problem You Might Face | Already Solved |
 |------------------------|----------------|
+| 🤔 "Must close Chrome every time to publish" | Chrome reuse: auto-detects existing browser, no more closing windows |
+| 🤔 "Only Antigravity can auto-generate images" | All-IDE illustration: Claude Code uses Gemini Web for image generation |
 | 🤔 "Setup takes forever and still doesn't work" | Complete `doctor.sh` environment check, one-click diagnostics |
 | 🤔 "AI writing sounds robotic" | 7 de-AI principles + Humanizer checklist |
 | 🤔 "Don't know where to find sources" | Search strategies by topic type (tech/product/social) |
 | 🤔 "AI makes up data" | Source Truth Table forces citations, eliminates hallucination |
 | 🤔 "This is your style, how do I adapt?" | Clear separation of **universal framework** vs **personal examples** |
-| 🤔 "Where does Baoyu go? How to install?" | Global/local install options + FAQ |
+| 🤔 "Where does Baoyu go? How to install?" | Lazy install: just paste a link to AI and ask it to install |
 | 🤔 "How to extract YouTube subtitles?" | yt-dlp + NotebookLM dual approach |
 
 **Design Principles:**
@@ -77,6 +79,45 @@ If you use WeChat Official Account, one-click publish to drafts:
 > 💡 See [WECHAT-PUBLISH.md](./docs/WECHAT-PUBLISH.md) for detailed tutorial
 
 **Don't use WeChat? No problem!** The core value is in research, analysis, and writing — output can be any Markdown file.
+
+## 🔌 Skill Installation
+
+This project depends on a few Claude Code Skills. Installation is simple — **just paste a link to AI**.
+
+### Lazy Install (copy-paste into Claude Code)
+
+**WeChat publishing (required):**
+```
+Help me install this skill: https://github.com/JimLiu/baoyu-skills
+It's a git submodule, install to dependencies/baoyu-skills directory.
+```
+
+**Image generation (recommended):**
+```
+Help me install these two skills:
+1. baoyu-danger-gemini-web (Gemini image generation)
+2. nano-banana-pro-prompts-recommend-skill (image prompt optimization)
+```
+
+> Skills are stored in `~/.claude/skills/` and auto-detected by Claude Code. baoyu-skills as a git submodule requires `bun install` for dependencies.
+
+### Manual Installation
+
+```bash
+# 1. Clone project
+git clone --recurse-submodules https://github.com/AliceLJY/content-alchemy.git
+cd content-alchemy
+
+# 2. Install dependencies
+bun install
+
+# 3. Verify
+bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --help
+```
+
+> See [SETUP.md](./docs/SETUP.md) for detailed steps
+
+---
 
 ## 📝 Acknowledgments & Credits
 
@@ -181,6 +222,36 @@ Judge whether the source is authoritative enough. AI cannot assess source credib
 
 ---
 
+### 5. Why no need to close Chrome anymore?
+
+**Misconception:** "You must close all browser windows to publish"
+**Truth:** "That was an old limitation, fixed in v4.0"
+
+**Pitfall:**
+Every time you published to WeChat, you had to Cmd+Q all Chrome windows. Otherwise the script would fail due to profile directory lock conflict.
+
+**v4.0 fix:**
+Script auto-scans for existing Chrome debug ports before launch. If found, it reuses the existing browser. It prioritizes tabs already logged into WeChat (identified by `token=` in URL) to avoid losing login state. Only launches a new instance when no existing Chrome is detected.
+
+This change was submitted as a PR to upstream baoyu-skills ([#23](https://github.com/JimLiu/baoyu-skills/pull/23)).
+
+---
+
+### 6. Why are search results sometimes inconsistent?
+
+**Misconception:** "Good prompts guarantee good search results"
+**Truth:** "Search quality = AI model × prompt × search scope"
+
+The search strategies in SKILL.md (by topic type: tech/product/social) provide **scope suggestions**, not quality guarantees. Actual results also depend on:
+
+- **AI model capability**: Different models interpret search instructions differently
+- **Prompt specificity**: More specific instructions yield more precise results
+- **Timeliness**: Hot topics have varying update frequencies
+
+**Suggestion:** Treat search strategies as a starting point. Iterate based on actual results. If one AI's search quality is poor, try a different model.
+
+---
+
 ## 🛠️ Modular Commands & Flexibility
 
 This Skill supports **starting from any stage** and **ending at any stage**. No need to run full pipeline every time:
@@ -225,39 +296,44 @@ Welcome to try it out and provide feedback (via Issues or PRs). Your feedback ma
 
 ## 🌐 Multi-IDE Compatibility
 
-While deep optimization was done in **Antigravity**, the core logic (SKILL.md) uses universal **Open-Skill** specification with strong portability:
+Core logic (SKILL.md) uses universal Open-Skill specification, all IDEs supported:
 
-- **Antigravity**: ⭐ **Fully compatible** - Auto-loads SKILL.md + auto image generation
-- **Claude Code**: ✅ Compatible - Manually reference SKILL.md
+- **Claude Code**: ⭐ **Recommended** - CLAUDE.md auto-loads project memory + Gemini Web image gen + WeChat publish
+- **Antigravity**: ✅ Compatible - Auto-loads SKILL.md + native Gemini image gen
 - **Cursor / Windsurf**: ✅ Compatible - Manually reference SKILL.md
 - **Other Agentic IDEs**: Depends on toolset
 
-### ⚠️ Important Differences
+### ⚠️ Feature Comparison
 
-| Feature | Antigravity | Other IDEs |
-|---------|-------------|------------|
-| **SKILL.md loading** | ✅ **Auto-load** | ⚠️ **Manual reference needed** |
-| Source collection | ✅ Auto | ✅ Auto |
-| Deep analysis | ✅ Auto | ✅ Auto |
-| Article writing | ✅ Auto | ✅ Auto |
-| **Image generation** | ✅ **AI auto-generate** | ⚠️ **Manual preparation** |
-| WeChat publishing | ✅ Auto | ✅ Auto |
+| Feature | Claude Code | Antigravity | Cursor etc. |
+|---------|-------------|-------------|-------------|
+| **Workflow loading** | ✅ CLAUDE.md auto | ✅ SKILL.md auto | ⚠️ Manual |
+| Source collection | ✅ Auto | ✅ Auto | ✅ Auto |
+| Deep analysis | ✅ Auto | ✅ Auto | ✅ Auto |
+| Article writing | ✅ Auto | ✅ Auto | ✅ Auto |
+| **Image generation** | ✅ Gemini Web Skill | ✅ Native Gemini | ⚠️ External tools |
+| WeChat publishing | ✅ Auto | ✅ Auto | ⚠️ Config needed |
 
-**Claude Code / Cursor users must read:**
+### 🎨 Image Generation Options
 
-These IDEs don't auto-load SKILL.md. Reference it at the start of your command:
+**Claude Code** (new in v4.0):
+Uses `baoyu-danger-gemini-web` skill to call Gemini Web reverse API. Requires your own Google account login; first use opens a browser for authentication. Pair with `nano-banana-pro-prompts-recommend-skill` for prompt optimization.
+
+**Antigravity**: Native Gemini image generation, no extra setup.
+
+**Cursor and other IDEs**:
+- Use Midjourney / DALL-E or other external tools
+- Save to project directory, reference in Markdown
+
+**Claude Code / Cursor users tip:**
+
+If your IDE doesn't auto-load the workflow, reference it manually:
 
 ```
 Please read SKILL.md first, then follow Stage 1-2 to search for today's hot topics as article material.
 ```
 
 > 💡 See [SETUP.md Q7](./docs/SETUP.md#q7-claude-code-不识别-skillmd-工作流) for details
-
-**If not using Antigravity**:
-- Skip auto image generation in Stage 5, instead:
-  1. Use Midjourney/DALL-E or other tools to generate images
-  2. Save images to project directory (e.g., `./images/cover.png`)
-  3. Reference in Markdown: `![cover](./images/cover.png)`
 
 ### 💻 Verified Environment
 
@@ -279,6 +355,7 @@ This project was built collaboratively by multiple AI Agents and the user:
 | v1.5 | **Antigravity** | Expanded to 9-stage workflow |
 | v2.0-2.5 | **Antigravity** | Refined to 7 stages, WeChat integration |
 | v3.1-3.2 | **Claude Code (Opus 4.5)** | Bug fixes, fallback mechanisms, NotebookLM testing, doc restructuring |
+| v4.0 | **Claude Code (Opus 4.5)** | Chrome reuse, all-IDE image gen, upstream PR, doc overhaul |
 
 > See [CHANGELOG.md](./docs/CHANGELOG.md) for detailed update history
 
@@ -297,4 +374,4 @@ Welcome to witness my love-hate relationship with AI.
 <img src="./assets/wechat_qr.jpg" width="200" alt="WeChat QR Code">
 
 ---
-*v1.0-2.5 by Antigravity | v3.1+ by Claude Code (Opus 4.5)*
+*v1.0-2.5 by Antigravity | v3.1-3.2 by Claude Code | v4.0 by Claude Code (Opus 4.5)*
