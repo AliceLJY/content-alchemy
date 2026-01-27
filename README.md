@@ -40,7 +40,7 @@
 | 你可能遇到的问题 | 我已经帮你解决了 |
 |----------------|-----------------|
 | 🤔 "每次发微信都要关 Chrome" | Chrome 复用：自动检测已有浏览器，不用关窗口了 |
-| 🤔 "只有 Antigravity 能自动生图" | 全 IDE 配图：Claude Code 也能通过 Gemini Web 自动生图 |
+| 🤔 "只有 Antigravity 能自动生图" | 全 IDE 配图：三种方案均全 IDE 兼容，Gemini Web 反向 API / Chrome MCP / Antigravity 原生 |
 | 🤔 "装了半天跑不起来" | 完整的 `doctor.sh` 环境检测，一键排查缺什么 |
 | 🤔 "AI 写的文章一股塑料味" | 七大去 AI 味原则 + Humanizer-ZH 检查清单 |
 | 🤔 "不知道去哪找素材" | 按话题类型的搜索策略（技术/产品/社会观察各有路径） |
@@ -299,10 +299,10 @@ SKILL.md 中的搜索策略（按话题类型分技术/产品/社会观察）提
 
 核心逻辑（SKILL.md）采用通用的 Open-Skill 指令规范，各 IDE 均可使用：
 
-- **Claude Code**: ⭐ **推荐** - CLAUDE.md 自动加载项目记忆 + Gemini Web 自动生图 + 微信发布
-- **Antigravity**: ✅ 兼容 - 自动加载 SKILL.md + 自动生图（Gemini 原生）
-- **Cursor / Windsurf**: ✅ 兼容 - 需手动引用 SKILL.md
-- **其他 Agentic IDEs**: 视工具集而定
+- **Claude Code**: ⭐ **推荐** - CLAUDE.md 自动加载项目记忆 + 自动生图 + 微信发布
+- **Antigravity**: ✅ 兼容 - 自动加载 SKILL.md + 自动生图（Gemini 原生，无需额外 Skill）
+- **Cursor / Windsurf**: ✅ 兼容 - 需手动引用 SKILL.md，配图可用 `baoyu-danger-gemini-web`
+- **其他 Agentic IDEs**: 视工具集而定，配图方案全兼容
 
 ### ⚠️ 功能对比
 
@@ -312,19 +312,23 @@ SKILL.md 中的搜索策略（按话题类型分技术/产品/社会观察）提
 | 素材采集 | ✅ 自动 | ✅ 自动 | ✅ 自动 |
 | 深度分析 | ✅ 自动 | ✅ 自动 | ✅ 自动 |
 | 文章撰写 | ✅ 自动 | ✅ 自动 | ✅ 自动 |
-| **配图生成** | ✅ Gemini Web Skill | ✅ Gemini 原生 | ⚠️ 需外部工具 |
+| **配图生成** | ✅ 自动 | ✅ 自动 | ✅ 自动 |
 | 微信发布 | ✅ 自动 | ✅ 自动 | ⚠️ 需配置 |
 
 ### 🎨 配图生成方案
 
-**Claude Code**（v4.0 新增）：
-通过 `baoyu-danger-gemini-web` skill 调用 Gemini Web 反向 API 生图。需要用户自己的 Google 账号登录，首次使用会弹出浏览器认证。配合 `nano-banana-pro-prompts-recommend-skill` 可以优化生图 Prompt。
+三种方案均**全 IDE 兼容**，按需选择：
 
-**Antigravity**：原生支持 Gemini 生图，无需额外配置。
+**方案 1：`baoyu-danger-gemini-web` Skill（推荐）**
+通过 Gemini Web 反向 API 自动生图，无需手动操作。所有支持 Skill 的 IDE 均可使用。配合 `nano-banana-pro-prompts-recommend-skill` 可优化生图 Prompt。
 
-**Cursor 等其他 IDE**：
-- 使用 Midjourney / DALL-E 等外部工具生成图片
-- 保存到项目目录后在 Markdown 中引用
+**方案 2：Chrome MCP 操作 Gemini 网页**
+通过浏览器自动化在后台操作已登录的 Gemini 网页生图。用户无需手动干预，但 Gemini 聊天记录中会留有痕迹。适合有 Google 账号且已登录 Gemini 的用户。
+
+**方案 3：Antigravity 原生**
+Antigravity IDE 内置 Gemini 生图能力，无需安装额外 Skill。
+
+> 💡 方案 1 和方案 2 不限 IDE，任何 Agentic IDE 都能用。方案 3 仅限 Antigravity。
 
 **Claude Code / Cursor 用户提示：**
 

@@ -40,7 +40,7 @@ English | **[中文](./README.md)**
 | Problem You Might Face | Already Solved |
 |------------------------|----------------|
 | 🤔 "Must close Chrome every time to publish" | Chrome reuse: auto-detects existing browser, no more closing windows |
-| 🤔 "Only Antigravity can auto-generate images" | All-IDE illustration: Claude Code uses Gemini Web for image generation |
+| 🤔 "Only Antigravity can auto-generate images" | All-IDE illustration: 3 options all IDE-compatible — Gemini Web reverse API / Chrome MCP / Antigravity native |
 | 🤔 "Setup takes forever and still doesn't work" | Complete `doctor.sh` environment check, one-click diagnostics |
 | 🤔 "AI writing sounds robotic" | 7 de-AI principles + Humanizer checklist |
 | 🤔 "Don't know where to find sources" | Search strategies by topic type (tech/product/social) |
@@ -298,10 +298,10 @@ Welcome to try it out and provide feedback (via Issues or PRs). Your feedback ma
 
 Core logic (SKILL.md) uses universal Open-Skill specification, all IDEs supported:
 
-- **Claude Code**: ⭐ **Recommended** - CLAUDE.md auto-loads project memory + Gemini Web image gen + WeChat publish
-- **Antigravity**: ✅ Compatible - Auto-loads SKILL.md + native Gemini image gen
-- **Cursor / Windsurf**: ✅ Compatible - Manually reference SKILL.md
-- **Other Agentic IDEs**: Depends on toolset
+- **Claude Code**: ⭐ **Recommended** - CLAUDE.md auto-loads project memory + auto image gen + WeChat publish
+- **Antigravity**: ✅ Compatible - Auto-loads SKILL.md + native Gemini image gen (no extra Skills needed)
+- **Cursor / Windsurf**: ✅ Compatible - Manually reference SKILL.md, image gen via `baoyu-danger-gemini-web`
+- **Other Agentic IDEs**: Depends on toolset; image gen options are all-IDE compatible
 
 ### ⚠️ Feature Comparison
 
@@ -311,19 +311,23 @@ Core logic (SKILL.md) uses universal Open-Skill specification, all IDEs supporte
 | Source collection | ✅ Auto | ✅ Auto | ✅ Auto |
 | Deep analysis | ✅ Auto | ✅ Auto | ✅ Auto |
 | Article writing | ✅ Auto | ✅ Auto | ✅ Auto |
-| **Image generation** | ✅ Gemini Web Skill | ✅ Native Gemini | ⚠️ External tools |
+| **Image generation** | ✅ Auto | ✅ Auto | ✅ Auto |
 | WeChat publishing | ✅ Auto | ✅ Auto | ⚠️ Config needed |
 
 ### 🎨 Image Generation Options
 
-**Claude Code** (new in v4.0):
-Uses `baoyu-danger-gemini-web` skill to call Gemini Web reverse API. Requires your own Google account login; first use opens a browser for authentication. Pair with `nano-banana-pro-prompts-recommend-skill` for prompt optimization.
+All three options are **compatible with all IDEs**. Choose based on your setup:
 
-**Antigravity**: Native Gemini image generation, no extra setup.
+**Option 1: `baoyu-danger-gemini-web` Skill (Recommended)**
+Auto-generates images via Gemini Web reverse API — no manual steps required. Works with any IDE that supports Skills. Pair with `nano-banana-pro-prompts-recommend-skill` for prompt optimization.
 
-**Cursor and other IDEs**:
-- Use Midjourney / DALL-E or other external tools
-- Save to project directory, reference in Markdown
+**Option 2: Chrome MCP + Gemini Web UI**
+Uses browser automation to operate Gemini in the background via your logged-in session. No manual intervention needed, but generation history will appear in your Gemini chat logs. Works for anyone with a Google account logged into Gemini.
+
+**Option 3: Antigravity Native**
+Antigravity has built-in Gemini image generation — no extra Skills needed.
+
+> 💡 Options 1 and 2 work with any Agentic IDE. Option 3 is Antigravity-only.
 
 **Claude Code / Cursor users tip:**
 
