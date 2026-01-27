@@ -19,6 +19,7 @@
 
 - **调用路径**：必须用项目本地路径 `bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --markdown <file> --theme <theme>`。**禁止**直接调用 `baoyu-post-to-wechat` skill
 - **Chrome 144+**：`--remote-debugging-port=9222` 必须搭配非默认 `--user-data-dir`（如 `$HOME/chrome-debug-profile`），否则端口不绑定
+- **禁止手动启动 Chrome**：`wechat-article.ts` 脚本会**自动启动一个新的 Chrome 实例**（使用 `~/.local/share/wechat-browser-profile`），不会连接已有的 Chrome。如果用户手动启动了 Chrome 并占用了同一个 profile 目录，脚本的新实例会因 profile 锁定而启动失败，报错 `Chrome debug port not ready`。**发布前必须确保没有其他 Chrome 实例占用 `wechat-browser-profile`**——提醒用户彻底退出 Chrome，让脚本自己管理浏览器生命周期
 - **焦点抢占**：发布过程中剪贴板操作会抢焦点，所有用户（包括 Claude Code）均受影响。发布前提醒用户不要切换窗口
 - **发布完成后**：脚本输出 `Done` 后，必须**立刻回复用户**进入 Checkpoint 确认，不要继续自行操作
 - **占位符格式**：baoyu v1.23.0 已将占位符从 `[[IMAGE_PLACEHOLDER_x]]` 改为 `WECHATIMGPH_x`（我们之前提的兼容性建议被采纳）。如果用本地 `simple-md-to-html.ts` 适配版，注意保持占位符格式一致
