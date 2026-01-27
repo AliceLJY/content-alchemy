@@ -79,14 +79,14 @@ async function processMarkdown(markdownPath: string): Promise<ParseResult> {
 
   // 1. 处理标准格式
   modifiedMarkdown = modifiedMarkdown.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
-    const placeholder = `[[IMAGE_PLACEHOLDER_${++imageCounter}]]`;
+    const placeholder = `WECHATIMGPH_${++imageCounter}`;
     images.push({ src: src.trim(), placeholder });
     return placeholder;
   });
 
   // 2. 处理中文符号格式 (Antigravity 生成的)
   modifiedMarkdown = modifiedMarkdown.replace(/！【([^】]*)】（([^）]+)）/g, (match, alt, src) => {
-    const placeholder = `[[IMAGE_PLACEHOLDER_${++imageCounter}]]`;
+    const placeholder = `WECHATIMGPH_${++imageCounter}`;
     // 处理文件名中的中文句号
     const cleanSrc = src.replace(/。/g, '.').trim();
     images.push({ src: cleanSrc, placeholder });
@@ -101,20 +101,14 @@ async function processMarkdown(markdownPath: string): Promise<ParseResult> {
 
   let html = marked.parse(modifiedMarkdown) as string;
 
-  // 添加微信公众号样式
+  // 读取专业的微信公众号样式
+  const stylesPath = path.join(path.dirname(new URL(import.meta.url).pathname), 'wechat-styles.css');
+  const wechatStyles = fs.readFileSync(stylesPath, 'utf-8');
+
+  // 添加样式到 HTML
   html = `
 <style>
-  body { font-size: 16px; line-height: 1.6; color: #333; }
-  h1 { font-size: 24px; font-weight: bold; margin: 20px 0; }
-  h2 { font-size: 20px; font-weight: bold; margin: 18px 0; }
-  h3 { font-size: 18px; font-weight: bold; margin: 16px 0; }
-  p { margin: 12px 0; }
-  strong { font-weight: bold; }
-  code { background: #f5f5f5; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
-  pre { background: #f5f5f5; padding: 12px; border-radius: 6px; overflow-x: auto; }
-  blockquote { border-left: 4px solid #0F4C81; padding-left: 16px; color: #666; margin: 12px 0; }
-  ul, ol { margin: 12px 0; padding-left: 24px; }
-  li { margin: 6px 0; }
+${wechatStyles}
 </style>
 ${html}
   `;

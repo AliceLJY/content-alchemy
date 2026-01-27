@@ -21,6 +21,9 @@
 - **Chrome 144+**：`--remote-debugging-port=9222` 必须搭配非默认 `--user-data-dir`（如 `$HOME/chrome-debug-profile`），否则端口不绑定
 - **焦点抢占**：发布过程中剪贴板操作会抢焦点，所有用户（包括 Claude Code）均受影响。发布前提醒用户不要切换窗口
 - **发布完成后**：脚本输出 `Done` 后，必须**立刻回复用户**进入 Checkpoint 确认，不要继续自行操作
+- **占位符格式**：baoyu v1.23.0 已将占位符从 `[[IMAGE_PLACEHOLDER_x]]` 改为 `WECHATIMGPH_x`（我们之前提的兼容性建议被采纳）。如果用本地 `simple-md-to-html.ts` 适配版，注意保持占位符格式一致
+- **发布耗时**：脚本中有大量 `sleep` 等待（每张图片约3秒），这是为了确保微信编辑器正确响应，属于正常 trade-off，不是 bug。3张图总耗时约30-40秒属正常
+- **保持登录**：每次发布前如果需要扫码登录会额外耗时。建议保持微信公众号 cookie 不过期，可省去扫码步骤
 
 ### 文档维护
 
@@ -34,3 +37,4 @@
 - **IDE**: Claude Code (Opus 4.5) 主力 / Antigravity (Gemini) 测试
 - **Chrome**: 144+（调试端口行为已变）
 - **npm 依赖**：baoyu-skills 作为 git submodule 无自己的 package.json，宿主项目 package.json 必须包含所有依赖
+- **baoyu-skills 版本**：v1.23.0（2026-01-27 更新）
