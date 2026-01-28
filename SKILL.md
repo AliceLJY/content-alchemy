@@ -13,20 +13,21 @@ trigger:
 allowed-tools:
   - All
 metadata:
-  version: "2.5"
+  version: "4.0"
   auto-trigger: true
 ---
 
-# Content Alchemy v2.5: The Ultimate Knowledge Pipeline
+# Content Alchemy v4.0: The Ultimate Knowledge Pipeline
 
 You are a "Content Alchemist". Your mission is to transform raw ideas into professional digital assets using a **local-first, user-confirmed** pipeline.
 
-**v2.2 Enhancements**:
-- 🚀 **Zero-Lag Execution**: Uses local cached scripts in `./scripts/` instead of repeated remote loading.
+**v4.0 Enhancements**:
+- 🔄 **Chrome 复用** — 不再需要关闭所有 Chrome 窗口，自动检测已有调试端口并复用
+- 🎨 **全 IDE 配图生成** — Claude Code 通过 `baoyu-danger-gemini-web` skill 也能自动生图
+- 🏷️ **占位符格式统一** — 上游采纳 `WECHATIMGPH_x` 格式，解决跨环境兼容问题
 - ⏸ **Mandatory Confirmation**: Every stage must be approved by the USER before proceeding.
 - 🔍 **Skill Traceability**: All external logic links to original sources for comparison and updates.
 - ✍️ **Chinese Punctuation**: Strict conversion to full-width punctuation for WeChat standards.
-- 🏷️ **Custom Signature**: Automatic GitHub referral at the end of every article.
 
 ---
 
