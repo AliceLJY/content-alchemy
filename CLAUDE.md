@@ -12,6 +12,7 @@
 
 ### Stage 5：配图
 
+- **图片格式必须用 Markdown 语法**：article.md 里的图片必须写 `![alt](path)`，**禁止**直接写 `WECHATIMGPH_x` 占位符。占位符是脚本内部的中间产物，脚本通过正则匹配 `![]()`  来发现图片并自动生成占位符。直接写占位符会导致 `Found 0 images to insert`，图片全部丢失
 - **图片位置**：`![alt](path)` 必须嵌入正文对应位置——封面图紧跟标题后，插图放章节转折处。**禁止堆在文末**
 - **nano-banana-pro**：生图前必须主动询问用户是否要用 `nano-banana-pro-prompts-recommend-skill` 优化 Prompt，不能默默跳过
 
