@@ -233,7 +233,7 @@ Every time you published to WeChat, you had to Cmd+Q all Chrome windows. Otherwi
 **v4.0 fix:**
 Script auto-scans for existing Chrome debug ports before launch. If found, it reuses the existing browser. It prioritizes tabs already logged into WeChat (identified by `token=` in URL) to avoid losing login state. Only launches a new instance when no existing Chrome is detected.
 
-This change was submitted as a PR to upstream baoyu-skills ([#23](https://github.com/JimLiu/baoyu-skills/pull/23)).
+This change has been merged into upstream baoyu-skills ([#23](https://github.com/JimLiu/baoyu-skills/pull/23)) and is now an official feature.
 
 ---
 

@@ -234,7 +234,7 @@ AI只拿到视频标题+简介+评论 → 基于这些"二手信息"编故事。
 **v4.0 改进：**
 脚本启动前先自动扫描已有 Chrome 调试端口，找到就直接复用。复用时优先找已登录微信的标签（通过 URL 中的 `token=` 识别），避免新开标签丢失登录态。找不到已有 Chrome 才启动新实例。
 
-这个改动已提交 PR 到上游 baoyu-skills（[#23](https://github.com/JimLiu/baoyu-skills/pull/23)）。
+这个改动已合并到上游 baoyu-skills（[#23](https://github.com/JimLiu/baoyu-skills/pull/23)），成为官方功能。
 
 ---
 

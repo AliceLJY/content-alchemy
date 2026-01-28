@@ -14,7 +14,7 @@
   - 无调试端口时用独立 profile 启动新实例，不干扰用户浏览器
   - 新增 `--cdp-port <port>` 手动指定端口
   - 修复脚本完成后进程不退出的问题
-  - 已提交 PR 到上游 baoyu-skills（[#23](https://github.com/JimLiu/baoyu-skills/pull/23)）
+  - ✅ 已合并到上游 baoyu-skills（[#23](https://github.com/JimLiu/baoyu-skills/pull/23)）
 
 - **全 IDE 配图生成** — Claude Code 也能自动生图了
   - 通过 `baoyu-danger-gemini-web` skill（Gemini Web 反向 API）实现
