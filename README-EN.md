@@ -222,7 +222,25 @@ Judge whether the source is authoritative enough. AI cannot assess source credib
 
 ---
 
-### 5. Why no need to close Chrome anymore?
+### 5. Why does paste fail? (macOS Accessibility Permission)
+
+**Misconception:** "The script has a bug"
+**Truth:** "macOS requires permission for terminals to send keystrokes"
+
+**Symptoms:**
+Script log shows `Body content verified OK`, but the editor is empty and placeholders are not found.
+
+**Root cause:**
+The script uses `osascript` to send Cmd+C / Cmd+V keystrokes. macOS blocks terminal apps from sending key events by default for security reasons.
+
+**Solution:**
+Open **System Settings → Privacy & Security → Accessibility**, add your terminal app (Terminal, iTerm, VS Code, Cursor, etc.) to the list and enable permission.
+
+> ⚠️ This is a one-time setup. Once authorized, no further action needed.
+
+---
+
+### 6. Why no need to close Chrome anymore?
 
 **Misconception:** "You must close all browser windows to publish"
 **Truth:** "That was an old limitation, fixed in v4.0"
@@ -237,7 +255,7 @@ This change has been merged into upstream baoyu-skills ([#23](https://github.com
 
 ---
 
-### 6. Why are search results sometimes inconsistent?
+### 7. Why are search results sometimes inconsistent?
 
 **Misconception:** "Good prompts guarantee good search results"
 **Truth:** "Search quality = AI model × prompt × search scope"
