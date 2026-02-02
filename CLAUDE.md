@@ -21,6 +21,7 @@
   - CDP 模式需 Chrome 调试端口 9222（脚本会自动启动或复用已有 Chrome）
   - Chrome 144+ 要求：`--remote-debugging-port=9222 --user-data-dir="$HOME/chrome-debug-profile"`
   - **已知问题**：Google Gemini API 响应格式不稳定，API 模式可能随时失效，此时 CDP 模式为唯一可靠方案
+  - **CDP 下载方式（2026-02-02 修复）**：模拟 hover 图片并点击下载按钮，从 Downloads 目录获取下载文件。直接 fetch googleusercontent URL 会返回 403
 
 ### Stage 6：发布
 

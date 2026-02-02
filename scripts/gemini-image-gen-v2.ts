@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * Gemini 生图 - 自动切换 API/CDP 模式
+ * Gemini 生图 - 改进的图片识别逻辑
  */
 import path from 'node:path';
 import { writeFile, mkdir } from 'node:fs/promises';
@@ -8,7 +8,7 @@ import { writeFile, mkdir } from 'node:fs/promises';
 const args = {
   prompt: '',
   output: '',
-  method: 'auto' // auto | api | cdp
+  method: 'auto'
 };
 
 for (let i = 2; i < process.argv.length; i++) {
@@ -18,72 +18,51 @@ for (let i = 2; i < process.argv.length; i++) {
 }
 
 if (!args.prompt || !args.output) {
-  console.error('Usage: bun gemini-image-gen.ts --prompt "A red apple" --output /path/to/image.png');
+  console.error('Usage: bun gemini-image-gen-v2.ts --prompt "A red apple" --output /path/to/image.png');
   process.exit(1);
 }
 
 await mkdir(path.dirname(args.output), { recursive: true });
 
-// 方法 1: 尝试 API 模式
-async function tryApiMethod() {
-  try {
-    const geminiWebPath = path.join(import.meta.dir, '../dependencies/baoyu-skills/skills/baoyu-danger-gemini-web/scripts/main.ts');
-    const { spawn } = await import('node:child_process');
-    
-    return new Promise<boolean>((resolve) => {
-      const proc = spawn('bun', [geminiWebPath, '--prompt', args.prompt, '--image', args.output], {
-        stdio: 'inherit',
-        timeout: 60000
-      });
-      
-      proc.on('close', (code) => resolve(code === 0));
-      proc.on('error', () => resolve(false));
-    });
-  } catch {
-    return false;
-  }
-}
-
-// 方法 2: CDP 浏览器模式
+// CDP 浏览器模式（改进的图片识别）
 async function cdpMethod() {
   const cdpPath = path.join(import.meta.dir, '../dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/cdp.ts');
   const { tryConnectExisting, findExistingChromeDebugPort, launchChrome, getPageSession, evaluate, typeText, sleep } = await import(cdpPath);
-
-  // 查找或启动 Chrome
+  
   let port = await findExistingChromeDebugPort();
   let cdp = port ? await tryConnectExisting(port) : null;
   let chrome = null;
-
+  
   if (!cdp) {
     console.log('[CDP] Launching Chrome...');
     const result = await launchChrome('https://gemini.google.com/app');
     cdp = result.cdp;
     chrome = result.chrome;
-    await sleep(5000); // 等待页面加载
+    await sleep(5000);
   }
-
+  
   try {
     const session = await getPageSession(cdp, 'gemini.google.com');
-
+    
     // 记录当前页面所有图片的 URL（用于排除）
     const existingImages = await session.cdp.send('Runtime.evaluate', {
       expression: `Array.from(document.querySelectorAll('img')).map(img => img.src)`,
       returnByValue: true
     }, { sessionId: session.sessionId });
-
+    
     const beforeUrls = new Set(existingImages.result.value || []);
     console.log(`[CDP] Found ${beforeUrls.size} existing images before generation`);
-
+    
     // 输入 prompt
     console.log('[CDP] Entering prompt...');
     await session.cdp.send('Runtime.evaluate', {
       expression: `document.querySelector('rich-textarea')?.focus()`
     }, { sessionId: session.sessionId });
     await sleep(500);
-
+    
     await typeText(session, `Generate an image: ${args.prompt}`);
     await sleep(500);
-
+    
     // 发送
     console.log('[CDP] Submitting...');
     await session.cdp.send('Input.dispatchKeyEvent', {
@@ -92,53 +71,53 @@ async function cdpMethod() {
     await session.cdp.send('Input.dispatchKeyEvent', {
       type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13
     }, { sessionId: session.sessionId });
-
+    
     // 等待并查找新图片
     console.log('[CDP] Waiting for image generation...');
     let imageUrl = null;
-
+    
     for (let attempt = 0; attempt < 30; attempt++) {
       await sleep(1000);
-
+      
       const result = await session.cdp.send('Runtime.evaluate', {
         expression: `
           (function() {
             const existingUrls = ${JSON.stringify(Array.from(beforeUrls))};
             const imgs = Array.from(document.querySelectorAll('img'))
-              .filter(img =>
+              .filter(img => 
                 (img.src.startsWith('data:image') || img.src.includes('googleusercontent')) &&
                 !existingUrls.includes(img.src) &&
                 img.width > 100 && img.height > 100
               )
               .sort((a, b) => b.width * b.height - a.width * a.height);
-
+            
             return imgs.length > 0 ? imgs[0].src : null;
           })()
         `,
         returnByValue: true
       }, { sessionId: session.sessionId });
-
+      
       imageUrl = result.result.value;
-
+      
       if (imageUrl) {
         console.log(`[CDP] Found new image after ${attempt + 1}s`);
         break;
       }
-
+      
       if ((attempt + 1) % 5 === 0) {
         console.log(`[CDP] Still waiting... (${attempt + 1}s)`);
       }
     }
-
+    
     if (!imageUrl) throw new Error('No generated image found after 30s');
-
+    
     console.log(`[CDP] Image URL: ${imageUrl.substring(0, 80)}...`);
 
     // 模拟点击下载按钮
     console.log('[CDP] Hovering over image and clicking download button...');
 
     // Hover 图片并点击下载按钮
-    await session.cdp.send('Runtime.evaluate', {
+    const clickResult = await session.cdp.send('Runtime.evaluate', {
       expression: `
         (function() {
           const existingUrls = ${JSON.stringify(Array.from(beforeUrls))};
@@ -230,9 +209,9 @@ async function cdpMethod() {
     // 移动文件到目标位置
     const { rename } = await import('node:fs/promises');
     await rename(downloadedFile, args.output);
-
+    
     return true;
-
+    
   } finally {
     cdp.close();
     if (chrome) chrome.kill();
@@ -240,23 +219,8 @@ async function cdpMethod() {
 }
 
 // 执行
-if (args.method === 'api') {
-  const success = await tryApiMethod();
-  if (!success) {
-    console.error('❌ API method failed');
-    process.exit(1);
-  }
-} else if (args.method === 'cdp') {
-  await cdpMethod();
-} else {
-  // auto: 先试 API，失败则 CDP
-  console.log('[AUTO] Trying API method first...');
-  const apiSuccess = await tryApiMethod();
-  
-  if (!apiSuccess) {
-    console.log('[AUTO] API failed, switching to CDP method...');
-    await cdpMethod();
-  }
-}
+await cdpMethod();
 
-console.log(`✅ Image saved: ${args.output}`);
+const fs = await import('node:fs/promises');
+const stat = await fs.stat(args.output);
+console.log(`✅ Image saved: ${args.output} (${(stat.size / 1024).toFixed(1)}KB)`);
