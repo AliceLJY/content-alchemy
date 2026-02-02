@@ -718,7 +718,9 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 
 > 💡 **图片生成工具说明**：
 > - **Antigravity**：内置 `generate_image` 工具（基于 Gemini），可直接生成高质量图片
-> - **Claude Code**：可调用 `baoyu-danger-gemini-web` skill（需登录 Google 账号，cookie 可能过期）
+> - **Claude Code**：使用 `scripts/gemini-image-gen.ts` 统一入口
+>   - 自动模式（推荐）：先尝试 `baoyu-danger-gemini-web` API，失败则自动切换 CDP 浏览器模式
+>   - CDP 模式需 Chrome 调试端口（脚本会自动检测或启动 Chrome）
 > - **其他 IDE**：需用户手动使用 Midjourney/DALL-E 等工具
 
 ### 🛡️ Why Manual Cover & Formatting?

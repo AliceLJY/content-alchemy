@@ -15,6 +15,12 @@
 - **图片格式必须用 Markdown 语法**：article.md 里的图片必须写 `![alt](path)`，**禁止**直接写 `WECHATIMGPH_x` 占位符。占位符是脚本内部的中间产物，脚本通过正则匹配 `![]()`  来发现图片并自动生成占位符。直接写占位符会导致 `Found 0 images to insert`，图片全部丢失
 - **图片位置**：`![alt](path)` 必须嵌入正文对应位置——封面图紧跟标题后，插图放章节转折处。**禁止堆在文末**
 - **nano-banana-pro**：生图前必须主动询问用户是否要用 `nano-banana-pro-prompts-recommend-skill` 优化 Prompt，不能默默跳过
+- **图片生成工具（2026-02-02 更新）**：
+  - 使用 `bun scripts/gemini-image-gen.ts --prompt "..." --output path.png`
+  - 自动模式：先尝试 API（`baoyu-danger-gemini-web`），失败则自动切换 CDP 浏览器模式
+  - CDP 模式需 Chrome 调试端口 9222（脚本会自动启动或复用已有 Chrome）
+  - Chrome 144+ 要求：`--remote-debugging-port=9222 --user-data-dir="$HOME/chrome-debug-profile"`
+  - **已知问题**：Google Gemini API 响应格式不稳定，API 模式可能随时失效，此时 CDP 模式为唯一可靠方案
 
 ### Stage 6：发布
 
@@ -40,4 +46,4 @@
 - **IDE**: Claude Code (Opus 4.5) 主力 / Antigravity (Gemini) 测试
 - **Chrome**: 144+（调试端口行为已变）
 - **npm 依赖**：baoyu-skills 作为 git submodule 无自己的 package.json，宿主项目 package.json 必须包含所有依赖
-- **baoyu-skills 版本**：v1.23.0（2026-01-27 更新）
+- **baoyu-skills 版本**：v1.28.0（2026-02-02 更新）
