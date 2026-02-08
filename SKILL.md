@@ -23,7 +23,7 @@ You are a "Content Alchemist". Your mission is to transform raw ideas into profe
 
 **v4.0 Enhancements**:
 - 🔄 **Chrome 复用** — 不再需要关闭所有 Chrome 窗口，自动检测已有调试端口并复用
-- 🎨 **全 IDE 配图生成** — Claude Code 通过 `baoyu-danger-gemini-web` skill 也能自动生图
+- 🎨 **全 IDE 配图生成** — Claude Code 通过 `bun scripts/gemini-image-gen.ts` 脚本自动生图（内部调用 baoyu-danger-gemini-web API，失败自动降级 CDP）
 - 🏷️ **占位符格式统一** — 上游采纳 `WECHATIMGPH_x` 格式，解决跨环境兼容问题
 - ⏸ **Mandatory Confirmation**: Every stage must be approved by the USER before proceeding.
 - 🔍 **Skill Traceability**: All external logic links to original sources for comparison and updates.
@@ -660,6 +660,8 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 ### 🎨 配图流程（Stage 5 子流程）
 
 > ⚠️ **重要**：不要直接生成图片！先分析文章，推荐风格让用户选择。
+>
+> 🚫 **强制 Checkpoint**：Step 2 必须停下来问用户是否使用 nano-banana-pro 优化 Prompt。**不问就生图是违规操作**，即使赶时间也必须先问再跳过。
 
 **Step 1: 分析文章调性**
 
@@ -668,9 +670,9 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 - 情绪基调（理性冷静 / 温暖治愈 / 犀利讽刺 / 轻松幽默）
 - 视觉关键词（从文章中提取 3-5 个可视化的核心概念）
 
-**Step 2: 编写图片 Prompt（⏸ Checkpoint）**
+**Step 2: 编写图片 Prompt（⏸ MANDATORY Checkpoint — 必须停下等用户回复）**
 
-在编写 Prompt 前，**必须主动询问用户**：
+在编写 Prompt 前，**必须主动询问用户，等待回复后才能继续**：
 
 > 是否需要先调用 `nano-banana-pro-prompts-recommend-skill` 来优化图片 Prompt？
 > 它会根据风格库推荐更高质量的提示词，你确认后再用于生图。
@@ -719,7 +721,8 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 > 💡 **图片生成工具说明**：
 > - **Antigravity**：内置 `generate_image` 工具（基于 Gemini），可直接生成高质量图片
 > - **Claude Code**：使用 `scripts/gemini-image-gen.ts` 统一入口
->   - 自动模式（推荐）：先尝试 `baoyu-danger-gemini-web` API，失败则自动切换 CDP 浏览器模式
+>   - 自动模式（推荐）：先尝试 baoyu-danger-gemini-web API，失败则自动切换 CDP 浏览器模式
+>   - **注意**：不要把 `baoyu-danger-gemini-web` 当作 Claude Code skill 调用，它不是注册 skill，必须通过 `bun scripts/gemini-image-gen.ts` 统一调用
 >   - CDP 模式需 Chrome 调试端口（脚本会自动检测或启动 Chrome）
 >   - CDP 下载方式：模拟 hover 图片并点击下载按钮（避免 googleusercontent URL 403 错误）
 > - **其他 IDE**：需用户手动使用 Midjourney/DALL-E 等工具
@@ -736,13 +739,14 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 ### Stage 6: Distribution (Flash-Publish Mode) ⏸
 - **Boundary**: Automation to "Saved Draft".
 - **Prerequisites**:
-  - Chrome Debug Port 9222（**必须**以 `--remote-debugging-port=9222` 启动 Chrome。若 Chrome 已在运行但未带此参数，**必须先关闭再重启**，已运行的 Chrome 不会接受新的启动参数。⚠️ **Chrome 144+ 新要求**：必须使用非默认的 `--user-data-dir`，否则调试端口不会绑定。示例：`--user-data-dir="$HOME/chrome-debug-profile"`）
   - npm 依赖已安装（运行 `bun install` 确认）
+  - Chrome 不需要手动启动——`wechat-article.ts` 内部调用 `cdp.ts`，会自动检测已有调试端口并复用，找不到时自动启动新 Chrome 实例（带 `--remote-debugging-port` 和非默认 `--user-data-dir`，兼容 Chrome 144+）
+  - **唯一需要用户操作的**：如果脚本自动启动了新 Chrome，用户需要在新窗口中登录微信公众号（mp.weixin.qq.com）
 
 - **Pre-flight Check [MANDATORY]**:
-  1. 检查端口 9222：`curl -s http://localhost:9222/json/version`，无响应则提示用户关闭重启 Chrome（Chrome 144+ 需使用非默认 `--user-data-dir`，如 `$HOME/chrome-debug-profile`）
-  2. 检查依赖：`ls node_modules/front-matter` 是否存在，不存在则先运行 `bun install`
-  3. 检查图片同步：确认 `{topic-slug}/` 和 `Desktop/wechat_assets/` 中图片一致
+  1. 检查依赖：`ls node_modules/front-matter` 是否存在，不存在则先运行 `bun install`
+  2. 检查图片同步：确认 `{topic-slug}/` 和 `Desktop/wechat_assets/` 中图片一致
+  3. Chrome 调试端口：**不要手动检查或让用户启动 Chrome**，直接调用发布脚本，脚本会自动处理
 
 - **调用路径 [FORCE]**:
   - ✅ **必须**使用项目本地路径：`bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --markdown <article.md> --theme grace`

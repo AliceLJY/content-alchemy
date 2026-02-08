@@ -35,19 +35,23 @@ English | **[中文](./README.md)**
 
 > Not "just another template" — this is **battle-tested wisdom from countless pitfalls**.
 
-**v4.0 Highlights (for serious users):**
+**v4.1 Highlights (for serious users):**
+
+A team of 3 Claude Code Agents (Architect, Security Auditor, DX Reviewer) conducted a full code review + hands-on testing:
 
 | Problem You Might Face | Already Solved |
 |------------------------|----------------|
+| 🤔 "Clone fails, path errors everywhere" | Removed all hardcoded paths; `publish.sh` auto-detects based on script location |
+| 🤔 "Two gemini scripts, which one to use?" | v1/v2 merged into single file — `--method auto\|api\|cdp` one entry point |
+| 🤔 "Installed deps but still missing packages" | Added missing `juice`, plus project metadata and `scripts` shortcuts |
+| 🤔 "Claude generates images without asking me" | Strengthened nano-banana-pro checkpoint — user confirmation enforced |
+| 🤔 "Told to manually start Chrome for publishing" | Chrome handled automatically by script, no more manual launch |
+| 🤔 "baoyu-danger-gemini-web reports unknown skill" | Now points to `bun scripts/gemini-image-gen.ts` entry point |
 | 🤔 "Must close Chrome every time to publish" | Chrome reuse: auto-detects existing browser, no more closing windows |
-| 🤔 "Only Antigravity can auto-generate images" | All-IDE illustration: 3 options all IDE-compatible — Gemini Web reverse API / Chrome MCP / Antigravity native |
-| 🤔 "Setup takes forever and still doesn't work" | Complete `doctor.sh` environment check, one-click diagnostics |
 | 🤔 "AI writing sounds robotic" | 7 de-AI principles + Humanizer checklist |
-| 🤔 "Don't know where to find sources" | Search strategies by topic type (tech/product/social) |
 | 🤔 "AI makes up data" | Source Truth Table forces citations, eliminates hallucination |
-| 🤔 "This is your style, how do I adapt?" | Clear separation of **universal framework** vs **personal examples** |
-| 🤔 "Where does Baoyu go? How to install?" | Lazy install: just paste a link to AI and ask it to install |
-| 🤔 "How to extract YouTube subtitles?" | yt-dlp + NotebookLM dual approach |
+
+> Goal: New users can `git clone` and start using immediately — no hidden local config dependencies.
 
 **Design Principles:**
 - 📖 **Beginner-friendly**: No technical background assumed, verification at every step
@@ -378,6 +382,7 @@ This project was built collaboratively by multiple AI Agents and the user:
 | v2.0-2.5 | **Antigravity** | Refined to 7 stages, WeChat integration |
 | v3.1-3.2 | **Claude Code (Opus 4.5)** | Bug fixes, fallback mechanisms, NotebookLM testing, doc restructuring |
 | v4.0 | **Claude Code (Opus 4.5)** | Chrome reuse, all-IDE image gen, upstream PR, doc overhaul |
+| v4.1 | **Claude Code (Opus 4.6)** | Multi-agent code review, hardcode cleanup, dependency fix, SKILL.md testing fixes |
 
 > See [CHANGELOG.md](./docs/CHANGELOG.md) for detailed update history
 
@@ -396,4 +401,4 @@ Welcome to witness my love-hate relationship with AI.
 <img src="./assets/wechat_qr.jpg" width="200" alt="WeChat QR Code">
 
 ---
-*v1.0-2.5 by Antigravity | v3.1-3.2 by Claude Code | v4.0 by Claude Code (Opus 4.5)*
+*v1.0-2.5 by Antigravity | v3.1-3.2 by Claude Code | v4.0 by Claude Code (Opus 4.5) | v4.1 by Claude Code (Opus 4.6)*

@@ -1,8 +1,20 @@
 {
+  "name": "content-alchemy",
+  "version": "4.1.0",
+  "private": true,
+  "description": "Semi-automated content workflow for WeChat Official Accounts",
+  "scripts": {
+    "setup": "bash scripts/setup.sh",
+    "doctor": "bash scripts/doctor.sh",
+    "publish": "bash scripts/publish.sh",
+    "image": "bun scripts/gemini-image-gen.ts",
+    "md2html": "bun scripts/simple-md-to-html.ts"
+  },
   "dependencies": {
     "fflate": "^0.8.2",
     "front-matter": "^4.0.2",
     "highlight.js": "^11.11.1",
+    "juice": "^11.1.0",
     "katex": "^0.16.28",
     "markdown-it": "^14.1.0",
     "markdown-it-footnote": "^4.0.0",

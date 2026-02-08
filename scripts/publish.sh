@@ -7,9 +7,9 @@
 
 set -e
 
-PROJECT_DIR="/Users/anxianjingya/content-alchemy-repo"
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 ARTICLE_FILE="${1}"
-BAOYU_SCRIPT="/Users/anxianjingya/.gemini/antigravity/scratch/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts"
+BAOYU_SCRIPT="$PROJECT_DIR/dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts"
 
 echo "📮 Content Alchemy - 微信发布"
 echo "===================================="

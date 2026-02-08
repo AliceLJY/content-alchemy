@@ -3,7 +3,7 @@
  * Gemini 生图 - 自动切换 API/CDP 模式
  */
 import path from 'node:path';
-import { writeFile, mkdir } from 'node:fs/promises';
+import { mkdir } from 'node:fs/promises';
 
 const args = {
   prompt: '',
@@ -138,7 +138,7 @@ async function cdpMethod() {
     console.log('[CDP] Hovering over image and clicking download button...');
 
     // Hover 图片并点击下载按钮
-    await session.cdp.send('Runtime.evaluate', {
+    const clickResult = await session.cdp.send('Runtime.evaluate', {
       expression: `
         (function() {
           const existingUrls = ${JSON.stringify(Array.from(beforeUrls))};
@@ -259,4 +259,6 @@ if (args.method === 'api') {
   }
 }
 
-console.log(`✅ Image saved: ${args.output}`);
+const { stat } = await import('node:fs/promises');
+const fileStat = await stat(args.output);
+console.log(`✅ Image saved: ${args.output} (${(fileStat.size / 1024).toFixed(1)}KB)`);

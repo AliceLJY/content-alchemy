@@ -41,7 +41,7 @@ if [ -n "$BASH_VERSION" ]; then
     SHELL_RC="$HOME/.bashrc"
 fi
 
-ALIAS_LINE='alias chrome-debug="/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 &"'
+ALIAS_LINE='alias chrome-debug="/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --user-data-dir=\"\$HOME/chrome-debug-profile\" &"'
 
 if grep -q "chrome-debug" "$SHELL_RC"; then
     echo "   ✅ Alias already exists"

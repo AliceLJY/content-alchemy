@@ -35,6 +35,15 @@
 - **发布耗时**：脚本中有大量 `sleep` 等待（每张图片约3秒），这是为了确保微信编辑器正确响应，属于正常 trade-off，不是 bug。3张图总耗时约30-40秒属正常
 - **保持登录**：每次发布前如果需要扫码登录会额外耗时。建议保持微信公众号 cookie 不过期，可省去扫码步骤
 
+### 代码质量（v4.1 评审改进）
+
+- **publish.sh 路径**：`PROJECT_DIR` 和 `BAOYU_SCRIPT` 已改为基于脚本自身位置自动检测，不再硬编码绝对路径
+- **gemini-image-gen**：v1 和 v2 已合并为单一文件，v2 已删除。保留 `--method auto|api|cdp` 参数
+- **package.json**：已添加 `name`、`version`、`scripts` 等项目元数据
+- **tsconfig.json**：已添加适配 Bun 的 TypeScript 配置
+- **setup.sh**：Chrome alias 已添加 `--user-data-dir` 参数（Chrome 144+ 必需）
+- **simple-md-to-html.ts**：已移除未使用的 `createHash` import
+
 ### 文档维护
 
 - **中英文同步**：每次改 README.md 必须同步更新 README-EN.md，一起提交
