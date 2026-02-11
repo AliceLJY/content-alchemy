@@ -25,7 +25,7 @@ English | **[中文](./README.md)**
 
 **Core Value**:
 - 🧩 **Modular like LEGO** — Use only what you need, no forced full workflow
-- 🛡️ **Anti-hallucination** — Source Truth Table forces citation of sources
+- 🛡️ **Anti-hallucination** — Source Truth Table + Cross-Reference double insurance
 - ✨ **Human-sounding** — 7 writing principles to eliminate AI-speak
 - 📖 **Beginner-friendly** — Verification steps at every stage, no coding required
 
@@ -50,6 +50,9 @@ A team of 3 Claude Code Agents (Architect, Security Auditor, DX Reviewer) conduc
 | 🤔 "Must close Chrome every time to publish" | Chrome reuse: auto-detects existing browser, no more closing windows |
 | 🤔 "AI writing sounds robotic" | 7 de-AI principles + Humanizer checklist |
 | 🤔 "AI makes up data" | Source Truth Table forces citations, eliminates hallucination |
+| 🤔 "Source exists but data itself is wrong" | **Stage 3.5 Cross-Reference**: multi-source verification + concept confusion check + absolute claim scanner |
+| 🤔 "Can't trust AI's numbers" | **Confidence self-assessment**: real-time evaluation during writing, uncertain data gets downgraded or removed |
+| 🤔 "De-AI'd words but still reads like AI" | **6-dimension AI scan**: structure/syntax/vocab/emotion/meta-commentary/predictability |
 
 > Goal: New users can `git clone` and start using immediately — no hidden local config dependencies.
 
@@ -382,7 +385,7 @@ This project was built collaboratively by multiple AI Agents and the user:
 | v2.0-2.5 | **Antigravity** | Refined to 7 stages, WeChat integration |
 | v3.1-3.2 | **Claude Code (Opus 4.5)** | Bug fixes, fallback mechanisms, NotebookLM testing, doc restructuring |
 | v4.0 | **Claude Code (Opus 4.5)** | Chrome reuse, all-IDE image gen, upstream PR, doc overhaul |
-| v4.1 | **Claude Code (Opus 4.6)** | Multi-agent code review, hardcode cleanup, dependency fix, SKILL.md testing fixes |
+| v4.1 | **Claude Code (Opus 4.6)** | Multi-agent code review, Cross-Reference Verification (Stage 3.5), confidence self-assessment, 6-dim AI scan, board-register matching |
 
 > See [CHANGELOG.md](./docs/CHANGELOG.md) for detailed update history
 
