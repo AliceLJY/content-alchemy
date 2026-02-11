@@ -979,8 +979,17 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 
 ### Stage 7: Cleanup (清理)
 
-- **Action**: Remove temporary files and working directories.
-- **Rule**: Keep the final output in `output/` and `manifesto.md`, but delete temporary search results and redundant mirrored assets if confirmed by user.
+- **Action**: Move temporary files and working directories to Trash.
+- **Method**: Use `mv` to move files to `~/.Trash/` instead of permanent deletion (`rm -rf`)，方便用户万一需要找回。
+- **Rule**: Keep the final output in `output/` and `manifesto.md`, but move temporary search results and redundant mirrored assets to `~/.Trash/` if confirmed by user.
+- **Example**:
+  ```bash
+  mv {topic-slug}/mining-report.md ~/.Trash/
+  mv {topic-slug}/cross-reference-report.md ~/.Trash/
+  # Desktop/wechat_assets/ 中的临时图片也移到 Trash
+  mv ~/Desktop/wechat_assets/*.png ~/.Trash/
+  ```
+- **Note**: Do NOT use `rm -rf`. Always use `mv` to `~/.Trash/` for safety.
 
 ---
 
