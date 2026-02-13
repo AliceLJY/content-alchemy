@@ -1,16 +1,31 @@
 # 文章内容（只保留在本地，不上传 GitHub）
-ai-fomo-anxiety/
 ai-agent-content-creation/
+ai-code-review-teams/
+ai-egg-timer/
 ai-entry-level-jobs/
+ai-fomo-anxiety/
 ai-reprogram-mouth/
+bot-infrastructure-bugs/
+claude-data-loss-recovery/
 clawdbot-jokes-history/
 content-alchemy-promo/
+deep-link-docker-hotpatch/
+digital-class-folding/
+discord-remote-mac/
+excel-retired/
 first-github-issue/
+first-principles-tech-choice/
 mock-test/
-wechat-paste-fix-story/
 open-source-joy/
+openclaw-article/
+openclaw-mas-pitfall/
 pr-merged-story/
+quiet-operator/
 research/
+session-timeout-death/
+session-timeout-resume/
+subagents-vs-teams/
+wechat-paste-fix-story/
 
 # 测试文件
 test-article.md
@@ -18,6 +33,8 @@ test-article.md
 # 临时/调试文件
 scripts/wechat-styles.css
 scripts/排版效果对比.md
+tmp-publish.ts
+package-lock.json
 
 # 系统文件
 .DS_Store
