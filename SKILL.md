@@ -979,9 +979,7 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
   1. 检查依赖：`ls node_modules/front-matter` 是否存在，不存在则先运行 `bun install`
   2. 检查图片同步：确认 `{topic-slug}/` 和 `Desktop/wechat_assets/` 中图片一致
   3. Chrome 调试端口：**不要手动检查或让用户启动 Chrome**，直接调用发布脚本，脚本会自动处理
-  4. **微信登录检测 [v4.3 新增]**：发布前用 Playwright 访问 `https://mp.weixin.qq.com`，检查是否跳转到扫码页面（URL 含 `login` 或页面出现二维码）。如果未登录：
-     - **有用户在场**：提示用户扫码登录
-     - **Bot 无人值守**：暂停发布流程，通过 Discord 通知用户"需要扫码登录微信公众号"，等待用户手动登录后再继续
+  4. **微信登录检测 [v4.3 新增]**：发布前用 Playwright 访问 `https://mp.weixin.qq.com`，检查是否跳转到扫码页面（URL 含 `login` 或页面出现二维码）。如果未登录，**暂停发布流程**，提醒用户先在 Chrome 中扫码登录微信公众号，登录完成后再继续
 
 - **调用路径 [FORCE]**:
   - ✅ **必须**使用项目本地路径：`bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --markdown <article.md> --theme grace`
