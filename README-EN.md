@@ -35,24 +35,23 @@ English | **[中文](./README.md)**
 
 > Not "just another template" — this is **battle-tested wisdom from countless pitfalls**.
 
-**v4.1 Highlights (for serious users):**
+**v4.3 Highlights (for serious users):**
 
-A team of 3 Claude Code Agents (Architect, Security Auditor, DX Reviewer) conducted a full code review + hands-on testing:
+From v4.1 to v4.3, iterated through multi-agent code review, source grading framework, Bilibili video extraction, and WeChat publishing improvements:
 
-| Problem You Might Face | Already Solved |
-|------------------------|----------------|
-| 🤔 "Clone fails, path errors everywhere" | Removed all hardcoded paths; `publish.sh` auto-detects based on script location |
-| 🤔 "Two gemini scripts, which one to use?" | v1/v2 merged into single file — `--method auto\|api\|cdp` one entry point |
-| 🤔 "Installed deps but still missing packages" | Added missing `juice`, plus project metadata and `scripts` shortcuts |
-| 🤔 "Claude generates images without asking me" | Strengthened nano-banana-pro checkpoint — user confirmation enforced |
-| 🤔 "Told to manually start Chrome for publishing" | Chrome handled automatically by script, no more manual launch |
-| 🤔 "baoyu-danger-gemini-web reports unknown skill" | Now points to `bun scripts/gemini-image-gen.ts` entry point |
-| 🤔 "Must close Chrome every time to publish" | Chrome reuse: auto-detects existing browser, no more closing windows |
-| 🤔 "AI writing sounds robotic" | 7 de-AI principles + Humanizer checklist |
-| 🤔 "AI makes up data" | Source Truth Table forces citations, eliminates hallucination |
-| 🤔 "Source exists but data itself is wrong" | **Stage 3.5 Cross-Reference**: multi-source verification + concept confusion check + absolute claim scanner |
-| 🤔 "Can't trust AI's numbers" | **Confidence self-assessment**: real-time evaluation during writing, uncertain data gets downgraded or removed |
-| 🤔 "De-AI'd words but still reads like AI" | **6-dimension AI scan**: structure/syntax/vocab/emotion/meta-commentary/predictability |
+| Problem You Might Face | Already Solved | Version |
+|------------------------|----------------|---------|
+| 🤔 "Clone fails, path errors everywhere" | Removed all hardcoded paths; `publish.sh` auto-detects based on script location | v4.1 |
+| 🤔 "AI makes up data" | Source Truth Table forces citations, eliminates hallucination | v4.1 |
+| 🤔 "Source exists but data itself is wrong" | **Stage 3.5 Cross-Reference**: multi-source verification + concept confusion check + absolute claim scanner | v4.1 |
+| 🤔 "Can't trust AI's numbers" | **Confidence self-assessment**: real-time evaluation during writing, uncertain data gets downgraded or removed | v4.1 |
+| 🤔 "De-AI'd words but still reads like AI" | **6-dimension AI scan**: structure/syntax/vocab/emotion/meta-commentary/predictability | v4.1 |
+| 🤔 "How to assess different source credibility?" | **Source grading framework**: hard data → trusted media → insider info → own estimates → social media, handled by tier | v4.2 |
+| 🤔 "Bilibili video has no YouTube mirror" | **Playwright Bilibili extraction (Method 6)**: directly extract title/description/comments/danmaku/CC subtitles | v4.3 |
+| 🤔 "Don't know what to reply to advance workflow on mobile" | **Next-step hints**: auto-prompts at each stage with shortcut words | v4.3 |
+| 🤔 "Don't know if WeChat is logged in before publishing" | **WeChat login detection**: auto-check login status, pause if not logged in | v4.3 |
+| 🤔 "Content pasted to address bar during consecutive publishes" | **Multi-tab focus issue**: remind to close extra editor tabs before publishing | v4.3 |
+| 🤔 "Title appears twice in WeChat" | **Title format spec**: frontmatter `title:` is the sole title source, no `# H1` in body | v4.3 |
 
 > Goal: New users can `git clone` and start using immediately — no hidden local config dependencies.
 
@@ -386,6 +385,8 @@ This project was built collaboratively by multiple AI Agents and the user:
 | v3.1-3.2 | **Claude Code (Opus 4.5)** | Bug fixes, fallback mechanisms, NotebookLM testing, doc restructuring |
 | v4.0 | **Claude Code (Opus 4.5)** | Chrome reuse, all-IDE image gen, upstream PR, doc overhaul |
 | v4.1 | **Claude Code (Opus 4.6)** | Multi-agent code review, Cross-Reference Verification (Stage 3.5), confidence self-assessment, 6-dim AI scan, board-register matching |
+| v4.2 | **Claude Code (Opus 4.6)** | Source grading framework, MIT license |
+| v4.3 | **Claude Code (Opus 4.6)** | Playwright Bilibili extraction (Method 6), next-step hints, WeChat login detection, multi-tab focus fix, duplicate title fix |
 
 > See [CHANGELOG.md](./docs/CHANGELOG.md) for detailed update history
 
@@ -404,4 +405,4 @@ Welcome to witness my love-hate relationship with AI.
 <img src="./assets/wechat_qr.jpg" width="200" alt="WeChat QR Code">
 
 ---
-*v1.0-2.5 by Antigravity | v3.1-3.2 by Claude Code | v4.0 by Claude Code (Opus 4.5) | v4.1 by Claude Code (Opus 4.6)*
+*v1.0-2.5 by Antigravity | v3.1-3.2 by Claude Code | v4.0 by Claude Code (Opus 4.5) | v4.1-4.3 by Claude Code (Opus 4.6)*
