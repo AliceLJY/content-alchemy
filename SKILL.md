@@ -345,6 +345,46 @@ yt-dlp --write-auto-sub --sub-format vtt --skip-download [URL]
 
 ---
 
+**方法 6：Playwright B站页面采集（快速筛选）**
+
+当 B站视频没有 YouTube 镜像时，用 Playwright（browser MCP）直接访问 B站页面提取可用信息。
+
+**定位**：快速筛选素材价值，不是深度转录。能判断"这个视频值不值得深挖"。
+
+**能拿到的**：
+
+| 内容 | 提取方式 | 素材价值 |
+|------|---------|---------|
+| 视频标题、简介、标签 | DOM 文本 | 判断主题相关性 |
+| 评论区热评 | B站 API（`api.bilibili.com/x/v2/reply`） | 观众真实反应，可直接引用 |
+| UP主信息 | DOM 文本 | 来源标注 |
+| CC字幕（如果有） | 开启字幕后 DOM 抓取 | 接近完整转录 |
+| 弹幕 | B站弹幕 API 或 DOM | 实时情绪，独特素材 |
+| 关键帧截图 | Playwright 截图 | 配图参考 |
+
+**拿不到的**：无字幕视频的完整语音转录
+
+**工作流**：
+1. 用 Playwright 打开 B站视频页面（支持短链 b23.tv）
+2. 截图确认视频内容
+3. 提取标题、简介、标签
+4. 用 B站 API 采集评论（`api.bilibili.com/x/v2/reply?type=1&oid={aid}&sort=1`，sort=1 按热度）
+   - ⚠️ **不要用 DOM 直接抓评论**：B站评论区用 `bili-comments` Web Component + Shadow DOM + lazy-load，Playwright DOM 操作拿不到内容
+5. 如有 CC 字幕，切换到字幕模式提取文本
+6. 汇总为素材卡片，标记来源："Bilibili Page Extract [URL]"
+
+**适用场景**：
+- B站独占内容（无 YouTube 镜像）
+- 需要评论区/弹幕作为素材（这是 B站独有的优势）
+- 快速判断一批视频的素材价值，再决定是否深挖
+
+**与其他方法的配合**：
+- 方法 6 筛选出高价值视频 → 如有 YouTube 镜像 → 方法 1-2 提取完整转录
+- 方法 6 筛选出高价值视频 → 无镜像但有 CC 字幕 → 直接提取
+- 方法 6 筛选出高价值视频 → 无镜像无字幕 → 仅使用简介+评论作为辅助素材
+
+---
+
 ### 📚 NotebookLM 深度整合
 
 NotebookLM 是 Google 的 AI 研究助手，特别适合处理大量素材。
@@ -1134,14 +1174,15 @@ publish "我的文章标题"
 
 ### ⚠️ 平台支持速查
 
-| 视频来源 | NotebookLM | yt-dlp | Browser DOM |
-|---------|------------|--------|-------------|
-| YouTube | ✅ 完整 transcript | ✅ 字幕 | ✅ Transcript |
-| B站 | ❌ 仅页面文本 | ❌ 不支持 | ⚠️ 有字幕才行 |
-| 小红书 | ❌ 仅页面文本 | ❌ 不支持 | ❌ 无字幕 |
+| 视频来源 | NotebookLM | yt-dlp | Browser DOM | Playwright MCP |
+|---------|------------|--------|-------------|---------------|
+| YouTube | ✅ 完整 transcript | ✅ 字幕 | ✅ Transcript | ✅ Transcript |
+| B站 | ❌ 仅页面文本 | ❌ 不支持 | ⚠️ 有字幕才行 | ✅ 标题+简介+评论+弹幕 |
+| 小红书 | ❌ 仅页面文本 | ❌ 不支持 | ❌ 无字幕 | ⚠️ 标题+简介（需登录） |
 
 **B站/小红书视频怎么办？**
-→ 搜索 YouTube 镜像：`{视频标题} site:youtube.com`
+→ 优先方法 6（Playwright MCP）：直接采集页面信息（标题、简介、评论、弹幕）
+→ 备选：搜索 YouTube 镜像 `{视频标题} site:youtube.com`
 
 ---
 
