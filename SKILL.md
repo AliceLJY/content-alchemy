@@ -1016,6 +1016,7 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
   2. 检查图片同步：确认 `{topic-slug}/` 和 `Desktop/wechat_assets/` 中图片一致
   3. Chrome 调试端口：**不要手动检查或让用户启动 Chrome**，直接调用发布脚本，脚本会自动处理
   4. **微信登录检测 [v4.3 新增]**：发布前用 Playwright 访问 `https://mp.weixin.qq.com`，检查是否跳转到扫码页面（URL 含 `login` 或页面出现二维码）。如果未登录，**暂停发布流程**，提醒用户先在 Chrome 中扫码登录微信公众号，登录完成后再继续
+  5. **多标签清理 [v4.3 新增]**：连续发布多篇时，之前留下的"公众号"编辑器标签不会自动关闭。累积多个标签会导致脚本 Cmd+V 粘贴焦点错位（内容粘到地址栏而非编辑器）。**发布前提醒用户关闭多余的公众号标签，只保留一个**
 
 - **调用路径 [FORCE]**:
   - ✅ **必须**使用项目本地路径：`bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --markdown <article.md> --theme grace`
