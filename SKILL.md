@@ -51,6 +51,15 @@ To avoid "temporary loading" lag, this skill references the following local or r
 3. **Traceability**: If a script (e.g., Baoyu's publisher) fails, the agent must visit the **Source URL** to check for updated CSS selectors.
 4. **Transparency**: Report all search failures. **Never fabricate content.**
 5. **Human-in-the-Loop**: Each output (mining report, truth table, draft) **MUST** be shown to the USER for approval before the next stage.
+6. **Next-Step Hint [v4.3]**: 每个 Stage 结束时，**必须**在输出末尾附上下一步提示，格式：
+   ```
+   👉 下一步：回复「继续」进入 Stage X（XX阶段），或告诉我需要修改的地方。
+   ```
+   这样用户在手机上也能知道该说什么来推进流程。常用快捷词：
+   - 「继续」— 进入下一个 Stage
+   - 「跳过配图」— 跳过 Stage 5 配图直接进发布
+   - 「从 Stage X 开始」— 跳到指定阶段
+   - 「发布」— 直接进入 Stage 6
 
 ### 🧩 Modular Starting Points
 - **Topic Mode**: Start from Stage 1.
