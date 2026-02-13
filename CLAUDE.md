@@ -21,8 +21,9 @@
 - **模板文件**：`templates/cross-reference-report.md`
 - **Bot 版**：v2.1 同步增加了自动交叉验证决策规则
 
-### Stage 5：配图
+### Stage 5：文章格式 + 配图
 
+- **标题不要写两次**：frontmatter 有 `title:` 就**不要**在 body 里再写 `# 标题`。baoyu 脚本从 frontmatter 提取 title 填到微信标题栏，但不去掉 body 里的 H1 → 两边都写 = 标题重复（2026-02-13 踩坑确认）
 - **图片格式必须用 Markdown 语法**：article.md 里的图片必须写 `![alt](path)`，**禁止**直接写 `WECHATIMGPH_x` 占位符。占位符是脚本内部的中间产物，脚本通过正则匹配 `![]()`  来发现图片并自动生成占位符。直接写占位符会导致 `Found 0 images to insert`，图片全部丢失
 - **图片位置**：`![alt](path)` 必须嵌入正文对应位置——封面图紧跟标题后，插图放章节转折处。**禁止堆在文末**
 - **nano-banana-pro**：生图前必须主动询问用户是否要用 `nano-banana-pro-prompts-recommend-skill` 优化 Prompt，不能默默跳过

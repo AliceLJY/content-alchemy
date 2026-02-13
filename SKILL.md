@@ -590,6 +590,33 @@ AI cannot judge source credibility. Only humans can decide:
 - **Goal**: Transform research into engaging, human-sounding article with genuine voice.
 - **Checkpoint**: Present `{topic-slug}/article.md`. **User must approve the article.**
 
+#### 📄 article.md 格式规范 [MANDATORY]
+
+> ⚠️ **标题不要写两次**：frontmatter 里有 `title:` 就**不要**在 body 里再写 `# 标题`。
+> baoyu-post-to-wechat 脚本会从 frontmatter 提取 title 填到微信标题栏，但不会自动去掉 body 里的 H1。
+> 两边都写 = 微信草稿里标题出现两次（标题栏一次 + 正文开头一次）。
+
+```markdown
+---
+title: 文章标题写在这里
+author: 小试AI
+category: AI照见众生
+---
+
+![封面图描述](path/to/cover.png)
+
+正文从这里开始，不要再写 # 标题。
+
+## 第一个章节标题
+
+正文内容...
+```
+
+**关键规则**：
+- ✅ frontmatter `title:` — 唯一的标题来源
+- ❌ body 里的 `# H1 标题` — **禁止**，会导致标题重复
+- ✅ body 里的 `## H2` 及以下 — 正常使用，作为章节标题
+
 #### 🛡️ 写作时置信度自评 [MANDATORY]
 
 > v4.1 新增：写作过程中对每条事实声明做实时置信度评估，**不确定就降级，不要赌**。
