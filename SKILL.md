@@ -66,6 +66,8 @@ To avoid "temporary loading" lag, this skill references the following local or r
 - **Source Mode**: Start from Stage 3 (If you already have text/transcripts).
 - **Draft Mode**: Start from Stage 6 (If you only need to publish an existing MD).
 
+> ⚠️ **素材包 ≠ 跳步理由**：当用户提供 Debate 素材包、外部素材、或任何参考材料时，**默认从 Stage 1 开始**。素材包作为辅助参考贯穿全流程，但不能替代任何 Stage 的独立执行。只有用户明确说「从 Stage X 开始」时才可跳步。
+
 ---
 
 ## 📋 Stage-by-Stage Workflow
