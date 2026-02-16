@@ -8,7 +8,8 @@
     "doctor": "bash scripts/doctor.sh",
     "publish": "bash scripts/publish.sh",
     "image": "bun scripts/gemini-image-gen.ts",
-    "md2html": "bun scripts/simple-md-to-html.ts"
+    "md2html": "bun scripts/simple-md-to-html.ts",
+    "format": "bun scripts/format-wechat.ts"
   },
   "dependencies": {
     "fflate": "^0.8.2",
