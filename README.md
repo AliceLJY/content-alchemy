@@ -1,407 +1,406 @@
 # Content Alchemy Skill
 
-**[English](./README-EN.md)** | 中文
+English | **[中文](./README-ZH.md)**
 
-🚀 **新手必看**: [安装指南](./docs/SETUP.md) | [新手指南](./docs/BEGINNER-GUIDE.md) | [微信发布](./docs/WECHAT-PUBLISH.md)
-📚 **深入了解**: [技术文档](./SKILL.md) | [项目结构](./docs/PROJECT-STRUCTURE.md)
-🔄 **一键更新**: `git pull && git submodule update --remote --merge`
+🚀 **Getting Started**: [Setup Guide](./docs/SETUP.md) | [Beginner Guide](./docs/BEGINNER-GUIDE.md) | [WeChat Publishing](./docs/WECHAT-PUBLISH.md)
+📚 **Deep Dive**: [Technical Docs](./SKILL.md) | [Project Structure](./docs/PROJECT-STRUCTURE.md)
+🔄 **Quick Update**: `git pull && git submodule update --remote --merge`
 
-**一句话说明**：让 AI 帮你完成"调研 → 分析 → 写作 → 配图 → 发布"的任意环节，或全部。
-
----
-
-## 🎯 这个项目能帮你做什么？
-
-> **不是只能发微信！** 每个阶段都可以单独使用。
-
-| 你的需求 | 怎么用 | 示例指令 |
-|---------|-------|---------|
-| 📚 **只做调研** | Stage 1-2 | "帮我收集 Cursor vs Windsurf 的对比素材，整理成文档给我" |
-| 🔍 **只做深度分析** | Stage 3 | "分析这 3 个 YouTube 视频的核心观点，生成对比表格" |
-| ✍️ **只写文章** | Stage 5 | "把这份技术笔记改写成公众号风格，不需要发布" |
-| 🎨 **只配图** | Stage 5 配图 | "给这篇文章生成 3 张插图" |
-| 📤 **只发微信** | Stage 6 | "把 article.md 发到微信草稿箱" |
-| 🔄 **全流程** | Stage 1-7 | "帮我写一篇关于 XX 的文章，发到微信" |
-
-**核心价值**：
-- 🧩 **像乐高一样灵活** — 需要哪块用哪块，不强制全流程
-- 🛡️ **防 AI 幻觉** — Source Truth Table + 交叉验证双保险
-- ✨ **去 AI 味** — 七大写作原则，告别塑料感
-- 📖 **新手友好** — 每一步都有验证方法，不懂代码也能用
+**One-liner**: Let AI handle any or all stages of your content pipeline — Research → Analysis → Writing → Illustration → Publishing.
 
 ---
 
-## 💡 为什么这个项目不一样
+## 🎯 What Can This Project Do For You?
 
-> 这不是"又一个模板"，而是**踩了无数坑后沉淀下来的经验**。
+> **Not just for WeChat!** Each stage can be used independently.
 
-**v4.3 迭代亮点（给真正要用的你）：**
+| Your Need | How to Use | Example Command |
+|-----------|------------|-----------------|
+| 📚 **Research only** | Stage 1-2 | "Collect comparison materials for Cursor vs Windsurf, organize into a doc" |
+| 🔍 **Deep analysis only** | Stage 3 | "Analyze core arguments from these 3 YouTube videos, generate comparison table" |
+| ✍️ **Writing only** | Stage 5 | "Rewrite these technical notes in blog style, no publishing needed" |
+| 🎨 **Illustrations only** | Stage 5 | "Generate 3 illustrations for this article" |
+| 📤 **Publish to WeChat only** | Stage 6 | "Publish article.md to WeChat drafts" |
+| 🔄 **Full pipeline** | Stage 1-7 | "Write an article about XX, publish to WeChat" |
 
-从 v4.1 到 v4.3，经历了多智能体代码审查、素材来源分级框架、B站视频采集、微信发布优化等多轮迭代：
-
-| 你可能遇到的问题 | 我已经帮你解决了 | 版本 |
-|----------------|-----------------|------|
-| 🤔 "clone 下来跑不了，路径报错" | 移除所有硬编码路径，`publish.sh` 基于脚本位置自动检测 | v4.1 |
-| 🤔 "AI 瞎编数据怎么办" | Source Truth Table 强制标注来源，杜绝幻觉 | v4.1 |
-| 🤔 "来源有了但数据本身是错的" | **Stage 3.5 交叉验证**：多源交叉印证 + 概念混淆检查 + 绝对化表述扫描 | v4.1 |
-| 🤔 "AI 写的数字不敢信" | **置信度自评**：写作时实时评估每条数据，不确定就降级或删除 | v4.1 |
-| 🤔 "去了 AI 味但整体还是像 AI" | **六维 AI 味扫描**：结构/句式/词汇/情感/元评论/可预测性全面检查 | v4.1 |
-| 🤔 "不同数据来源怎么区分可信度" | **来源分级框架**：硬数据→可信来源→业内人士→自己推算→社交媒体，按级处理 | v4.2 |
-| 🤔 "B站视频没有 YouTube 镜像" | **Playwright B站采集（方法 6）**：直接提取标题/简介/评论/弹幕/CC字幕 | v4.3 |
-| 🤔 "在手机上不知道该回复什么推进流程" | **下一步提示**：每个 Stage 结束自动提示下一步操作和快捷词 | v4.3 |
-| 🤔 "发微信前不知道有没有登录" | **微信登录检测**：发布前自动检查登录状态，未登录暂停提醒 | v4.3 |
-| 🤔 "连续发多篇文章粘贴到地址栏了" | **多标签焦点问题**：发布前提醒关闭多余编辑器标签 | v4.3 |
-| 🤔 "标题在微信里显示两次" | **标题格式规范**：frontmatter `title:` 是唯一标题来源，禁止 body 再写 `# H1` | v4.3 |
-
-> 目标：新用户 `git clone` 后即可正常使用，不再依赖本地隐式配置。
-
-**设计原则：**
-- 📖 **新手友好**：不假设你懂任何技术背景，每一步都有验证方法
-- 🔧 **可定制**：写作风格是示例，搜索策略是通用，拿去直接改
-- 🛡️ **防幻觉**：不是让 AI 自由发挥，而是强制它标注来源
-- ⚡ **实战验证**：每个"设计决策"背后都有真实的踩坑故事
+**Core Value**:
+- 🧩 **Modular like LEGO** — Use only what you need, no forced full workflow
+- 🛡️ **Anti-hallucination** — Source Truth Table + Cross-Reference double insurance
+- ✨ **Human-sounding** — 7 writing principles to eliminate AI-speak
+- 📖 **Beginner-friendly** — Verification steps at every stage, no coding required
 
 ---
 
-### 🤝 人机协作：90/10 黄金比例
+## 💡 Why This Project Is Different
 
-本项目追求"极速交付，人工把关"：
-- **AI (90%)**: 选题、采集、分析、素材核查、撰写、配图、**自动发布草稿**
+> Not "just another template" — this is **battle-tested wisdom from countless pitfalls**.
+
+**v4.3 Highlights (for serious users):**
+
+From v4.1 to v4.3, iterated through multi-agent code review, source grading framework, Bilibili video extraction, and WeChat publishing improvements:
+
+| Problem You Might Face | Already Solved | Version |
+|------------------------|----------------|---------|
+| 🤔 "Clone fails, path errors everywhere" | Removed all hardcoded paths; `publish.sh` auto-detects based on script location | v4.1 |
+| 🤔 "AI makes up data" | Source Truth Table forces citations, eliminates hallucination | v4.1 |
+| 🤔 "Source exists but data itself is wrong" | **Stage 3.5 Cross-Reference**: multi-source verification + concept confusion check + absolute claim scanner | v4.1 |
+| 🤔 "Can't trust AI's numbers" | **Confidence self-assessment**: real-time evaluation during writing, uncertain data gets downgraded or removed | v4.1 |
+| 🤔 "De-AI'd words but still reads like AI" | **6-dimension AI scan**: structure/syntax/vocab/emotion/meta-commentary/predictability | v4.1 |
+| 🤔 "How to assess different source credibility?" | **Source grading framework**: hard data → trusted media → insider info → own estimates → social media, handled by tier | v4.2 |
+| 🤔 "Bilibili video has no YouTube mirror" | **Playwright Bilibili extraction (Method 6)**: directly extract title/description/comments/danmaku/CC subtitles | v4.3 |
+| 🤔 "Don't know what to reply to advance workflow on mobile" | **Next-step hints**: auto-prompts at each stage with shortcut words | v4.3 |
+| 🤔 "Don't know if WeChat is logged in before publishing" | **WeChat login detection**: auto-check login status, pause if not logged in | v4.3 |
+| 🤔 "Content pasted to address bar during consecutive publishes" | **Multi-tab focus issue**: remind to close extra editor tabs before publishing | v4.3 |
+| 🤔 "Title appears twice in WeChat" | **Title format spec**: frontmatter `title:` is the sole title source, no `# H1` in body | v4.3 |
+
+> Goal: New users can `git clone` and start using immediately — no hidden local config dependencies.
+
+**Design Principles:**
+- 📖 **Beginner-friendly**: No technical background assumed, verification at every step
+- 🔧 **Customizable**: Writing style is example, search strategy is universal — adapt freely
+- 🛡️ **Anti-hallucination**: Force AI to cite sources, not free-form generation
+- ⚡ **Battle-tested**: Every design decision has a real pitfall story behind it
+
+---
+
+### 🤝 Human-AI Collaboration: The 90/10 Golden Ratio
+
+This project pursues "rapid delivery with human oversight":
+- **AI (90%)**: Topic selection, collection, analysis, fact-checking, writing, illustration, **auto-save to drafts**
 - **HUMAN (10%)**:
-  1. 素材确认：审核 Source Truth Table，确保引用真实
-  2. 草稿微调：在微信中进行审美把关（封面、排版）
-  3. 模块化启动：可从任何阶段切入，AI 自动补完剩余流程
+  1. Source verification: Review Source Truth Table, ensure citations are real
+  2. Draft polish: Aesthetic review in platform (cover, formatting)
+  3. Modular entry: Start from any stage, AI auto-completes the rest
 
-> **核心逻辑**：AI 负责繁琐的数字化工作，人负责真实性确认与审美决策。
+> **Core Logic**: AI handles tedious digital work; humans handle authenticity verification and aesthetic decisions.
 
-### 📮 微信公众号自动发布（可选功能）
+### 📮 WeChat Auto-Publishing (Optional)
 
-如果你用微信公众号，可以一键发布到草稿箱：
+If you use WeChat Official Account, one-click publish to drafts:
 
-- ✅ 自动填写标题、粘贴内容、插入图片、保存草稿
-- ✅ 本地运行，不经过第三方服务器
-- ✅ 节省时间：13 分钟 → 3.5 分钟
+- ✅ Auto-fill title, paste content, insert images, save draft
+- ✅ Runs locally, no third-party servers
+- ✅ Time saved: 13 min → 3.5 min
 
-> 💡 详细教程请查看 [WECHAT-PUBLISH.md](./docs/WECHAT-PUBLISH.md)
+> 💡 See [WECHAT-PUBLISH.md](./docs/WECHAT-PUBLISH.md) for detailed tutorial
 
-**不用微信？没关系！** 这套工作流的核心价值在于调研、分析、写作，输出格式可以是任何 Markdown 文件。
+**Don't use WeChat? No problem!** The core value is in research, analysis, and writing — output can be any Markdown file.
 
-## 🔌 Skill 安装
+## 🔌 Skill Installation
 
-本项目依赖几个 Claude Code Skill，安装方式很简单——**把链接丢给 AI 就行**。
+This project depends on a few Claude Code Skills. Installation is simple — **just paste a link to AI**.
 
-### 懒人话术（复制粘贴到 Claude Code）
+### Lazy Install (copy-paste into Claude Code)
 
-**微信发布（必装）：**
+**WeChat publishing (required):**
 ```
-帮我安装这个 skill：https://github.com/JimLiu/baoyu-skills
-它是一个 git submodule，安装到 dependencies/baoyu-skills 目录下。
-```
-
-**配图生成（推荐）：**
-```
-帮我安装这两个 skill：
-1. baoyu-danger-gemini-web（Gemini 生图）
-2. nano-banana-pro-prompts-recommend-skill（生图 Prompt 优化）
+Help me install this skill: https://github.com/JimLiu/baoyu-skills
+It's a git submodule, install to dependencies/baoyu-skills directory.
 ```
 
-> 💡 Skill 安装后存放在 `~/.claude/skills/` 目录，Claude Code 会自动识别。baoyu-skills 作为 git submodule 需要 `bun install` 安装依赖。
+**Image generation (recommended):**
+```
+Help me install these two skills:
+1. baoyu-danger-gemini-web (Gemini image generation)
+2. nano-banana-pro-prompts-recommend-skill (image prompt optimization)
+```
 
-### 手动安装
+> Skills are stored in `~/.claude/skills/` and auto-detected by Claude Code. baoyu-skills as a git submodule requires `bun install` for dependencies.
+
+### Manual Installation
 
 ```bash
-# 1. 克隆项目
+# 1. Clone project
 git clone --recurse-submodules https://github.com/AliceLJY/content-alchemy.git
 cd content-alchemy
 
-# 2. 安装依赖
+# 2. Install dependencies
 bun install
 
-# 3. 验证
+# 3. Verify
 bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --help
 ```
 
-> 💡 详细安装步骤请查看 [SETUP.md](./docs/SETUP.md)
+> See [SETUP.md](./docs/SETUP.md) for detailed steps
 
 ---
 
-## 📝 致谢与版权声明
+## 📝 Acknowledgments & Credits
 
-本项目的核心逻辑是基于开源社区多位开发者贡献的优秀 Skill 和提示词思路进行的二次编排与场景化串联。特此感谢以下项目的原始作者：
+This project's core logic builds upon excellent Skills and prompt patterns from the open-source community. Special thanks to:
 
-*   **微信发布流程**:
-    *   **Skill**: `baoyu-post-to-wechat`
-    *   **Author**: **Baoyu (宝玉)** — 感谢提供了微信公众号 CDP 自动化操作的核心代码与 DOM 选择器逻辑
+* **WeChat Publishing**:
+  * **Skill**: `baoyu-post-to-wechat`
+  * **Author**: **Baoyu** — CDP automation for WeChat Official Account
 
-*   **图像提示词推荐**:
-    *   **Skill**: nano-banana-pro-prompts-recommend-skill
-    *   **Author**: **YouMind-OpenLab** — 感谢提供了高质量的 Prompt 库与推荐算法
+* **Image Prompt Recommendation**:
+  * **Skill**: nano-banana-pro-prompts-recommend-skill
+  * **Author**: **YouMind-OpenLab** — High-quality prompt library
 
-*   **思维链提示词**:
-    *   **Prompt**: 链式指令 (Chained Instructions)
-    *   **Author**: **Lynne Liu**
-    *   **Source**: [YouMind Shortcut](https://youmind.com/zh-CN/shortcuts/P5cdEZdDzG51jA) — 感谢提供了"Mining -> Refining -> Building"这一核心内容炼金术的 Prompt 结构灵感
+* **Chain-of-Thought Prompts**:
+  * **Prompt**: Chained Instructions
+  * **Author**: **Lynne Liu**
+  * **Source**: [YouMind Shortcut](https://youmind.com/zh-CN/shortcuts/P5cdEZdDzG51jA) — Inspiration for "Mining → Refining → Building" structure
 
-*   **版权声明**：本项目所调用的基础工具版权归原作者所有。我（AliceLJY）仅根据个人实际业务需求，将这些原子化的功能进行了串联、重构与场景化适配，旨在提供一种多 Skill 协同工作的思路。
+* **Copyright Notice**: Base tools belong to original authors. I (AliceLJY) only orchestrated these atomic functions into a multi-Skill collaboration pattern based on personal workflow needs.
 
-*   **致敬**：感谢所有为 AI 生态贡献智力资产的先行者，是你们的开源精神让"提词即生产"成为可能。
+* **Tribute**: Thanks to all pioneers contributing intellectual assets to the AI ecosystem. Your open-source spirit makes "prompt-as-production" possible.
 
+## ⚙️ Design Philosophy
 
-## ⚙️ 设计路径
+This repository demonstrates a **"multi-Skill orchestration"** approach:
+1. **End-to-end pipeline**: 7-stage alchemy from inspiration to draft saving
+2. **Smart incremental updates**: Auto-detect and update existing drafts
+3. **Self-evolving architecture**: Solidified 7-stage automation from "finding inspiration" to "digital asset distribution"
 
-本仓库的主要目的是提供一种**"多 Skill 协同作战"**的思路：
-1.  **端到端闭环**：通过 7 阶段炼金术，实现从灵感采集到草稿保存的完整生产链
-2.  **智能增量更新**：能自动识别并更新现有草稿，避免重复发文，保持创作流的一致性
-3.  **自进化架构**：固化 7 阶段自动化架构，实现从"寻找灵感"到"数字资产分发"的完整闭环
+## 🧠 Design Decisions
 
-## 🧠 设计决策
+This section explains the deeper reasons behind some "seemingly odd" designs.
 
-本章节解释一些"看起来奇怪"的设计背后的深层原因。
+### 1. Why YouTube over Bilibili?
 
-### 1. 为什么YouTube优先于Bilibili？
+**Misconception:** "Because Bilibili is blocked"
+**Truth:** "Because of data accessibility"
 
-**误解：** "因为B站被墙"  
-**真相：** "因为数据可得性"
+- Bilibili: Creators may not enable subtitles, API extraction is difficult
+- YouTube: Auto-generated subtitles, `yt-dlp` extracts easily
 
-- B站：UP主可能不开字幕，API提取困难
-- YouTube：自动生成字幕，`yt-dlp`轻松获取
-
-**实际案例：**
-某次搜索到B站视频讨论AI算力，但视频没有字幕/转录文本。同名搜索YouTube发现有搬运视频，秒获完整文本。这不是绕过审查，而是优先选择**数据获取最简单的路径**。
-
----
-
-### 2. 为什么Chrome必须用调试端口启动？
-
-**误解：** "这是可选的技术细节"  
-**真相：** "这是防止API限流的生死线"
-
-**踩坑经历：**
-1. 第一次测试成功 → 以为是Baoyu脚本自动搞定
-2. 出现429错误 → 发现根本没走CDP，是API调用被限流
-3. 单独跑Baoyu → 浏览器没动，但显示"已完成" → 假成功
-
-**根本原因：**
-Baoyu脚本有两种模式：
-- **CDP模式（需要9222）：** 真实浏览器操作，稳定
-- **API模式（不需要端口）：** 直接调微信接口，易被拒绝
-
-不开9222端口 → 脚本降级到API模式 → 显示"Done"但无草稿。
+**Real case:**
+Found a Bilibili video about AI computing, but no subtitles/transcript. Same search on YouTube found a mirror with full transcript instantly. This isn't censorship bypass — it's prioritizing **the path of least resistance for data**.
 
 ---
 
-### 3. 为什么封面图要手动设置？
+### 2. Why must Chrome use debug port?
 
-**误解：** "可以全自动化"  
-**真相：** "中途操作风险极高"
+**Misconception:** "This is optional technical detail"
+**Truth:** "This is life-or-death for avoiding API rate limits"
 
-**测试结果：**
-- 尝试自动点击"编辑"按钮 → 卡住
-- 原因1：按钮只在hover时显示，坐标容易失效
-- 原因2：复制内容会跳转到Antigravity对话框
-- 原因3：复制位置错位
+**Pitfall experience:**
+1. First test succeeded → thought Baoyu script handled it
+2. Got 429 error → realized it wasn't using CDP, API was rate-limited
+3. Ran Baoyu alone → browser didn't move, but showed "Done" → fake success
 
-**最佳实践：**
-1. 自动化只做到"保存草稿"
-2. 用户打开草稿 → 选择第一张图作为封面
-3. 审查格式 → 手动点击"发送"
+**Root cause:**
+Baoyu script has two modes:
+- **CDP Mode (requires 9222):** Real browser automation, stable
+- **API Mode (no port needed):** Direct API calls, easily rejected
 
-这不是"降级方案"，而是**唯一稳定的方案**。
-
----
-
-### 4. 为什么需要Source Truth Table？
-
-**误解：** "这是技术文档"  
-**真相：** "这是反AI幻觉的最后防线"
-
-**早期版本问题：**
-AI只拿到视频标题+简介+评论 → 基于这些"二手信息"编故事。
-
-**改进后：**
-强制AI标注每个论断的来源：
-- ✅ 视频12:34处提到 → 可信
-- ⚠️ 评论区推测 → 改为"据XX称"
-- ❌ 找不到来源 → AI在编，删掉
-
-**人的作用：**
-判断这个来源是否足够权威。AI无法判断信源可信度，只有人能做这个决策。
+No port 9222 → script falls back to API mode → shows "Done" but no draft saved.
 
 ---
 
-### 5. 为什么粘贴内容失败？（macOS 辅助功能权限）
+### 3. Why set cover image manually?
 
-**误解：** "脚本有 bug"
-**真相：** "macOS 需要授权终端发送按键"
+**Misconception:** "Can be fully automated"
+**Truth:** "Mid-process operations are extremely risky"
 
-**症状：**
-脚本日志显示 `Body content verified OK`，但编辑器内容为空，占位符找不到。
+**Test results:**
+- Tried auto-clicking "Edit" button → got stuck
+- Reason 1: Button only shows on hover, coordinates easily fail
+- Reason 2: Copy action jumps to wrong dialog
+- Reason 3: Paste position misaligned
 
-**根本原因：**
-脚本使用 `osascript` 发送 Cmd+C / Cmd+V 按键。macOS 出于安全考虑，默认禁止终端应用发送按键事件。
+**Best practice:**
+1. Automation stops at "Save Draft"
+2. User opens draft → selects first image as cover
+3. Review formatting → manually click "Publish"
 
-**解决方法：**
-打开 **系统设置 → 隐私与安全性 → 辅助功能**，把运行 Claude Code 的终端应用（如 Terminal、iTerm、VS Code、Cursor 等）添加到列表中并启用权限。
-
-> ⚠️ 这是一次性设置，授权后无需再次操作。
-
----
-
-### 6. 为什么不用关Chrome了？
-
-**误解：** "发文章必须关掉所有浏览器"
-**真相：** "那是旧版的限制，v4.0 已经解决了"
-
-**踩坑经历：**
-每次发微信文章都要先 Cmd+Q 关掉所有 Chrome 窗口，否则脚本启动新实例时会因为 profile 目录被锁定而失败。对于日常使用来说很不友好。
-
-**v4.0 改进：**
-脚本启动前先自动扫描已有 Chrome 调试端口，找到就直接复用。复用时优先找已登录微信的标签（通过 URL 中的 `token=` 识别），避免新开标签丢失登录态。找不到已有 Chrome 才启动新实例。
-
-这个改动已合并到上游 baoyu-skills（[#23](https://github.com/JimLiu/baoyu-skills/pull/23)），成为官方功能。
+This isn't a "downgrade" — it's **the only stable approach**.
 
 ---
 
-### 7. 为什么搜索结果有时候不理想？
+### 4. Why Source Truth Table?
 
-**误解：** "提示词写好了就能搜到好素材"
-**真相：** "搜索效果是 AI 模型 × 提示词 × 搜索范围的综合结果"
+**Misconception:** "This is technical documentation"
+**Truth:** "This is the last line of defense against AI hallucination"
 
-SKILL.md 中的搜索策略（按话题类型分技术/产品/社会观察）提供的是**搜索范围建议**，不是质量保证。实际搜索效果还取决于：
+**Early version problem:**
+AI only got video title + description + comments → fabricated stories from this "secondhand info".
 
-- **AI 模型能力**：不同模型对搜索指令的理解和执行能力不同
-- **提示词精度**：越具体的搜索指令，结果越精准
-- **时效性**：热点话题的素材更新频率不同
+**After improvement:**
+Force AI to cite source for every claim:
+- ✅ Mentioned at 12:34 in video → trustworthy
+- ⚠️ Comment speculation → rephrase as "according to XX"
+- ❌ No source found → AI made it up, delete
 
-**建议：** 把搜索策略当作起点，根据实际结果迭代调整。如果某个 AI 的搜索效果不好，换个模型试试。
+**Human's role:**
+Judge whether the source is authoritative enough. AI cannot assess source credibility — only humans can make this decision.
 
 ---
 
-## 🛠️ 模块化指令与灵活性
+### 5. Why does paste fail? (macOS Accessibility Permission)
 
-本 Skill 支持**任意阶段启动**，**任意阶段结束**。不必每次都跑全流程：
+**Misconception:** "The script has a bug"
+**Truth:** "macOS requires permission for terminals to send keystrokes"
 
-### 常见使用场景
+**Symptoms:**
+Script log shows `Body content verified OK`, but the editor is empty and placeholders are not found.
 
-**场景 1：我只想做调研，不写文章**
+**Root cause:**
+The script uses `osascript` to send Cmd+C / Cmd+V keystrokes. macOS blocks terminal apps from sending key events by default for security reasons.
+
+**Solution:**
+Open **System Settings → Privacy & Security → Accessibility**, add your terminal app (Terminal, iTerm, VS Code, Cursor, etc.) to the list and enable permission.
+
+> ⚠️ This is a one-time setup. Once authorized, no further action needed.
+
+---
+
+### 6. Why no need to close Chrome anymore?
+
+**Misconception:** "You must close all browser windows to publish"
+**Truth:** "That was an old limitation, fixed in v4.0"
+
+**Pitfall:**
+Every time you published to WeChat, you had to Cmd+Q all Chrome windows. Otherwise the script would fail due to profile directory lock conflict.
+
+**v4.0 fix:**
+Script auto-scans for existing Chrome debug ports before launch. If found, it reuses the existing browser. It prioritizes tabs already logged into WeChat (identified by `token=` in URL) to avoid losing login state. Only launches a new instance when no existing Chrome is detected.
+
+This change has been merged into upstream baoyu-skills ([#23](https://github.com/JimLiu/baoyu-skills/pull/23)) and is now an official feature.
+
+---
+
+### 7. Why are search results sometimes inconsistent?
+
+**Misconception:** "Good prompts guarantee good search results"
+**Truth:** "Search quality = AI model × prompt × search scope"
+
+The search strategies in SKILL.md (by topic type: tech/product/social) provide **scope suggestions**, not quality guarantees. Actual results also depend on:
+
+- **AI model capability**: Different models interpret search instructions differently
+- **Prompt specificity**: More specific instructions yield more precise results
+- **Timeliness**: Hot topics have varying update frequencies
+
+**Suggestion:** Treat search strategies as a starting point. Iterate based on actual results. If one AI's search quality is poor, try a different model.
+
+---
+
+## 🛠️ Modular Commands & Flexibility
+
+This Skill supports **starting from any stage** and **ending at any stage**. No need to run full pipeline every time:
+
+### Common Usage Scenarios
+
+**Scenario 1: Research only, no article**
 ```
-帮我收集关于"AI 编程助手"的最新动态，
-整理成一份素材文档给我，不需要写文章。
-```
-
-**场景 2：我已经有素材了，直接写文章**
-```
-用这份 notes.md 作为素材，帮我写一篇公众号文章，
-写完给我看就行，不发布。
-```
-
-**场景 3：文章写好了，只发微信**
-```
-帮我把 ~/Documents/article.md 发到微信草稿箱。
-```
-
-**场景 4：帮我从头到尾全搞定**
-```
-帮我写一篇公众号文章，话题是"Cursor vs Windsurf 2025对比"，
-从搜索素材开始，完成后保存到微信草稿箱。
-```
-
-**场景 5：我不用微信，只想用这套调研+写作流程**
-```
-帮我调研 XX 话题，分析核心观点，写成一篇博客文章，
-保存到 ./output/article.md
-```
-
-> 💡 **微信发布只是最后一个可选步骤**，这套工作流的核心价值在于：系统化的调研方法 + 防幻觉机制 + 去 AI 味写作原则。
-
-## 🚀 持续进化与反馈
-
-**本项目正处于活跃更新中！** 
-欢迎大家试用并提出宝贵意见（通过 Issue 或 PR）。你的每一个反馈都可能成为下次系统进化的输入。
-
-## 🌐 多 IDE 兼容性
-
-核心逻辑（SKILL.md）采用通用的 Open-Skill 指令规范，各 IDE 均可使用：
-
-- **Claude Code**: ⭐ **推荐** - CLAUDE.md 自动加载项目记忆 + 自动生图 + 微信发布
-- **Antigravity**: ✅ 兼容 - 自动加载 SKILL.md + 自动生图（Gemini 原生，无需额外 Skill）
-- **Cursor / Windsurf**: ✅ 兼容 - 需手动引用 SKILL.md，配图可用 `baoyu-danger-gemini-web`
-- **其他 Agentic IDEs**: 视工具集而定，配图方案全兼容
-
-### ⚠️ 功能对比
-
-| 功能 | Claude Code | Antigravity | Cursor 等 |
-|------|-------------|-------------|-----------|
-| **工作流加载** | ✅ CLAUDE.md 自动 | ✅ SKILL.md 自动 | ⚠️ 手动引用 |
-| 素材采集 | ✅ 自动 | ✅ 自动 | ✅ 自动 |
-| 深度分析 | ✅ 自动 | ✅ 自动 | ✅ 自动 |
-| 文章撰写 | ✅ 自动 | ✅ 自动 | ✅ 自动 |
-| **配图生成** | ✅ 自动 | ✅ 自动 | ✅ 自动 |
-| 微信发布 | ✅ 自动 | ✅ 自动 | ⚠️ 需配置 |
-
-### 🎨 配图生成方案
-
-三种方案均**全 IDE 兼容**，按需选择：
-
-**方案 1：`baoyu-danger-gemini-web` Skill（推荐）**
-通过 Gemini Web 反向 API 自动生图，无需手动操作。所有支持 Skill 的 IDE 均可使用。配合 `nano-banana-pro-prompts-recommend-skill` 可优化生图 Prompt。
-
-**方案 2：Chrome MCP 操作 Gemini 网页**
-通过浏览器自动化在后台操作已登录的 Gemini 网页生图。用户无需手动干预，但 Gemini 聊天记录中会留有痕迹。适合有 Google 账号且已登录 Gemini 的用户。
-
-**方案 3：Antigravity 原生**
-Antigravity IDE 内置 Gemini 生图能力，无需安装额外 Skill。
-
-> 💡 方案 1 和方案 2 不限 IDE，任何 Agentic IDE 都能用。方案 3 仅限 Antigravity。
-
-**Claude Code / Cursor 用户提示：**
-
-如果 IDE 不会自动加载工作流，在指令开头手动引用：
-
-```
-请先阅读 SKILL.md，然后按照 Stage 1-2 帮我搜索今天的热点新闻作为公众号素材。
+Collect latest news about "AI coding assistants",
+organize into a source document, no article needed.
 ```
 
-> 💡 详细说明请查看 [SETUP.md 的 Q7](./docs/SETUP.md#q7-claude-code-不识别-skillmd-工作流)
+**Scenario 2: Already have sources, write directly**
+```
+Use this notes.md as source material, write a blog article,
+show me when done, don't publish.
+```
 
-### 💻 官方验证环境
+**Scenario 3: Article ready, just publish**
+```
+Publish ~/Documents/article.md to WeChat drafts.
+```
 
-本项目已在以下配置中通过完整测试（Stable）：
+**Scenario 4: Full end-to-end**
+```
+Write an article about "Cursor vs Windsurf 2025 comparison",
+start from source collection, save to WeChat drafts when done.
+```
+
+**Scenario 5: No WeChat, just want the research+writing workflow**
+```
+Research XX topic, analyze core points, write as blog article,
+save to ./output/article.md
+```
+
+> 💡 **WeChat publishing is just the final optional step**. The core value is: systematic research method + anti-hallucination mechanism + human-sounding writing principles.
+
+## 🚀 Continuous Evolution & Feedback
+
+**This project is actively maintained!**
+Welcome to try it out and provide feedback (via Issues or PRs). Your feedback may become input for the next system evolution.
+
+## 🌐 Multi-IDE Compatibility
+
+Core logic (SKILL.md) uses universal Open-Skill specification, all IDEs supported:
+
+- **Claude Code**: ⭐ **Recommended** - CLAUDE.md auto-loads project memory + auto image gen + WeChat publish
+- **Antigravity**: ✅ Compatible - Auto-loads SKILL.md + native Gemini image gen (no extra Skills needed)
+- **Cursor / Windsurf**: ✅ Compatible - Manually reference SKILL.md, image gen via `baoyu-danger-gemini-web`
+- **Other Agentic IDEs**: Depends on toolset; image gen options are all-IDE compatible
+
+### ⚠️ Feature Comparison
+
+| Feature | Claude Code | Antigravity | Cursor etc. |
+|---------|-------------|-------------|-------------|
+| **Workflow loading** | ✅ CLAUDE.md auto | ✅ SKILL.md auto | ⚠️ Manual |
+| Source collection | ✅ Auto | ✅ Auto | ✅ Auto |
+| Deep analysis | ✅ Auto | ✅ Auto | ✅ Auto |
+| Article writing | ✅ Auto | ✅ Auto | ✅ Auto |
+| **Image generation** | ✅ Auto | ✅ Auto | ✅ Auto |
+| WeChat publishing | ✅ Auto | ✅ Auto | ⚠️ Config needed |
+
+### 🎨 Image Generation Options
+
+All three options are **compatible with all IDEs**. Choose based on your setup:
+
+**Option 1: `baoyu-danger-gemini-web` Skill (Recommended)**
+Auto-generates images via Gemini Web reverse API — no manual steps required. Works with any IDE that supports Skills. Pair with `nano-banana-pro-prompts-recommend-skill` for prompt optimization.
+
+**Option 2: Chrome MCP + Gemini Web UI**
+Uses browser automation to operate Gemini in the background via your logged-in session. No manual intervention needed, but generation history will appear in your Gemini chat logs. Works for anyone with a Google account logged into Gemini.
+
+**Option 3: Antigravity Native**
+Antigravity has built-in Gemini image generation — no extra Skills needed.
+
+> 💡 Options 1 and 2 work with any Agentic IDE. Option 3 is Antigravity-only.
+
+**Claude Code / Cursor users tip:**
+
+If your IDE doesn't auto-load the workflow, reference it manually:
+
+```
+Please read SKILL.md first, then follow Stage 1-2 to search for today's hot topics as article material.
+```
+
+> 💡 See [SETUP.md Q7](./docs/SETUP.md#q7-claude-code-不识别-skillmd-工作流) for details
+
+### 💻 Verified Environment
+
+This project has been fully tested on (Stable):
 
 - **Hardware**: MacBook Air (13-inch, M4, 2025) / 16GB RAM / Apple M4 Chip
 - **System**: macOS Tahoe (26.3 Beta)
 - **IDE**:
-  - **Claude Code (Opus 4.6)** — 主力开发环境，代码编写与调试
-  - **Antigravity (Gemini)** — 测试验证环境，多环境兼容性测试
+  - **Claude Code (Opus 4.6)** — Primary dev environment, coding & debugging
+  - **Antigravity (Gemini)** — Test environment, multi-platform compatibility testing
 
-## 🤖 AI 协作声明
+## 🤖 AI Collaboration Statement
 
-本项目由多个 AI Agent 与用户协作完成：
+This project was built collaboratively by multiple AI Agents and the user:
 
-| 版本 | 主要贡献者 | 角色 |
-|------|-----------|------|
-| v1.0 | **Antigravity** | 项目创始、4 阶段工作流设计 |
-| v1.5 | **Antigravity** | 扩展到 9 阶段工作流 |
-| v2.0-2.5 | **Antigravity** | 精简为 7 阶段、微信集成 |
-| v3.1-3.2 | **Claude Code (Opus 4.5)** | Bug 修复、Fallback 机制、NotebookLM 测试、文档重构 |
-| v4.0 | **Claude Code (Opus 4.5)** | Chrome 复用、全 IDE 配图、上游 PR、文档完善 |
-| v4.1 | **Claude Code (Opus 4.6)** | 多智能体代码评审、交叉验证(Stage 3.5)、置信度自评、六维AI味扫描、板块-文体匹配 |
-| v4.2 | **Claude Code (Opus 4.6)** | 来源分级框架、MIT 开源许可 |
-| v4.3 | **Claude Code (Opus 4.6)** | Playwright B站采集(方法6)、下一步提示、微信登录检测、多标签焦点修复、标题重复修复 |
+| Version | Main Contributor | Role |
+|---------|------------------|------|
+| v1.0 | **Antigravity** | Project inception, 4-stage workflow design |
+| v1.5 | **Antigravity** | Expanded to 9-stage workflow |
+| v2.0-2.5 | **Antigravity** | Refined to 7 stages, WeChat integration |
+| v3.1-3.2 | **Claude Code (Opus 4.5)** | Bug fixes, fallback mechanisms, NotebookLM testing, doc restructuring |
+| v4.0 | **Claude Code (Opus 4.5)** | Chrome reuse, all-IDE image gen, upstream PR, doc overhaul |
+| v4.1 | **Claude Code (Opus 4.6)** | Multi-agent code review, Cross-Reference Verification (Stage 3.5), confidence self-assessment, 6-dim AI scan, board-register matching |
+| v4.2 | **Claude Code (Opus 4.6)** | Source grading framework, MIT license |
+| v4.3 | **Claude Code (Opus 4.6)** | Playwright Bilibili extraction (Method 6), next-step hints, WeChat login detection, multi-tab focus fix, duplicate title fix |
 
-> 详细更新历史请查看 [CHANGELOG.md](./docs/CHANGELOG.md)
+> See [CHANGELOG.md](./docs/CHANGELOG.md) for detailed update history
 
-## 📲 关注公众号
+## 📲 Follow the Author
 
-专业劈叉式跨界选手：🧬 医学出身，🎭 文化口饭碗，🤖 AI 是我的野路子。
+Professional cross-domain acrobat: 🧬 Medical background, 🎭 Culture sector day job, 🤖 AI is my side quest.
 
-不卷参数，不追新模型，只关心一个问题：AI 啥时候能装进我脑子，替我不开心？
+Not chasing parameters or new models. Only one question matters: When can AI plug into my brain and feel unhappy for me?
 
-欢迎围观我与 AI 相爱相杀的日常。
+Welcome to witness my love-hate relationship with AI.
 
-——AI不会取代你，但会用AI的人会。所以我先学了，你随意。
+— AI won't replace you, but people who use AI will. So I learned first. No pressure.
 
-🔧 踩坑副产品已开源 → [content-alchemy](https://github.com/AliceLJY/content-alchemy)
+🔧 Pitfall byproducts open-sourced → [content-alchemy](https://github.com/AliceLJY/content-alchemy)
 
 <img src="./assets/wechat_qr.jpg" width="200" alt="WeChat QR Code">
 
