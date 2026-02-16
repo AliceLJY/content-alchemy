@@ -390,17 +390,15 @@ This project was built collaboratively by multiple AI Agents and the user:
 
 > See [CHANGELOG.md](./docs/CHANGELOG.md) for detailed update history
 
-## 📲 Follow the Author
+## Author
 
-Professional cross-domain acrobat: 🧬 Medical background, 🎭 Culture sector day job, 🤖 AI is my side quest.
+Built by **小试AI** ([@AliceLJY](https://github.com/AliceLJY)) · WeChat Official Account: **我的AI小木屋**
 
-Not chasing parameters or new models. Only one question matters: When can AI plug into my brain and feel unhappy for me?
+> 医学出身，文化口工作，AI 野路子。公众号四大板块：AI实操手账 · AI踩坑实录 · AI照见众生 · AI随心分享
 
-Welcome to witness my love-hate relationship with AI.
+Four content pillars: **Hands-on AI** · **AI Pitfall Diaries** · **AI & Humanity** · **AI Gallery**
 
-— AI won't replace you, but people who use AI will. So I learned first. No pressure.
-
-🔧 Pitfall byproducts open-sourced → [content-alchemy](https://github.com/AliceLJY/content-alchemy)
+Open-source byproducts: [content-alchemy](https://github.com/AliceLJY/content-alchemy) · [openclaw-worker](https://github.com/AliceLJY/openclaw-worker) · [openclaw-cc-pipeline](https://github.com/AliceLJY/openclaw-cc-pipeline)
 
 <img src="./assets/wechat_qr.jpg" width="200" alt="WeChat QR Code">
 
