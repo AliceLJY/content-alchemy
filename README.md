@@ -371,7 +371,7 @@ Antigravity IDE 内置 Gemini 生图能力，无需安装额外 Skill。
 - **Hardware**: MacBook Air (13-inch, M4, 2025) / 16GB RAM / Apple M4 Chip
 - **System**: macOS Tahoe (26.3 Beta)
 - **IDE**:
-  - **Claude Code (Opus 4.5)** — 主力开发环境，代码编写与调试
+  - **Claude Code (Opus 4.6)** — 主力开发环境，代码编写与调试
   - **Antigravity (Gemini)** — 测试验证环境，多环境兼容性测试
 
 ## 🤖 AI 协作声明

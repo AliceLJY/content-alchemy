@@ -370,7 +370,7 @@ This project has been fully tested on (Stable):
 - **Hardware**: MacBook Air (13-inch, M4, 2025) / 16GB RAM / Apple M4 Chip
 - **System**: macOS Tahoe (26.3 Beta)
 - **IDE**:
-  - **Claude Code (Opus 4.5)** — Primary dev environment, coding & debugging
+  - **Claude Code (Opus 4.6)** — Primary dev environment, coding & debugging
   - **Antigravity (Gemini)** — Test environment, multi-platform compatibility testing
 
 ## 🤖 AI Collaboration Statement
