@@ -588,6 +588,7 @@ Pipeline:
   const { attributes, body } = fm<Record<string, string>>(raw);
   const title = attributes.title || '';
   const author = attributes.author || '';
+  const summary = attributes.summary || attributes.description || attributes.digest || '';
 
   // Initialize markdown-it with highlight.js
   const md = new MarkdownIt({
@@ -605,6 +606,14 @@ Pipeline:
   // Render markdown to HTML
   let html = md.render(body);
 
+  // Add data-local-path to local images (for wechat-article.ts --html pipeline)
+  const inputDir = path.dirname(inputPath);
+  html = html.replace(/<img\s+src="([^"]+)"/g, (match, src) => {
+    if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:')) return match;
+    const absPath = path.isAbsolute(src) ? src : path.resolve(inputDir, src);
+    return `<img src="${src}" data-local-path="${absPath}"`;
+  });
+
   // Apply inline styles
   html = applyStyles(html, styleName);
 
@@ -617,6 +626,7 @@ Pipeline:
 <meta charset="UTF-8">
 <title>${escapedTitle}</title>
 <meta name="author" content="${escapedAuthor}">
+<meta name="description" content="${(summary || '').replace(/"/g, '&quot;')}">
 </head>
 <body>
 ${html}
