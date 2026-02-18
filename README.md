@@ -1,12 +1,12 @@
 # Content Alchemy Skill
 
-English | **[中文](./README-ZH.md)**
-
 🚀 **Getting Started**: [Setup Guide](./docs/SETUP.md) | [Beginner Guide](./docs/BEGINNER-GUIDE.md) | [WeChat Publishing](./docs/WECHAT-PUBLISH.md)
 📚 **Deep Dive**: [Technical Docs](./SKILL.md) | [Project Structure](./docs/PROJECT-STRUCTURE.md)
 🔄 **Quick Update**: `git pull && git submodule update --remote --merge`
 
 **One-liner**: Let AI handle any or all stages of your content pipeline — Research → Analysis → Writing → Illustration → Publishing.
+
+> 让 AI 帮你完成内容流水线的任意环节——调研 → 分析 → 写作 → 配图 → 发布。
 
 ---
 
@@ -30,9 +30,13 @@ English | **[中文](./README-ZH.md)**
 - 📖 **Beginner-friendly** — Verification steps at every stage, no coding required
 
 **Ecosystem**:
-- 🤖 [digital-clone-skill](https://github.com/AliceLJY/digital-clone-skill) — Train AI to write in YOUR voice. Extract writing DNA from your articles/reviews, generate a persona profile for Stage 5.
-- 🔧 [openclaw-worker](https://github.com/AliceLJY/openclaw-worker) — Automated bot worker for scheduled publishing
-- 🔗 [openclaw-cc-pipeline](https://github.com/AliceLJY/openclaw-cc-pipeline) — Claude Code automation pipeline for Content Alchemy
+
+> 这些项目配合使用效果更好
+
+- 🤖 [digital-clone-skill](https://github.com/AliceLJY/digital-clone-skill) — Extract writing DNA for personalized Stage 5 output
+- 📦 [openclaw-content-alchemy](https://github.com/AliceLJY/openclaw-content-alchemy) — Standard edition: bot config + 56 art styles for everyone
+- 🔧 [openclaw-worker](https://github.com/AliceLJY/openclaw-worker) — Bot worker for automated task execution
+- 🔗 [openclaw-cc-pipeline](https://github.com/AliceLJY/openclaw-cc-pipeline) — Multi-turn Claude Code orchestration pipeline
 
 ---
 
@@ -368,15 +372,18 @@ Please read SKILL.md first, then follow Stage 1-2 to search for today's hot topi
 
 > 💡 See [SETUP.md Q7](./docs/SETUP.md#q7-claude-code-不识别-skillmd-工作流) for details
 
-### 💻 Verified Environment
+### Author's Setup
 
-This project has been fully tested on (Stable):
+> 作者的开发环境，仅供参考，你可以用自己喜欢的工具替代
 
-- **Hardware**: MacBook Air (13-inch, M4, 2025) / 16GB RAM / Apple M4 Chip
-- **System**: macOS Tahoe (26.3 Beta)
-- **IDE**:
-  - **Claude Code (Opus 4.6)** — Primary dev environment, coding & debugging
-  - **Antigravity (Gemini)** — Test environment, multi-platform compatibility testing
+| Item | Setup |
+|------|-------|
+| **Hardware** | MacBook Air M4, 16GB RAM |
+| **Models** | Claude Opus 4.6 (primary), Gemini Pro 3 (secondary), MiniMax M2.5 (scheduled tasks) |
+| **Runtime** | Bun, Docker |
+| **API** | [OpenClaw](https://github.com/openclaw/openclaw) subscription |
+
+*Author's setup — yours may differ.*
 
 ## 🤖 AI Collaboration Statement
 

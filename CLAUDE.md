@@ -62,14 +62,14 @@
 
 ### 文档维护
 
-- **中英文同步**：每次改 README.md 必须同步更新 README-EN.md，一起提交
+- **双语 README**：README.md 英文主体 + 中文 blockquote（已合并，无单独 ZH 文件）
 - **改了就推**：每次修改都要提交到 GitHub，不要攒着
 
 ## 环境信息
 
 - **Hardware**: MacBook Air M4, 16GB
 - **System**: macOS Tahoe
-- **IDE**: Claude Code (Opus 4.5) 主力 / Antigravity (Gemini) 测试
+- **IDE**: Claude Code (Opus 4.6) 主力 / Antigravity (Gemini) 测试
 - **Chrome**: 144+（调试端口行为已变）
 - **npm 依赖**：baoyu-skills 作为 git submodule 无自己的 package.json，宿主项目 package.json 必须包含所有依赖
 - **baoyu-skills 版本**：v1.28.0（2026-02-02 更新）
