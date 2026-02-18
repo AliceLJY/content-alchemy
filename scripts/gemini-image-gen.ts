@@ -49,17 +49,23 @@ async function cdpMethod() {
   const cdpPath = path.join(import.meta.dir, '../dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/cdp.ts');
   const { tryConnectExisting, findExistingChromeDebugPort, launchChrome, getPageSession, evaluate, typeText, sleep } = await import(cdpPath);
 
-  // 查找或启动 Chrome
-  let port = await findExistingChromeDebugPort();
-  let cdp = port ? await tryConnectExisting(port) : null;
+  // 优先连接已有的 Chromium (port 9222)，再 fallback 到自动发现
+  let cdp = await tryConnectExisting(9222);
   let chrome = null;
 
   if (!cdp) {
-    console.log('[CDP] Launching Chrome...');
+    const port = await findExistingChromeDebugPort();
+    cdp = port ? await tryConnectExisting(port) : null;
+  }
+
+  if (!cdp) {
+    console.log('[CDP] No existing browser found, launching Chrome...');
     const result = await launchChrome('https://gemini.google.com/app');
     cdp = result.cdp;
     chrome = result.chrome;
     await sleep(5000); // 等待页面加载
+  } else {
+    console.log('[CDP] Connected to existing browser');
   }
 
   try {
