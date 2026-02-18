@@ -601,8 +601,8 @@ AI cannot judge source credibility. Only humans can decide:
 ```markdown
 ---
 title: 文章标题写在这里
-author: 小试AI
-category: AI照见众生
+author: Your Name
+category: Your Category
 ---
 
 ![封面图描述](path/to/cover.png)
@@ -651,35 +651,27 @@ category: AI照见众生
 
 ## ✍️ 写作风格指南
 
-> ⚠️ **个人示例，非通用模板**
+> 💡 **Define Your Own Voice**
 >
-> 以下是本项目作者的公众号风格定位，仅作参考。**请根据你自己的公众号调性修改这部分内容**，或直接删除，使用你自己的写作指南。
+> The writing principles below are universal (applicable to any Chinese-language blog). But every author has unique linguistic fingerprints — sentence patterns, metaphor habits, rhetorical preferences — that make their writing *theirs*.
+>
+> **Want to train AI to write in YOUR style?** Check out [digital-clone-skill](https://github.com/AliceLJY/digital-clone-skill) — it extracts writing DNA from your existing corpus (articles, reviews, chat logs) and generates a persona profile that Content Alchemy can use during Stage 5.
+>
+> > 下面的写作原则是通用的（适用于任何中文公众号），但每个作者都有独特的语言指纹。如果你想让 AI 写出"像你"的文章，可以用 [digital-clone-skill](https://github.com/AliceLJY/digital-clone-skill) 从你的已有文章中提取写作人格画像，Content Alchemy 在 Stage 5 写文章时会参考它。
 
-### 📌 示例：作者的公众号定位
+### 📌 How to Define Your Content Types
 
-本公众号有两类内容，写作风格需匹配：
+Before writing, identify your content categories and their tone requirements. For example:
 
-**内容类型 A：技术踩坑实录**
+**Technical content** (tutorials, debug logs, tool reviews):
+- Accuracy first, but explain like you're talking to a friend
+- Preserve real emotional arcs (confusion → attempt → failure → insight → resolution)
+- OK to be casual, self-deprecating, opinionated
 
-记录真实的 AI 技术实践、工具使用、Bug 修复过程。
-
-风格要求：
-- 像给朋友讲故事一样还原踩坑过程
-- 保留真实的情绪起伏（困惑→尝试→失败→顿悟→解决）
-- 技术细节要准确，但表达要口语化
-- 可以自嘲，可以吐槽，不要端着
-
-**内容类型 B：AI视角观察人间**
-
-> "当AI开始理解人类，它看见了什么？"
-
-用 AI 的"局外人"视角切入时代情绪：躺平、内卷、猝死、孤独、焦虑……
-
-风格要求：
-- 不贩卖焦虑，不兜售答案
-- 不是冰冷的分析，而是温柔的凝视
-- 像一个刚学会"懂"的 AI，带着好奇和困惑观察人类
-- 留白比填满重要，问题比答案重要
+**Reflective content** (essays, opinion pieces, cultural commentary):
+- Don't sell anxiety, don't sell answers
+- Questions matter more than conclusions
+- Leave room for readers to think for themselves
 
 ---
 
@@ -856,16 +848,18 @@ category: AI照见众生
 
 ---
 
-## 📌 板块-文体匹配（v4.1 新增）
+## 📌 Content Type — De-AI Intensity Matching (v4.1)
 
-> 不同板块的去 AI 味强度不同。技术文要保留术语精确性，人文观察要放开主观表达。
+> Different content types need different levels of de-AI treatment. Technical posts should keep terminology precise; reflective essays should maximize subjective voice.
+>
+> > 不同内容类型的去 AI 味强度不同。技术文保留术语精确性，人文随笔放开主观表达。
 
-| 板块 | 文体模式 | 去 AI 味重点 |
+| Content Type | Style Mode | De-AI Focus |
 |------|---------|-------------|
-| **AI实操手账** | 技术口语模式 | 只去风格层面的 AI 味，保留术语和步骤精确性，口语化讲解 |
-| **AI踩坑实录** | 强口语模式 | 最大力度去 AI 味。强主观、情感波动大、第一人称、感官细节 |
-| **AI照见众生** | 随笔模式 | 允许不确定（"似乎""或许"），立场有层次，留白比填满重要 |
-| **AI随心分享** | 轻松模式 | 短句为主、语气随意，"AI 随手画，我随心发，你随意看" |
+| **Technical tutorials** | Technical + casual | Keep terminology and step accuracy, but explain conversationally |
+| **Debug/failure logs** | Strong casual | Maximum de-AI. Strong first-person, emotional arc, sensory details |
+| **Essays/opinion** | Essay mode | Allow uncertainty ("perhaps", "it seems"), layered stance, leave gaps |
+| **Visual showcase** | Light mode | Short sentences, casual tone, let images do the talking |
 
 ---
 

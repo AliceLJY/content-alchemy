@@ -29,6 +29,11 @@ English | **[中文](./README-ZH.md)**
 - ✨ **Human-sounding** — 7 writing principles to eliminate AI-speak
 - 📖 **Beginner-friendly** — Verification steps at every stage, no coding required
 
+**Ecosystem**:
+- 🤖 [digital-clone-skill](https://github.com/AliceLJY/digital-clone-skill) — Train AI to write in YOUR voice. Extract writing DNA from your articles/reviews, generate a persona profile for Stage 5.
+- 🔧 [openclaw-worker](https://github.com/AliceLJY/openclaw-worker) — Automated bot worker for scheduled publishing
+- 🔗 [openclaw-cc-pipeline](https://github.com/AliceLJY/openclaw-cc-pipeline) — Claude Code automation pipeline for Content Alchemy
+
 ---
 
 ## 💡 Why This Project Is Different
