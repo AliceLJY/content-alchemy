@@ -383,7 +383,7 @@ Please read SKILL.md first, then follow Stage 1-2 to search for today's hot topi
 | **Runtime** | Bun, Docker |
 | **API** | [OpenClaw](https://github.com/openclaw/openclaw) subscription |
 
-*Author's setup — yours may differ.*
+> Author's setup — yours may differ.
 
 ## 🤖 AI Collaboration Statement
 
@@ -404,7 +404,7 @@ This project was built collaboratively by multiple AI Agents and the user:
 
 ## Author
 
-Built by **小试AI** ([@AliceLJY](https://github.com/AliceLJY)) · WeChat Official Account: **我的AI小木屋**
+Built by **小试AI** ([@AliceLJY](https://github.com/AliceLJY)) · WeChat: **我的AI小木屋**
 
 > 医学出身，文化口工作，AI 野路子。公众号四大板块：AI实操手账 · AI踩坑实录 · AI照见众生 · AI随心分享
 
@@ -415,4 +415,4 @@ Open-source byproducts: [content-alchemy](https://github.com/AliceLJY/content-al
 <img src="./assets/wechat_qr.jpg" width="200" alt="WeChat QR Code">
 
 ---
-*v1.0-2.5 by Antigravity | v3.1-3.2 by Claude Code | v4.0 by Claude Code (Opus 4.5) | v4.1-4.3 by Claude Code (Opus 4.6)*
+v1.0-2.5 by Antigravity | v3.1-3.2 by Claude Code | v4.0 by Claude Code (Opus 4.5) | v4.1-4.3 by Claude Code (Opus 4.6)
