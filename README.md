@@ -78,9 +78,9 @@ This project pursues "rapid delivery with human oversight":
 
 If you use WeChat Official Account, one-click publish to drafts:
 
-- ✅ Auto-fill title, paste content, insert images, save draft
+- ✅ **API mode (recommended)**: Pure HTTP via WeChat Developer API, no browser needed, works headless for bot automation
+- ✅ **Browser mode (fallback)**: Chrome CDP automation, for when API is not configured
 - ✅ Runs locally, no third-party servers
-- ✅ Time saved: 13 min → 3.5 min
 
 > 💡 See [WECHAT-PUBLISH.md](./docs/WECHAT-PUBLISH.md) for detailed tutorial
 
@@ -118,7 +118,7 @@ cd content-alchemy
 bun install
 
 # 3. Verify
-bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --help
+bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-api.ts --help
 ```
 
 > See [SETUP.md](./docs/SETUP.md) for detailed steps

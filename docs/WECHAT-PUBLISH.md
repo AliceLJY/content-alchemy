@@ -1,398 +1,120 @@
-# 📮 微信公众号发布指南
+# 📮 WeChat Official Account Publishing Guide
 
-> 💡 **给新手的话**: 这个功能能让你用 AI 写完文章后，自动发布到微信公众号。不用手动复制粘贴，不用一张张插图片。放心，很简单！
-
----
-
-## 🎯 这个功能做什么？
-
-把你在 Antigravity 中写好的文章（Markdown 格式），自动发布到微信公众号后台，并保存为草稿。
-
-**你只需要**:
-1. 准备好文章和图片
-2. 运行一条命令
-3. 扫个码（首次）
-4. 等待自动发布完成
-
-**剩下的都是自动的**:
-- ✅ 打开微信公众号后台
-- ✅ 创建新文章
-- ✅ 填写标题
-- ✅ 粘贴内容（保持格式）
-- ✅ 插入所有图片
-- ✅ 保存草稿
+> Two publishing modes available: **API mode** (recommended) and **Browser mode** (fallback).
+>
+> 💡 API 模式不需要 Chrome，纯后台运行，适合 Bot 自动化；浏览器模式作为兜底方案。
 
 ---
 
-## ⚙️ 准备工作（只需要做一次）
+## 🎯 What does this do?
 
-### 1. 确认你安装了 Google Chrome 浏览器
+Publishes your Markdown article to WeChat Official Account drafts automatically.
 
-如果没有，[点这里下载](https://www.google.com/chrome/)
-
-### 2. 确认项目已经安装好
-
-如果还没安装，看 [SETUP.md](./SETUP.md)
+> 把 AI 写好的文章（Markdown 格式）自动发布到微信公众号草稿箱。
 
 ---
 
-## 🚀 发布文章（3 步搞定）
+## 🚀 API Mode (Recommended)
 
-### 步骤 1: 启动 Chrome 调试模式
+No browser needed. Pure HTTP calls to WeChat Developer API.
 
-**打开终端**，复制粘贴这行命令：
+> 不需要 Chrome，纯 HTTP 调用微信开发者 API，适合 Bot 和无人值守场景。
+
+### Setup (one-time)
+
+1. **Get AppID & AppSecret** from [mp.weixin.qq.com](https://mp.weixin.qq.com) → Settings → Basic Configuration
+
+2. **Add IP whitelist**: Same page → IP Whitelist → Add your server's outbound IP
+   ```bash
+   curl checkip.amazonaws.com   # Check your outbound IP
+   ```
+
+3. **Configure credentials** in `~/.baoyu-skills/.env`:
+   ```
+   WECHAT_APP_ID=your_app_id
+   WECHAT_APP_SECRET=your_app_secret
+   ```
+
+### Publish
 
 ```bash
-/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
-  --remote-debugging-port=9222 \
-  --user-data-dir=/tmp/chrome-wechat &
+cd content-alchemy-repo
+
+# Publish article with cover image
+bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-api.ts \
+  ./your-article/article.md --author "Your Name" --cover ./your-article/cover.png
+
+# Dry run (parse only, don't publish)
+bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-api.ts \
+  ./your-article/article.md --dry-run
 ```
 
-**按回车**，会弹出一个新的 Chrome 窗口。
+### Troubleshooting
 
-> 💡 **为什么要这样？**: 这个命令让 Chrome 开启"远程控制模式"，我们的脚本才能自动操作浏览器。
+| Error | Cause | Fix |
+|-------|-------|-----|
+| `40164 invalid ip` | IP not in whitelist | Add the IP shown in error message to whitelist |
+| `No cover image` | Article has no images | Add `--cover path/to/cover.png` |
+| `45003` | Title too long | Keep title under 20 Chinese characters |
 
 ---
 
-### 步骤 2: 准备文章和图片
+## 🔧 Browser Mode (Fallback)
 
-**检查文件是否存在**:
+Use when API is not configured. Requires Chrome with debug port.
+
+> API 没配时的兜底方案，需要 Chrome 浏览器。
+
+### Setup (one-time)
+
+1. Install [Google Chrome](https://www.google.com/chrome/)
+2. Install project dependencies: see [SETUP.md](./SETUP.md)
+
+### Publish
 
 ```bash
-cd /Users/anxianjingya/content-alchemy-repo
-ls -lh ./你的文章目录/*.md
-ls -lh ./你的文章目录/*.png
+cd content-alchemy-repo
+
+bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts \
+  --markdown ./your-article/article.md --theme grace
 ```
 
-**应该看到**:
-- 1 个 Markdown 文件（你的文章）
-- N 张 PNG 图片（文章配图）
+The script auto-detects existing Chrome debug ports and reuses them. First run requires WeChat QR code scan.
 
-> ⚠️ **常见错误**: 如果提示"文件不存在"，说明路径不对。检查你的文章保存在哪里。
+> ⚠️ **Do not switch windows** during publishing — clipboard operations require Chrome to stay focused.
 
 ---
 
-### 步骤 3: 运行发布脚本
+## 👀 Final Step (Manual)
 
-```bash
-bash scripts/publish-v2.sh ./你的文章目录/文章名.md
-```
+Open WeChat Official Account backend, review the saved draft:
 
-**例如**:
-```bash
-bash scripts/publish-v2.sh ./ai-agent-content-creation/wechat-article-formatted.md
-```
+1. **Check formatting** — verify layout looks correct
+2. **Check images** — all images inserted properly
+3. **Click publish** — send to readers
 
-**首次运行**: 会自动打开微信公众号登录页，用手机扫码即可
-
-**后续运行**: 会记住登录状态，直接发布
+> 💡 We only save to drafts, never auto-publish. Human review is always required.
 
 ---
 
-### 步骤 4: 等待自动完成
+## 🔒 Security
 
-你会看到终端输出这些信息：
+- **Local execution** — all operations run on your machine, no third-party servers
+- **API mode** — uses official WeChat Developer API with your own credentials
+- **Browser mode** — uses Chrome DevTools Protocol (CDP), mimics human operations
+- **Open source** — all code is transparent and auditable
 
-```
-✅ [wechat] Opening WeChat editor...
-✅ [wechat] Copying title...
-✅ [wechat] Pasting into editor...
-✅ [wechat] Inserting 3 images...
-✅ [wechat] [1/3] Processing: [[IMAGE_PLACEHOLDER_1]]
-✅ [wechat] [2/3] Processing: [[IMAGE_PLACEHOLDER_2]]
-✅ [wechat] [3/3] Processing: [[IMAGE_PLACEHOLDER_3]]
-✅ [wechat] Saving draft...
-✅ Done!
-```
-
-**全程大约 30-60 秒**
+> ⚠️ **Never commit your AppSecret to git.** Store it in `~/.baoyu-skills/.env` only.
 
 ---
 
-## 👀 最后一步（手动操作）
+## 📚 Related Docs
 
-打开微信公众号后台，你会看到刚保存的草稿：
-
-1. **设置封面图** - 选择第一张图作为封面
-2. **检查格式** - 看看排版是否满意
-3. **点击发布** - 正式发送给读者
-
-> 💡 **为什么不全自动？**: 微信官方建议人工审核后再发布，我们遵守这个规则。
+- [SETUP.md](./SETUP.md) — Installation guide
+- [SKILL.md](../SKILL.md) — Content Alchemy workflow
+- [README.md](../README.md) — Project overview
 
 ---
 
-## 🐛 遇到问题了？
-
-### 问题 1: "端口 9222 已被占用"
-
-**原因**: 之前的 Chrome 没关干净
-
-**解决**:
-```bash
-# 找到占用端口的进程
-lsof -i :9222
-
-# 看到输出类似:
-# Google  12345  你的用户名  ...
-
-# 杀掉进程（把 12345 换成你看到的数字）
-kill -9 12345
-
-# 重新运行步骤 1
-```
-
----
-
-### 问题 2: "文件不存在"
-
-**原因**: 路径不对
-
-**解决**:
-```bash
-# 先进入项目目录
-cd /Users/anxianjingya/content-alchemy-repo
-
-# 找到你的文章
-find . -name "*.md" -type f
-
-# 复制正确的路径，再运行发布脚本
-bash scripts/publish-v2.sh ./找到的路径/文章.md
-```
-
----
-
-### 问题 3: "图片没有插入"
-
-**原因**: 图片文件不存在，或者文章里没有正确引用
-
-**检查图片**:
-```bash
-ls -lh ./你的文章目录/*.png
-```
-
-**检查文章中的图片引用**（打开 Markdown 文件，应该有这样的内容）:
-```markdown
-![图片描述](./图片文件名.png)
-```
-
-或者（Antigravity 格式）:
-```
-！【图片描述】（图片文件名.png）
-```
-
----
-
-### 问题 4: "粘贴没反应"
-
-**原因**: 这个问题已经修复了！如果还遇到，可能是以下原因：
-
-1. **Chrome 窗口失去焦点** - 不要在发布过程中切换窗口
-2. **微信后台卡住** - 刷新页面重试
-
-**解决**: 重新运行脚本即可
-
----
-
-### 问题 5: "扫码后没反应"
-
-**原因**: 登录成功了，但脚本还在等待
-
-**解决**: 耐心等待 5-10 秒，脚本会自动继续
-
----
-
-## 💡 进阶技巧
-
-### 1. 发布多篇文章
-
-如果有多篇文章要发布：
-
-```bash
-# 发布第一篇
-bash scripts/publish-v2.sh ./article1.md
-
-# 等待完成后，发布第二篇
-bash scripts/publish-v2.sh ./article2.md
-
-# 以此类推...
-```
-
-> ⚠️ **注意**: 每篇文章之间建议间隔 1-2 分钟，避免微信检测为异常操作。
-
----
-
-### 2. 批量发布脚本
-
-创建一个批量发布脚本（适合老手）:
-
-```bash
-#!/bin/bash
-# 保存为 batch-publish.sh
-
-for file in ./articles/*.md; do
-  echo "发布: $file"
-  bash scripts/publish-v2.sh "$file"
-  echo "等待 2 分钟..."
-  sleep 120  # 等待 2 分钟
-done
-```
-
-运行:
-```bash
-chmod +x batch-publish.sh
-./batch-publish.sh
-```
-
----
-
-### 3. 自动化整个流程
-
-如果你已经很熟练了，可以把启动 Chrome 和发布文章合并成一个脚本。
-
-但建议新手先分步操作，熟悉流程后再优化。
-
----
-
-## 🔒 安全说明
-
-### 这个工具安全吗？
-
-**完全安全**！原因：
-
-1. **本地运行** - 所有操作在你的电脑上，不经过任何第三方服务器
-2. **模拟真人** - 使用 Chrome DevTools Protocol (CDP)，完全模拟真人操作
-3. **不存储密码** - 不涉及任何密码，只用微信扫码登录
-4. **开源透明** - 所有代码都可以看到，没有任何后门
-
-### 微信会不会封号？
-
-**不会**！原因：
-
-1. **官方协议** - CDP 是 Google 官方提供的浏览器自动化协议
-2. **真人行为** - 微信看到的操作和你手动操作完全一样
-3. **合理频率** - 我们建议每篇文章之间间隔 1-2 分钟，符合正常使用习惯
-
----
-
-## 🎯 适用场景
-
-### ✅ 适合的场景
-
-- 你在 Antigravity 中用 AI 写完了文章，想快速发布
-- 你有多篇文章要发布，不想手动复制粘贴
-- 你的文章有很多图片，手动插入太麻烦
-
-### ❌ 不适合的场景
-
-- 你还没写文章（请先用 Antigravity 的 `alchemy` 功能）
-- 你想发视频、音频等多媒体内容（目前只支持文字+图片）
-- 你想直接发布不保存草稿（我们建议人工审核后再发布）
-
----
-
-## 📊 完整流程图
-
-```
-┌─────────────────────────────────────┐
-│  1. 启动 Chrome 调试模式              │
-│     /Applications/Google Chrome...   │
-└──────────────┬──────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────┐
-│  2. 准备文章和图片                    │
-│     article.md + images/*.png        │
-└──────────────┬──────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────┐
-│  3. 运行发布脚本                      │
-│     bash scripts/publish-v2.sh       │
-└──────────────┬──────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────┐
-│  4. 自动化流程（30-60秒）             │
-│     ✓ 打开微信后台                    │
-│     ✓ 扫码登录（首次）                │
-│     ✓ 创建文章                        │
-│     ✓ 填写标题                        │
-│     ✓ 粘贴内容                        │
-│     ✓ 插入图片                        │
-│     ✓ 保存草稿                        │
-└──────────────┬──────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────┐
-│  5. 人工审核（你来做）                │
-│     ✓ 设置封面                        │
-│     ✓ 检查格式                        │
-│     ✓ 点击发布                        │
-└─────────────────────────────────────┘
-```
-
----
-
-## ⏱️ 时间对比
-
-**手动发布**（传统方式）:
-1. 复制标题 → 30秒
-2. 复制内容 → 1分钟
-3. 调整格式 → 5分钟
-4. 插入图片 → 每张1分钟，3张=3分钟
-5. 设置封面 → 1分钟
-6. 检查发布 → 2分钟
-
-**总计: 约 13 分钟**
-
----
-
-**自动化发布**（我们的方式）:
-1. 启动 Chrome → 10秒
-2. 运行脚本 → 5秒
-3. 自动发布 → 60秒
-4. 设置封面+检查 → 2分钟
-
-**总计: 约 3.5 分钟**
-
-**节省时间: 70%** 🎉
-
----
-
-## 📚 相关文档
-
-- [SETUP.md](./SETUP.md) - 完整安装指南
-- [BEGINNER-GUIDE.md](./BEGINNER-GUIDE.md) - 新手补充指南
-- [SKILL.md](../SKILL.md) - Alchemy 工作流技术文档
-- [README.md](../README.md) - 项目总览
-
----
-
-## 🤝 需要帮助？
-
-**遇到问题**:
-1. 先看上面的"遇到问题了？"部分
-2. 检查 [Issue](https://github.com/你的用户名/content-alchemy-repo/issues) 看是否有人遇到过
-3. 提交新 Issue 描述你的问题
-
-**建议改进**:
-- 欢迎提交 PR 优化文档或代码
-- 在 Issue 中分享你的使用心得
-
----
-
-## 🎉 开始使用吧！
-
-不要被技术细节吓到，其实就 3 步：
-
-1. **启动 Chrome** - 复制粘贴一行命令
-2. **运行脚本** - 再复制粘贴一行命令
-3. **等待完成** - 喝口水就好了
-
-试试看，你会发现比想象中简单！💪
-
----
-
-*最后更新: 2025-01-25*
-*版本: v3.1*
-*状态: ✅ 已修复粘贴问题，稳定可用*
+*Last updated: 2026-02-18*
+*Version: v4.3*
