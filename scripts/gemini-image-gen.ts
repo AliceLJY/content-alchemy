@@ -1,50 +1,122 @@
 #!/usr/bin/env bun
 /**
- * Gemini 生图 - 自动切换 API/CDP 模式
+ * Gemini 生图 - 官方 API 直连 / CDP 浏览器兜底
+ *
+ * Usage:
+ *   bun gemini-image-gen.ts --prompt "A red apple" --output /path/to/image.png
+ *   bun gemini-image-gen.ts --prompt "..." --output /path/to/image.png --method cdp
+ *   bun gemini-image-gen.ts --prompt "..." --output /path/to/image.png --aspect 2.5:1
+ *
+ * API key: reads GOOGLE_API_KEY from env or ~/.baoyu-skills/.env
  */
 import path from 'node:path';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, writeFile, readFile, stat, readdir, rename } from 'node:fs/promises';
 
 const args = {
   prompt: '',
   output: '',
-  method: 'auto' // auto | api | cdp
+  method: 'auto', // auto | api | cdp
+  aspect: '',      // optional: "16:9", "2.5:1", "1:1" etc.
 };
 
 for (let i = 2; i < process.argv.length; i++) {
   if (process.argv[i] === '--prompt' || process.argv[i] === '-p') args.prompt = process.argv[++i] || '';
   else if (process.argv[i] === '--output' || process.argv[i] === '-o') args.output = process.argv[++i] || '';
   else if (process.argv[i] === '--method') args.method = process.argv[++i] || 'auto';
+  else if (process.argv[i] === '--aspect') args.aspect = process.argv[++i] || '';
 }
 
 if (!args.prompt || !args.output) {
-  console.error('Usage: bun gemini-image-gen.ts --prompt "A red apple" --output /path/to/image.png');
+  console.error('Usage: bun gemini-image-gen.ts --prompt "A red apple" --output /path/to/image.png [--method auto|api|cdp] [--aspect 16:9]');
   process.exit(1);
 }
 
 await mkdir(path.dirname(args.output), { recursive: true });
 
-// 方法 1: 尝试 API 模式
-async function tryApiMethod() {
+// Load API key from env or .env file
+async function getApiKey(): Promise<string | null> {
+  if (process.env.GOOGLE_API_KEY) return process.env.GOOGLE_API_KEY;
+
   try {
-    const geminiWebPath = path.join(import.meta.dir, '../dependencies/baoyu-skills/skills/baoyu-danger-gemini-web/scripts/main.ts');
-    const { spawn } = await import('node:child_process');
-    
-    return new Promise<boolean>((resolve) => {
-      const proc = spawn('bun', [geminiWebPath, '--prompt', args.prompt, '--image', args.output], {
-        stdio: 'inherit',
-        timeout: 60000
-      });
-      
-      proc.on('close', (code) => resolve(code === 0));
-      proc.on('error', () => resolve(false));
-    });
+    const envPath = path.join(process.env.HOME!, '.baoyu-skills', '.env');
+    const content = await readFile(envPath, 'utf-8');
+    const match = content.match(/^GOOGLE_API_KEY=(.+)$/m);
+    return match?.[1]?.trim() || null;
   } catch {
+    return null;
+  }
+}
+
+// 方法 1: 官方 Gemini API 直连
+async function tryApiMethod(): Promise<boolean> {
+  const apiKey = await getApiKey();
+  if (!apiKey) {
+    console.log('[API] No GOOGLE_API_KEY found');
+    return false;
+  }
+
+  const model = 'gemini-3-pro-image-preview';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+  // Build prompt with optional aspect ratio hint
+  let fullPrompt = args.prompt;
+  if (args.aspect) {
+    fullPrompt = `Generate an image with aspect ratio ${args.aspect}. ${fullPrompt}`;
+  }
+
+  console.log(`[API] Generating image with ${model}...`);
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: fullPrompt }] }],
+        generationConfig: { responseModalities: ['TEXT', 'IMAGE'] },
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error(`[API] HTTP ${response.status}: ${error.substring(0, 200)}`);
+      return false;
+    }
+
+    const data = await response.json();
+    const parts = data?.candidates?.[0]?.content?.parts;
+
+    if (!parts || parts.length === 0) {
+      console.error('[API] No content in response');
+      return false;
+    }
+
+    // Find image part
+    for (const part of parts) {
+      if (part.inlineData) {
+        const buffer = Buffer.from(part.inlineData.data, 'base64');
+        // Determine extension from mime type
+        const ext = path.extname(args.output).toLowerCase();
+        const mimeType = part.inlineData.mimeType || 'image/png';
+
+        // If output expects png but got jpeg (or vice versa), still save with correct format
+        await writeFile(args.output, buffer);
+        console.log(`[API] Image generated: ${mimeType}, ${(buffer.length / 1024).toFixed(1)}KB`);
+        return true;
+      }
+    }
+
+    // Only got text, no image
+    const textParts = parts.filter((p: any) => p.text).map((p: any) => p.text).join('\n');
+    console.error(`[API] No image in response. Text: ${textParts.substring(0, 200)}`);
+    return false;
+
+  } catch (err: any) {
+    console.error(`[API] Error: ${err.message}`);
     return false;
   }
 }
 
-// 方法 2: CDP 浏览器模式
+// 方法 2: CDP 浏览器模式（兜底）
 async function cdpMethod() {
   const cdpPath = path.join(import.meta.dir, '../dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/cdp.ts');
   const { tryConnectExisting, findExistingChromeDebugPort, launchChrome, getPageSession, evaluate, typeText, sleep } = await import(cdpPath);
@@ -63,7 +135,7 @@ async function cdpMethod() {
     const result = await launchChrome('https://gemini.google.com/app');
     cdp = result.cdp;
     chrome = result.chrome;
-    await sleep(5000); // 等待页面加载
+    await sleep(5000);
   } else {
     console.log('[CDP] Connected to existing browser');
   }
@@ -71,7 +143,6 @@ async function cdpMethod() {
   try {
     const session = await getPageSession(cdp, 'gemini.google.com');
 
-    // 记录当前页面所有图片的 URL（用于排除）
     const existingImages = await session.cdp.send('Runtime.evaluate', {
       expression: `Array.from(document.querySelectorAll('img')).map(img => img.src)`,
       returnByValue: true
@@ -80,7 +151,6 @@ async function cdpMethod() {
     const beforeUrls = new Set(existingImages.result.value || []);
     console.log(`[CDP] Found ${beforeUrls.size} existing images before generation`);
 
-    // 输入 prompt
     console.log('[CDP] Entering prompt...');
     await session.cdp.send('Runtime.evaluate', {
       expression: `document.querySelector('rich-textarea')?.focus()`
@@ -90,7 +160,6 @@ async function cdpMethod() {
     await typeText(session, `Generate an image: ${args.prompt}`);
     await sleep(500);
 
-    // 发送
     console.log('[CDP] Submitting...');
     await session.cdp.send('Input.dispatchKeyEvent', {
       type: 'keyDown', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13
@@ -99,7 +168,6 @@ async function cdpMethod() {
       type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13
     }, { sessionId: session.sessionId });
 
-    // 等待并查找新图片
     console.log('[CDP] Waiting for image generation...');
     let imageUrl = null;
 
@@ -140,11 +208,9 @@ async function cdpMethod() {
 
     console.log(`[CDP] Image URL: ${imageUrl.substring(0, 80)}...`);
 
-    // 模拟点击下载按钮
     console.log('[CDP] Hovering over image and clicking download button...');
 
-    // Hover 图片并点击下载按钮
-    const clickResult = await session.cdp.send('Runtime.evaluate', {
+    await session.cdp.send('Runtime.evaluate', {
       expression: `
         (function() {
           const existingUrls = ${JSON.stringify(Array.from(beforeUrls))};
@@ -159,20 +225,14 @@ async function cdpMethod() {
           if (imgs.length === 0) return { success: false, error: 'No image found' };
 
           const img = imgs[0];
-
-          // 触发 hover 事件
           const hoverEvent = new MouseEvent('mouseenter', { bubbles: true });
           img.dispatchEvent(hoverEvent);
 
-          // 查找下载按钮（右上角第三个按钮）
           const parent = img.closest('[class*="response"], [class*="message"], div');
           if (!parent) return { success: false, error: 'Cannot find parent container' };
 
-          // 等待按钮显示
           setTimeout(() => {
             const buttons = Array.from(parent.querySelectorAll('button[aria-label*="下载"], button[aria-label*="Download"], button[download]'));
-
-            // 也尝试找所有按钮，下载按钮通常是最后一个
             if (buttons.length === 0) {
               const allButtons = Array.from(parent.querySelectorAll('button'));
               if (allButtons.length >= 3) {
@@ -191,11 +251,9 @@ async function cdpMethod() {
       returnByValue: true
     }, { sessionId: session.sessionId });
 
-    await sleep(2000); // 等待下载开始
+    await sleep(2000);
 
-    // 从默认下载目录查找最新的图片文件
     console.log('[CDP] Waiting for download to complete...');
-    const { readdir, stat: fsStat } = await import('node:fs/promises');
     const downloadDir = path.join(process.env.HOME!, 'Downloads');
 
     let downloadedFile = null;
@@ -208,17 +266,15 @@ async function cdpMethod() {
       );
 
       if (imageFiles.length > 0) {
-        // 找最新的文件
         const stats = await Promise.all(
           imageFiles.map(async f => ({
             name: f,
-            stat: await fsStat(path.join(downloadDir, f))
+            stat: await stat(path.join(downloadDir, f))
           }))
         );
 
         stats.sort((a, b) => b.stat.mtimeMs - a.stat.mtimeMs);
 
-        // 检查文件是否在最近10秒内创建
         const now = Date.now();
         if (now - stats[0].stat.mtimeMs < 10000) {
           downloadedFile = path.join(downloadDir, stats[0].name);
@@ -232,9 +288,6 @@ async function cdpMethod() {
     }
 
     console.log(`[CDP] Download completed: ${downloadedFile}`);
-
-    // 移动文件到目标位置
-    const { rename } = await import('node:fs/promises');
     await rename(downloadedFile, args.output);
 
     return true;
@@ -249,22 +302,21 @@ async function cdpMethod() {
 if (args.method === 'api') {
   const success = await tryApiMethod();
   if (!success) {
-    console.error('❌ API method failed');
+    console.error('[API] Failed');
     process.exit(1);
   }
 } else if (args.method === 'cdp') {
   await cdpMethod();
 } else {
-  // auto: 先试 API，失败则 CDP
-  console.log('[AUTO] Trying API method first...');
+  // auto: 先试官方 API，失败则 CDP
+  console.log('[AUTO] Trying Gemini API...');
   const apiSuccess = await tryApiMethod();
-  
+
   if (!apiSuccess) {
     console.log('[AUTO] API failed, switching to CDP method...');
     await cdpMethod();
   }
 }
 
-const { stat } = await import('node:fs/promises');
 const fileStat = await stat(args.output);
-console.log(`✅ Image saved: ${args.output} (${(fileStat.size / 1024).toFixed(1)}KB)`);
+console.log(`Image saved: ${args.output} (${(fileStat.size / 1024).toFixed(1)}KB)`);
