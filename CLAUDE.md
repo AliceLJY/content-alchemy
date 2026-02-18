@@ -37,16 +37,19 @@
 
 ### Stage 6：发布
 
-- **调用路径**：必须用项目本地路径 `bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --markdown <file> --theme <theme>`。**禁止**直接调用 `baoyu-post-to-wechat` skill
-- **Chrome 144+**：`--remote-debugging-port=9222` 必须搭配非默认 `--user-data-dir`（如 `$HOME/chrome-debug-profile`），否则端口不绑定
-- **Chrome 复用（本地改进）**：我们在 cdp.ts 和 wechat-article.ts 中添加了自动检测已有 Chrome 调试端口的功能。脚本启动时会先扫描已有 Chrome 进程的监听端口，找到后自动复用，**无需关闭 Chrome、无需手动传参**。优先找带 `token=` 的已登录微信标签直接操作。只有在没检测到已有 Chrome 时才启动新实例。支持 `--cdp-port <port>` 手动指定端口
-- **微信登录状态绑定标签**：微信公众号登录状态跟标签绑定，新开标签不会自动继承。复用 Chrome 时必须在已登录的标签上操作，不能新建标签
-- **焦点抢占**：发布过程中剪贴板操作会抢焦点，所有用户（包括 Claude Code）均受影响。发布前提醒用户不要切换窗口
-- **发布完成后**：脚本输出 `Done` 后，必须**立刻回复用户**进入 Checkpoint 确认，不要继续自行操作
-- **占位符格式**：baoyu v1.23.0 已将占位符从 `[[IMAGE_PLACEHOLDER_x]]` 改为 `WECHATIMGPH_x`（我们之前提的兼容性建议被采纳）。如果用本地 `simple-md-to-html.ts` 适配版，注意保持占位符格式一致
-- **发布耗时**：脚本中有大量 `sleep` 等待（每张图片约3秒），这是为了确保微信编辑器正确响应，属于正常 trade-off，不是 bug。3张图总耗时约30-40秒属正常
-- **保持登录**：每次发布前如果需要扫码登录会额外耗时。建议保持微信公众号 cookie 不过期，可省去扫码步骤
-- **多标签焦点错位**：Chrome 复用时，之前发布留下的"公众号"标签不会自动关闭。累积多个标签后，脚本 Cmd+V 粘贴可能打到地址栏而非编辑器。**连续发布多篇时，每篇发完顺手关掉编辑器标签**，保持只有一个公众号页面（2026-02-13 踩坑确认）
+- **两套发布方案**（2026-02-18 新增 API 模式）：
+  - **API 模式（首选）**：`bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-api.ts <article.md> --author "小试AI" --cover <cover.png>`。纯 HTTP，不需要 Chrome，适合 Bot 和无人值守
+  - **浏览器模式（兜底）**：`bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --markdown <file> --theme <theme>`。需要 Chrome，仅在 API 未配置时使用
+  - **判断规则**：检查 `~/.baoyu-skills/.env` 是否有 `WECHAT_APP_ID`，有则 API，没有则浏览器
+- **API 模式配置**：`~/.baoyu-skills/.env` 需要 `WECHAT_APP_ID` 和 `WECHAT_APP_SECRET`，微信公众平台 IP 白名单需添加本机出口 IP
+- **API 模式 IP 白名单报错**：`40164 invalid ip` → 错误信息里带实际 IP，让用户去公众平台白名单补上
+- **禁止**直接调用 `baoyu-post-to-wechat` skill（它不知道 Content Alchemy 的上下文）
+- **浏览器模式注意事项**（仅兜底时参考）：
+  - Chrome 复用：cdp.ts 自动检测已有调试端口并复用
+  - 焦点抢占：发布过程中剪贴板操作会抢焦点，提醒用户不要切换窗口
+  - 多标签焦点错位：连续发布多篇时，每篇发完顺手关掉编辑器标签
+- **发布完成后**：脚本输出成功后，必须**立刻回复用户**进入 Checkpoint 确认，不要继续自行操作
+- **占位符格式**：baoyu v1.23.0 已将占位符从 `[[IMAGE_PLACEHOLDER_x]]` 改为 `WECHATIMGPH_x`
 
 ### 代码质量（v4.1 评审改进）
 
