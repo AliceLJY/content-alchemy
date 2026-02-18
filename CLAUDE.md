@@ -37,9 +37,10 @@
 
 ### Stage 6：发布
 
+- **排版风格轮换**（2026-02-18 新增）：20 个主题（3 baoyu 内置 + 17 排版器自定义），发布时通过 `--theme <key>` 传入。本地版自动轮换，GitHub 版推荐 2-3 种让用户选。CSS 主题文件由 `scripts/generate-layout-themes.ts` 从排版器 HTML 自动生成
 - **两套发布方案**（2026-02-18 新增 API 模式）：
-  - **API 模式（首选）**：`bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-api.ts <article.md> --author "小试AI" --cover <cover.png>`。纯 HTTP，不需要 Chrome，适合 Bot 和无人值守
-  - **浏览器模式（兜底）**：`bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --markdown <file> --theme <theme>`。需要 Chrome，仅在 API 未配置时使用
+  - **API 模式（首选）**：`bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-api.ts <article.md> --author "小试AI" --cover <cover.png> --theme <theme key>`。纯 HTTP，不需要 Chrome，适合 Bot 和无人值守
+  - **浏览器模式（兜底）**：`bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --markdown <file> --theme <theme key>`。需要 Chrome，仅在 API 未配置时使用
   - **判断规则**：检查 `~/.baoyu-skills/.env` 是否有 `WECHAT_APP_ID`，有则 API，没有则浏览器
 - **API 模式配置**：`~/.baoyu-skills/.env` 需要 `WECHAT_APP_ID` 和 `WECHAT_APP_SECRET`，微信公众平台 IP 白名单需添加本机出口 IP
 - **API 模式 IP 白名单报错**：`40164 invalid ip` → 错误信息里带实际 IP，让用户去公众平台白名单补上

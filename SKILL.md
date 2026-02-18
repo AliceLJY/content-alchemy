@@ -1002,6 +1002,57 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 
 ### Stage 6: Distribution (Flash-Publish Mode) ⏸
 - **Boundary**: Automation to "Saved Draft".
+
+#### 🎨 排版风格选择（20 主题）— ⏸ Checkpoint
+
+> 发布前推荐 2-3 种排版风格让用户选择，选好后传 `--theme` 参数。
+
+**20 个可用主题**（3 baoyu 内置 + 17 自定义，CSS 文件位于 `dependencies/baoyu-skills/.../md/themes/`）：
+
+| # | Theme Key | 名称 | 适合调性 |
+|---|-----------|------|---------|
+| 01 | default | 默认 | 通用 |
+| 02 | grace | 优雅 | 通用 |
+| 03 | simple | 简洁 | 通用 |
+| 04 | wechat-default | 📝 默认公众号 | 通用 |
+| 05 | wechat-tech | 💻 技术风格 | 技术干货 |
+| 06 | wechat-elegant | 🪶 优雅简约 | 人文随笔 |
+| 07 | wechat-deepread | 📖 深度阅读 | 长文深度 |
+| 08 | latepost-depth | 📰 晚点LatePost | 商业分析 |
+| 09 | wechat-nyt | 🗽 纽约时报 | 深度报道 |
+| 10 | wechat-ft | 💼 金融时报 | 财经商业 |
+| 11 | wechat-jonyive | 🍎 Jony Ive | 产品设计 |
+| 12 | wechat-medium | 📋 Medium | 技术博客 |
+| 13 | wechat-apple | 🤍 Apple 极简 | 极简美学 |
+| 14 | wechat-anthropic | 🧡 Claude | AI 相关 |
+| 15 | xiaomuwu-journal | 🏠 小木屋手账 | 生活随记 |
+| 16 | sunset-orange | 🌅 日落橘 | 温暖治愈 |
+| 17 | matcha-latte | 🍵 抹茶拿铁 | 清新自然 |
+| 18 | sakura-letter | 🌸 樱花信笺 | 柔美感性 |
+| 19 | vibecoding-tech | ⌨️ VibeCoding | 编程极客 |
+| 20 | geek-dark | 🖥️ 极客暗黑 | 科技暗黑 |
+
+**推荐风格时的格式（⏸ Checkpoint）**：
+
+```
+基于文章《XXX》的主题和调性，推荐以下排版风格：
+
+**风格 A：[名称]**
+- 适合理由：[10字内]
+
+**风格 B：[名称]**
+- 适合理由：[10字内]
+
+**风格 C：[名称]**（可选）
+- 适合理由：[10字内]
+
+请选择一个风格，或输入 theme key 指定其他风格。
+```
+
+用户确认后，将选中的 theme key 传给 `--theme` 参数。
+
+> 💡 **自动轮换模式**：如果你想配置自动轮换（不问用户），可在本地 SKILL.md 中添加 history 文件追踪机制，参考配图 56 风格轮换的实现方式。
+
 - **Prerequisites**:
   - npm 依赖已安装（运行 `bun install` 确认）
   - Chrome 不需要手动启动——`wechat-article.ts` 内部调用 `cdp.ts`，会自动检测已有调试端口并复用，找不到时自动启动新 Chrome 实例（带 `--remote-debugging-port` 和非默认 `--user-data-dir`，兼容 Chrome 144+）
@@ -1015,7 +1066,7 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
   5. **多标签清理 [v4.3 新增]**：连续发布多篇时，之前留下的"公众号"编辑器标签不会自动关闭。累积多个标签会导致脚本 Cmd+V 粘贴焦点错位（内容粘到地址栏而非编辑器）。**发布前提醒用户关闭多余的公众号标签，只保留一个**
 
 - **调用路径 [FORCE]**:
-  - ✅ **必须**使用项目本地路径：`bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --markdown <article.md> --theme grace`
+  - ✅ **必须**使用项目本地路径：`bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --markdown <article.md> --theme <用户选择的 theme key>`
   - ❌ **禁止**直接调用 `baoyu-post-to-wechat` skill（它不知道 Content Alchemy 的上下文，会走自己的 SKILL.md 流程，导致依赖找不到、占位符不匹配等问题）
 
 - **Execution Protocol [FORCE]**:
