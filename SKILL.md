@@ -961,7 +961,7 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 >
 > **方法 2：Gemini API 直接调用（方法 1 失败时）**
 > ```bash
-> curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent?key=***REMOVED***" \
+> curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent?key=$GOOGLE_API_KEY" \
 >   -H "Content-Type: application/json" \
 >   -d '{
 >     "contents": [{"parts": [{"text": "你的 prompt"}]}],
