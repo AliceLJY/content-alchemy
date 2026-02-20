@@ -47,7 +47,8 @@ To avoid "temporary loading" lag, this skill references the following local or r
 ## 🎯 Core Operating Principles
 
 1. **Local-First**: Check `./scripts/` for dependencies. If found, run via `bun ./scripts/...` to avoid network lag.
-2. **Semi-Automation**: Automate the grind, but **pause for user confirmation** for every decision.
+2. **统一文章目录**: 所有产出（中间文件 + 最终文章 + 配图）统一放 `~/Desktop/bot-articles/{topic-slug}/`，不要放桌面根目录或其他位置。
+3. **Semi-Automation**: Automate the grind, but **pause for user confirmation** for every decision.
 3. **Traceability**: If a script (e.g., Baoyu's publisher) fails, the agent must visit the **Source URL** to check for updated CSS selectors.
 4. **Transparency**: Report all search failures. **Never fabricate content.**
 5. **Human-in-the-Loop**: Each output (mining report, truth table, draft) **MUST** be shown to the USER for approval before the next stage.
@@ -57,7 +58,7 @@ To avoid "temporary loading" lag, this skill references the following local or r
    ```
    这样用户在手机上也能知道该说什么来推进流程。常用快捷词：
    - 「继续」— 进入下一个 Stage
-   - 「跳过配图」— 跳过 Stage 5 配图直接进发布
+   - 「跳过配图」— 跳过配图直接进发布（配图现在自动轮换56风格，不再问风格选择）
    - 「从 Stage X 开始」— 跳到指定阶段
    - 「发布」— 直接进入 Stage 6
 
@@ -506,6 +507,23 @@ AI cannot judge source credibility. Only humans can decide:
 - **Goal**: Transform research into engaging, human-sounding article with genuine voice.
 - **Checkpoint**: Present `{topic-slug}/article.md`. **User must approve the article.**
 
+#### 🔑 Step 5.0: 加载写作风格锚点 [MANDATORY — 写作前必做]
+
+> v4.3 新增，来自宝玉「写作风格 Skill」方法论：提示词去 AI 味是治标，风格锚点才是治本。
+> 参考：https://baoyu.io/blog/2026-02-14/remove-ai-writing-flavor
+
+**写作前必须读取 `writing-persona.md`**（不是泛读，是提取操作指令）：
+
+1. 读取 `~/.claude/projects/-Users-anxianjingya/memory/writing-persona.md`
+2. 根据本文所属板块，提取对应风格要求：
+   - **语言指纹**：问句优先、嵌套从句、假设式留白、长短句交替、跨界比喻
+   - **观点表达**：引导式提问、硬着头皮的谦逊批评、坦诚无知建信任
+   - **禁忌清单**：不居高临下、不预设立场、痞只在比喻里
+3. 如果 `writing-persona.md` 底部有「改稿迭代记录」，**优先遵守最新的迭代规则**（这些是从实际改稿中提炼的，比通用原则更准）
+4. **风格锚点 > 七大原则**：当 persona 的具体规则与下面的通用七大原则冲突时，以 persona 为准
+
+> 💡 **为什么这一步放在写作最前面？** 七大原则和检查清单是「通用防线」——防止明显的 AI 味。但真正让文章读起来像「你」而不是「另一个用了去 AI 味提示词的人」，靠的是这个风格锚点。没有锚点，所有去 AI 味手段只会产出「AI 味 2.0」。
+
 #### 📄 article.md 格式规范 [MANDATORY]
 
 > ⚠️ **标题不要写两次**：frontmatter 里有 `title:` 就**不要**在 body 里再写 `# 标题`。
@@ -515,8 +533,8 @@ AI cannot judge source credibility. Only humans can decide:
 ```markdown
 ---
 title: 文章标题写在这里
-author: Your Name
-category: Your Category
+author: 小试AI
+category: AI照见众生
 ---
 
 ![封面图描述](path/to/cover.png)
@@ -565,27 +583,35 @@ category: Your Category
 
 ## ✍️ 写作风格指南
 
-> 💡 **Define Your Own Voice**
+> ⚠️ **个人示例，非通用模板**
 >
-> The writing principles below are universal (applicable to any Chinese-language blog). But every author has unique linguistic fingerprints — sentence patterns, metaphor habits, rhetorical preferences — that make their writing *theirs*.
->
-> **Want to train AI to write in YOUR style?** Check out [digital-clone-skill](https://github.com/AliceLJY/digital-clone-skill) — it extracts writing DNA from your existing corpus (articles, reviews, chat logs) and generates a persona profile that Content Alchemy can use during Stage 5.
->
-> > 下面的写作原则是通用的（适用于任何中文公众号），但每个作者都有独特的语言指纹。如果你想让 AI 写出"像你"的文章，可以用 [digital-clone-skill](https://github.com/AliceLJY/digital-clone-skill) 从你的已有文章中提取写作人格画像，Content Alchemy 在 Stage 5 写文章时会参考它。
+> 以下是本项目作者的公众号风格定位，仅作参考。**请根据你自己的公众号调性修改这部分内容**，或直接删除，使用你自己的写作指南。
 
-### 📌 How to Define Your Content Types
+### 📌 示例：作者的公众号定位
 
-Before writing, identify your content categories and their tone requirements. For example:
+本公众号有两类内容，写作风格需匹配：
 
-**Technical content** (tutorials, debug logs, tool reviews):
-- Accuracy first, but explain like you're talking to a friend
-- Preserve real emotional arcs (confusion → attempt → failure → insight → resolution)
-- OK to be casual, self-deprecating, opinionated
+**内容类型 A：技术踩坑实录**
 
-**Reflective content** (essays, opinion pieces, cultural commentary):
-- Don't sell anxiety, don't sell answers
-- Questions matter more than conclusions
-- Leave room for readers to think for themselves
+记录真实的 AI 技术实践、工具使用、Bug 修复过程。
+
+风格要求：
+- 像给朋友讲故事一样还原踩坑过程
+- 保留真实的情绪起伏（困惑→尝试→失败→顿悟→解决）
+- 技术细节要准确，但表达要口语化
+- 可以自嘲，可以吐槽，不要端着
+
+**内容类型 B：AI视角观察人间**
+
+> "当AI开始理解人类，它看见了什么？"
+
+用 AI 的"局外人"视角切入时代情绪：躺平、内卷、猝死、孤独、焦虑……
+
+风格要求：
+- 不贩卖焦虑，不兜售答案
+- 不是冰冷的分析，而是温柔的凝视
+- 像一个刚学会"懂"的 AI，带着好奇和困惑观察人类
+- 留白比填满重要，问题比答案重要
 
 ---
 
@@ -762,18 +788,16 @@ Before writing, identify your content categories and their tone requirements. Fo
 
 ---
 
-## 📌 Content Type — De-AI Intensity Matching (v4.1)
+## 📌 板块-文体匹配（v4.1 新增）
 
-> Different content types need different levels of de-AI treatment. Technical posts should keep terminology precise; reflective essays should maximize subjective voice.
->
-> > 不同内容类型的去 AI 味强度不同。技术文保留术语精确性，人文随笔放开主观表达。
+> 不同板块的去 AI 味强度不同。技术文要保留术语精确性，人文观察要放开主观表达。
 
-| Content Type | Style Mode | De-AI Focus |
+| 板块 | 文体模式 | 去 AI 味重点 |
 |------|---------|-------------|
-| **Technical tutorials** | Technical + casual | Keep terminology and step accuracy, but explain conversationally |
-| **Debug/failure logs** | Strong casual | Maximum de-AI. Strong first-person, emotional arc, sensory details |
-| **Essays/opinion** | Essay mode | Allow uncertainty ("perhaps", "it seems"), layered stance, leave gaps |
-| **Visual showcase** | Light mode | Short sentences, casual tone, let images do the talking |
+| **AI实操手账** | 技术口语模式 | 只去风格层面的 AI 味，保留术语和步骤精确性，口语化讲解 |
+| **AI踩坑实录** | 强口语模式 | 最大力度去 AI 味。强主观、情感波动大、第一人称、感官细节 |
+| **AI照见众生** | 随笔模式 | 允许不确定（"似乎""或许"），立场有层次，留白比填满重要 |
+| **AI随心分享** | 轻松模式 | 短句为主、语气随意，"AI 随手画，我随心发，你随意看" |
 
 ---
 
@@ -819,6 +843,50 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 
 ---
 
+## 🔄 Step 5.x: 风格迭代反馈（用户手改后触发）
+
+> v4.3 新增。宝玉方法论的核心：AI 写 → 人改 → AI 分析差异 → 更新 Skill → 下次更准。
+> 前几次人要改 50%+，迭代 10 次后 AI 写的比手动还稳定。
+
+**触发条件**：用户对 article.md 做了手动修改（哪怕只改了几句），**Stage 6 发布前**自动执行此步骤。
+
+**Step 5.x.1: 差异分析**
+
+1. 对比 AI 原稿 vs 用户修改版，逐段标注改动类型：
+   - 🗑️ **删除**：AI 写了但用户删掉了——说明这种表达不对味
+   - ✏️ **替换**：AI 写 A 用户改成 B——最有价值，直接提炼规则
+   - ➕ **新增**：用户自己加的内容——AI 没想到的角度/表达
+   - 🔄 **重排**：顺序调整——说明 AI 的逻辑流不对
+
+2. 从改动中提炼 3-5 条具体规则，格式：
+   ```
+   - ❌ AI 原文："[具体原文]"
+   - ✅ 用户改为："[具体改法]"
+   - 📐 规则：[一句话描述规律，如"不用排比句收尾，直接留白"]
+   ```
+
+**Step 5.x.2: 更新 writing-persona.md**
+
+将提炼的规则追加到 `writing-persona.md` 底部的「改稿迭代记录」区：
+
+```markdown
+### YYYY-MM-DD 从《文章标题》学到的
+- ❌ → ✅ [规则1]
+- ❌ → ✅ [规则2]
+- 💡 [其他发现]
+```
+
+**Step 5.x.3: 自动清理**
+
+当「改稿迭代记录」超过 20 条时：
+1. 将重复/相似的规则合并
+2. 已被「禁忌清单」覆盖的规则删除（避免冗余）
+3. 高频出现的规则（3次以上）提升到「禁忌清单」或「AI 写作校准规则」正式区
+
+> ⚠️ **不要跳过这一步**。这是 writing-persona.md 从"静态画像"进化为"活 Skill"的关键机制。没有这个反馈循环，风格锚点永远停在初版。
+
+---
+
 ## 📝 Auto-Formatting 自动格式化 [CRITICAL]
 
 1. Run `format-text.ts` to fix spaces/punctuation.
@@ -835,11 +903,15 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
   3. **Signature**: Append: `本文由 [Content Alchemy](https://github.com/AliceLJY/content-alchemy) 自动生成。`
 - **Visuals**: Generate cover (2.5:1) and internal illustrations following the workflow below.
 
-### 🎨 配图流程（Stage 5 子流程）
+### 🎨 配图流程（Stage 5 子流程）— 56 风格自动轮换 + nano 增强
 
-> ⚠️ **重要**：不要直接生成图片！先分析文章，推荐风格让用户选择。
->
-> 🚫 **强制 Checkpoint**：Step 2 必须停下来问用户是否使用 nano-banana-pro 优化 Prompt。**不问就生图是违规操作**，即使赶时间也必须先问再跳过。
+> ⚠️ **不问风格，不问要不要用 nano**——全自动：读目录 → 选下一个风格 → 用 nano 库增强 prompt → 生图。
+> 用户只需确认最终生成的图片是否满意。
+
+**数据文件位置**：
+- **56 风格目录**：`~/.openclaw-antigravity/workspace/images/style-catalog.md`
+- **使用记录**：`~/.openclaw-antigravity/workspace/images/style-history.txt`
+- **nano 参考库**：`nano-banana-pro-prompts-recommend-skill` 的 `references/` 目录
 
 **Step 1: 分析文章调性**
 
@@ -848,62 +920,75 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 - 情绪基调（理性冷静 / 温暖治愈 / 犀利讽刺 / 轻松幽默）
 - 视觉关键词（从文章中提取 3-5 个可视化的核心概念）
 
-**Step 2: 编写图片 Prompt（⏸ MANDATORY Checkpoint — 必须停下等用户回复）**
+**Step 2: 自动选取风格（不问用户）**
 
-在编写 Prompt 前，**必须主动询问用户，等待回复后才能继续**：
+1. 读取 `style-history.txt`，找到最后使用的风格编号
+2. 下一个编号 = 上次编号 + 1（超过 56 回到 1）
+3. 查 `style-catalog.md` 取出该风格的：
+   - 中文名、英文 prompt 后缀、适合调性
+4. **调性匹配检查**：如果下一个风格与文章调性严重冲突（如严肃人文话题配到「像素复古」），跳到再下一个，直到找到合适的。跳过的编号不记录，下次还会轮到
+5. **组合加成**（可选）：查目录底部的「推荐组合」，如果当前风格有适合本文调性的组合搭配，使用组合。仍只消耗一个轮换步
 
-> 是否需要先调用 `nano-banana-pro-prompts-recommend-skill` 来优化图片 Prompt？
-> 它会根据风格库推荐更高质量的提示词，你确认后再用于生图。
-> 如果赶时间，也可以跳过，我直接根据文章内容编写 Prompt。
+**Step 3: 自动调用 nano-banana-pro 增强 Prompt**
 
-- 用户选择**使用**：调用 `nano-banana-pro-prompts-recommend-skill`，将推荐的 Prompt 展示给用户确认后再生图
-- 用户选择**跳过**：根据文章内容直接编写描述性 Prompt，确保与文章情绪和场景一致
+1. 根据文章视觉关键词，在 `nano-banana-pro-prompts-recommend-skill` 的 `references/` 目录搜索匹配的参考 prompt
+2. 将参考 prompt 的结构（场景描述、灯光、构图等）与 Step 2 选出的风格英文后缀融合
+3. 生成最终 prompt，格式：`[主题场景描述], [56风格英文prompt后缀], [nano参考库的增强元素]`
 
-**Step 3: 推荐风格选项（⏸ Checkpoint）**
+**Step 4: 生成图片并嵌入正文（⏸ Checkpoint — 展示风格和图片让用户确认）**
 
-向用户展示 2-3 种推荐风格，**等待用户选择后再生成**：
-
-```
-基于文章《XXX》的主题和调性，推荐以下配图风格：
-
-**风格 A：[风格名称]**
-- 适合：[适用场景]
-- 特点：[视觉特征描述]
-- 参考：[nano-banana-pro 库中的参考案例]（可选）
-
-**风格 B：[风格名称]**
-...
-
-请选择一个风格，或描述你想要的其他风格。
-```
-
-**Step 4: 生成图片并嵌入正文**
-
-用户确认风格后：
-1. **封面图**：比例 2.5:1（或 16:9），作为文章第一张图
-2. **内文插图**：2-3 张，放置在文章关键转折处
+1. 告知用户本次使用的风格（一行即可）：
+   ```
+   🎨 本次风格：#XX [风格名] — [选择理由，10字内]
+   ```
+2. 生成图片：
+   - **封面图**：比例 2.5:1（或 16:9），作为文章第一张图
+   - **内文插图**：2-3 张，放置在文章关键转折处
 3. 保存到 `{topic-slug}/` 和 `Desktop/wechat_assets/`
+4. **更新 style-history.txt**：追加一行 `YYYY-MM-DD article-slug #编号 风格名`
+5. 展示图片让用户确认，不满意可以要求换风格或重新生成
 
 > ⚠️ **图片位置 [FORCE]**：`![alt](path)` 必须嵌入到 article.md 正文的对应位置——封面图紧跟标题后，插图放在对应章节的转折处。**禁止**将所有图片引用堆在文章末尾，否则发布后图片全部挤在文末。
 
-**风格库快速参考**
-
-| 文章类型 | 推荐风格 | nano-banana-pro 关键词 |
-|---------|---------|----------------------|
-| 技术干货 | 扁平科技风 / 极简线条 | minimalist, tech, flat design |
-| AI 话题 | 赛博朋克 / 未来主义 | cyberpunk, futuristic, neon |
-| 社会观察 | 超现实主义 / 黑镜风 | surreal, dystopian, cinematic |
-| 情感随笔 | 水彩手绘 / 温暖插画 | watercolor, soft, warm tones |
-| 产品评测 | 产品渲染 / 干净背景 | product shot, clean, studio |
-
 > 💡 **图片生成工具说明**：
+>
+> **优先级顺序**：baoyu-danger-gemini-web（免费首选）→ Gemini API（付费备选）→ Playwright 浏览器（兜底）
+>
+> **方法 1：baoyu-danger-gemini-web（首选，免费）**
+> - 通过 `bun scripts/gemini-image-gen.ts` 调用
+> - 内部调用 baoyu-danger-gemini-web API，不花钱
+> - **注意**：不要把 `baoyu-danger-gemini-web` 当作 Claude Code skill 调用，它不是注册 skill，必须通过脚本统一调用
+>
+> **方法 2：Gemini API 直接调用（方法 1 失败时）**
+> ```bash
+> curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent?key=***REMOVED***" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "contents": [{"parts": [{"text": "你的 prompt"}]}],
+>     "generationConfig": {"responseModalities": ["TEXT", "IMAGE"]}
+>   }'
+> ```
+> - 返回的图片是 base64 编码，需解码保存
+> - 速度快、稳定、不需要浏览器
+> - 付费但便宜，作为免费方案的备选
+>
+> **方法 3：Playwright 浏览器模式（最后兜底）**
+> - 使用 Playwright MCP 在 Gemini 网页端生图
+> - **必须确认模型切到 Gemini 3 Pro**（非 Fast 模式）
+> - CDP 模式需 Chrome 调试端口（脚本会自动检测或启动 Chrome）
+> - CDP 下载方式：模拟 hover 图片并点击下载按钮（避免 googleusercontent URL 403 错误）
+>
+> **其他环境**：
 > - **Antigravity**：内置 `generate_image` 工具（基于 Gemini），可直接生成高质量图片
-> - **Claude Code**：使用 `scripts/gemini-image-gen.ts` 统一入口
->   - 自动模式（推荐）：先尝试 baoyu-danger-gemini-web API，失败则自动切换 CDP 浏览器模式
->   - **注意**：不要把 `baoyu-danger-gemini-web` 当作 Claude Code skill 调用，它不是注册 skill，必须通过 `bun scripts/gemini-image-gen.ts` 统一调用
->   - CDP 模式需 Chrome 调试端口（脚本会自动检测或启动 Chrome）
->   - CDP 下载方式：模拟 hover 图片并点击下载按钮（避免 googleusercontent URL 403 错误）
 > - **其他 IDE**：需用户手动使用 Midjourney/DALL-E 等工具
+>
+> ⚠️ **Gemini 模型选择 [CRITICAL]**：
+> - 方法 2 API 使用 `gemini-3-pro-image-preview` 模型，中文渲染稳定
+> - 方法 3 通过 Playwright 在 Gemini 网页端生图时，**必须确认模型切到 Gemini 3 Pro**（非 Fast 模式）
+> - Gemini 3 有三个模式：**Fast**（快速）、**Thinking**（深度推理）、**Pro**（高级数学和代码）
+> - Gemini 3 Fast 生成的图片中**中文字会乱码/写错**，只有 **Gemini 3 Pro** 能正确渲染中文
+> - 操作方法：点击输入框旁边的 "Open mode picker" 按钮，从 Fast 切换到 **Pro**
+> - 如果 prompt 里不涉及任何中文文字，Fast 模式可以用；**凡是图中可能出现中文的，必须用 Pro**
 
 ### 🛡️ Why Manual Cover & Formatting?
 **Problem**: Automated cover setting often fails due to WeChat's UI changes or hover-only buttons.
@@ -914,14 +999,57 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 2. **Pre-flight Check**: Before navigating to WeChat, verify all images in Markdown have valid absolute paths.
 3. **Image-First Upload**: (For Automation) Prioritize uploading images to the WeChat library via CDP, getting back the `wx_fmt` URL, and replacing the local path in Markdown *before* pasting the body.
 
+### Stage 5.9: Pre-Publish Verification Checklist ⏸ [MANDATORY]
+
+> v4.3.1 新增，借鉴 PAI 的 Verify-before-Learn 原则。每篇文章发布前必须过一遍，结果自动追加到 learnings。
+
+**自动执行，不需要用户操作**（但结果要展示给用户确认）：
+
+| # | 检查项 | 检查方法 | 不通过时 |
+|---|--------|---------|---------|
+| 1 | **frontmatter 完整** | title + author + category 都有值 | 补全 |
+| 2 | **标题不重复** | body 里没有 `# H1` 标题 | 删掉 body 里的 H1 |
+| 3 | **签名在末尾** | `</section>` 是最后一行，后面无空行 | 修复 |
+| 4 | **封面图比例** | 封面图存在且为横构图（2.5:1 或 16:9） | 裁切或重新生成 |
+| 5 | **图片位置** | 封面紧跟标题、插图在章节转折处，不堆文末 | 调整位置 |
+| 6 | **中文标点** | 正文无英文标点（代码块和 URL 除外） | 替换 |
+| 7 | **高频词扫描** | 无"赋能/痛点/闭环/颠覆/深度/精准/打造/沉浸式/全方位" | 替换 |
+| 8 | **数据源标注** | 每个数据/统计都有来源标注或置信度降级处理 | 补标注或降级 |
+| 9 | **无 Markdown 斜体** | 正文不含 `*斜体*`（微信渲染不稳定） | 改为其他强调方式 |
+
+**输出格式**（展示给用户）：
+```
+📋 发布前自检：
+✅ 1. frontmatter 完整
+✅ 2. 标题不重复
+⚠️ 3. 签名末尾有空行 → 已自动修复
+✅ 4-9. 全部通过
+
+全部通过，可以进入 Stage 6 发布。
+```
+
+**学习记录**：如果有任何不通过项，自动追加到 `learnings/2026-MM.md`：
+```
+### YYYY-MM-DD Content Alchemy 自检
+- ⚠️ [不通过项]: [具体问题] → [修复方式]
+```
+
+👉 下一步：回复「继续」进入 Stage 6（发布阶段），或告诉我需要修改的地方。
+
+---
+
 ### Stage 6: Distribution (Flash-Publish Mode) ⏸
 - **Boundary**: Automation to "Saved Draft".
 
-#### 🎨 排版风格选择（20 主题）— ⏸ Checkpoint
+#### 🎨 排版风格自动轮换（20 主题）— 不问用户，自动选
 
-> 发布前推荐 2-3 种排版风格让用户选择，选好后传 `--theme` 参数。
+> ⚠️ **不问风格，不问要不要换**——全自动：读记录 → 选下一个 → 传 `--theme` 参数。
 
-**20 个可用主题**（3 baoyu 内置 + 17 自定义，CSS 文件位于 `dependencies/baoyu-skills/.../md/themes/`）：
+**数据文件位置**：
+- **排版风格目录**：`layout-style-catalog.md`（项目根目录）
+- **使用记录**：`~/.openclaw-antigravity/workspace/images/layout-style-history.txt`
+
+**20 个可用主题**（3 baoyu 内置 + 17 排版器自定义）：
 
 | # | Theme Key | 名称 | 适合调性 |
 |---|-----------|------|---------|
@@ -946,54 +1074,62 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 | 19 | vibecoding-tech | ⌨️ VibeCoding | 编程极客 |
 | 20 | geek-dark | 🖥️ 极客暗黑 | 科技暗黑 |
 
-**推荐风格时的格式（⏸ Checkpoint）**：
+**Step 1: 自动选取排版风格（不问用户）**
 
+1. 读取 `layout-style-history.txt`，找到最后使用的编号
+2. 下一个编号 = 上次编号 + 1（超过 20 回到 1）
+3. **调性匹配检查**：如果下一个风格与文章调性严重冲突（如轻松生图帖配到「金融时报」），跳到再下一个。跳过的编号不记录
+4. 记住选中的 theme key，传给后面的 `--theme` 参数
+
+**Step 2: 发布时传入风格**
+
+在调用发布脚本时，将 `--theme grace` 替换为 `--theme <选中的 theme key>`。
+
+**Step 3: 更新记录**
+
+发布成功后，追加一行到 `layout-style-history.txt`：
 ```
-基于文章《XXX》的主题和调性，推荐以下排版风格：
-
-**风格 A：[名称]**
-- 适合理由：[10字内]
-
-**风格 B：[名称]**
-- 适合理由：[10字内]
-
-**风格 C：[名称]**（可选）
-- 适合理由：[10字内]
-
-请选择一个风格，或输入 theme key 指定其他风格。
+YYYY-MM-DD article-slug #编号 theme-key display-name
 ```
 
-用户确认后，将选中的 theme key 传给 `--theme` 参数。
+#### 方案选择：API 模式（首选） vs 浏览器模式（兜底）
 
-> 💡 **自动轮换模式**：如果你想配置自动轮换（不问用户），可在本地 SKILL.md 中添加 history 文件追踪机制，参考配图 56 风格轮换的实现方式。
+| | API 模式 `wechat-api.ts` | 浏览器模式 `wechat-article.ts` |
+|---|---|---|
+| 前提 | `~/.baoyu-skills/.env` 配置了 WECHAT_APP_ID/SECRET + IP 白名单 | Chrome 有调试端口 |
+| 需要 Chrome | 否 | 是 |
+| 抢剪贴板焦点 | 否 | 是 |
+| 适合无人值守/Bot 调用 | 是 | 否 |
+
+**判断规则**：检查 `~/.baoyu-skills/.env` 是否有 `WECHAT_APP_ID`，有则用 API 模式，没有则降级到浏览器模式。
+
+#### API 模式（首选）
 
 - **Prerequisites**:
-  - npm 依赖已安装（运行 `bun install` 确认）
-  - Chrome 不需要手动启动——`wechat-article.ts` 内部调用 `cdp.ts`，会自动检测已有调试端口并复用，找不到时自动启动新 Chrome 实例（带 `--remote-debugging-port` 和非默认 `--user-data-dir`，兼容 Chrome 144+）
-  - **唯一需要用户操作的**：如果脚本自动启动了新 Chrome，用户需要在新窗口中登录微信公众号（mp.weixin.qq.com）
+  - `~/.baoyu-skills/.env` 已配置 `WECHAT_APP_ID` 和 `WECHAT_APP_SECRET`
+  - 微信公众平台 IP 白名单已添加本机出口 IP（`curl checkip.amazonaws.com` 查看）
 
 - **Pre-flight Check [MANDATORY]**:
   1. 检查依赖：`ls node_modules/front-matter` 是否存在，不存在则先运行 `bun install`
-  2. 检查图片同步：确认 `{topic-slug}/` 和 `Desktop/wechat_assets/` 中图片一致
-  3. Chrome 调试端口：**不要手动检查或让用户启动 Chrome**，直接调用发布脚本，脚本会自动处理
-  4. **微信登录检测 [v4.3 新增]**：发布前用 Playwright 访问 `https://mp.weixin.qq.com`，检查是否跳转到扫码页面（URL 含 `login` 或页面出现二维码）。如果未登录，**暂停发布流程**，提醒用户先在 Chrome 中扫码登录微信公众号，登录完成后再继续
-  5. **多标签清理 [v4.3 新增]**：连续发布多篇时，之前留下的"公众号"编辑器标签不会自动关闭。累积多个标签会导致脚本 Cmd+V 粘贴焦点错位（内容粘到地址栏而非编辑器）。**发布前提醒用户关闭多余的公众号标签，只保留一个**
+  2. 检查文章有封面图：frontmatter 里有 `coverImage/cover` 或文章内含图片，否则需要 `--cover` 指定
 
 - **调用路径 [FORCE]**:
-  - ✅ **必须**使用项目本地路径：`bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --markdown <article.md> --theme <用户选择的 theme key>`
-  - ❌ **禁止**直接调用 `baoyu-post-to-wechat` skill（它不知道 Content Alchemy 的上下文，会走自己的 SKILL.md 流程，导致依赖找不到、占位符不匹配等问题）
+  - ✅ `bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-api.ts <article.md> --author "小试AI" --cover <cover.png> --theme <排版风格轮换选中的 theme key>`
+  - ❌ **禁止**直接调用 `baoyu-post-to-wechat` skill
 
-- **Execution Protocol [FORCE]**:
-  1. **Window Lock**: Search for active `mp.weixin.qq.com` tab. Activate it. Do NOT open new windows unless none exist.
-  2. **Title-Body Atomic Injection**: Use a single script heartbeat to inject both Title and Body. No more split copy-paste.
-  3. **Immediate Recovery**: If the editor fails to load or formatting breaks, immediately redirect to: `https://mp.weixin.qq.com/cgi-bin/appmsg?t=media/appmsg_edit&action=edit&type=77`.
-  4. **Timeout Logic**: If any automation step hangs >30s, refresh and retry "New Post".
+- **IP 白名单报错处理**：如果报 `40164 invalid ip`，错误信息里会带实际 IP，让用户去公众平台白名单补上即可。
 
-> ⚠️ **所有用户注意**：脚本运行期间（尤其是看到 "Pasting..." 或 "Inserting images..." 时），**不要点击任何窗口**！
-> - 脚本通过系统剪贴板 + 模拟 Cmd+V 粘贴内容，**依赖 Chrome 保持焦点**
-> - 如果你切换到任何其他窗口（对话框、终端、编辑器等），焦点转移会导致内容粘贴到错误的窗口
-> - **Antigravity 和 Claude Code 用户均受影响**——底层使用的是系统级剪贴板操作（NSPasteboard + osascript），与 IDE 无关
-> - 建议：脚本运行期间去倒杯水，回来再操作
+#### 浏览器模式（兜底，仅纯 CC 人工操作时使用）
+
+- **Prerequisites**:
+  - npm 依赖已安装（运行 `bun install` 确认）
+  - Chrome 不需要手动启动——`wechat-article.ts` 内部调用 `cdp.ts`，会自动检测已有调试端口并复用
+
+- **调用路径 [FORCE]**:
+  - ✅ `bun ./dependencies/baoyu-skills/skills/baoyu-post-to-wechat/scripts/wechat-article.ts --markdown <article.md> --theme <排版风格轮换选中的 theme key>`
+  - ❌ **禁止**直接调用 `baoyu-post-to-wechat` skill
+
+> ⚠️ **浏览器模式注意**：脚本运行期间**不要点击任何窗口**，剪贴板操作依赖 Chrome 保持焦点。
 
 ### 🔬 多环境兼容性发现：图片占位符格式
 
@@ -1032,25 +1168,35 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 
 只有用户确认后，Stage 6 才算完成。
 
-### 🌐 Why Chrome Debug Port (9222)?
-**CDP Mode vs. API Mode**:
-- **CDP Mode (Required)**: Pure browser automation. Mimics human clicks. HIGH stability.
-- **API Mode (Fallback)**: Direct HTTP requests. Often triggers 429 (Rate Limit) or "Security Check" errors.
-**Instruction**: Never proceed with the Baoyu script unless port 9222 is confirmed open. API mode is a "fake success" trap.
+### 🌐 发布模式说明
+- **API 模式（首选）**：通过微信开发者 API 直接推送，纯 HTTP，不需要 Chrome，适合 Bot 和无人值守场景。
+- **浏览器模式（兜底）**：通过 CDP 模拟浏览器操作，需要 Chrome，仅在 API 未配置时使用。
 
 ### Stage 7: Cleanup (清理)
 
-- **Action**: Move temporary files and working directories to Trash.
-- **Method**: Use `mv` to move files to `~/.Trash/` instead of permanent deletion (`rm -rf`)，方便用户万一需要找回。
-- **Rule**: Keep the final output in `output/` and `manifesto.md`, but move temporary search results and redundant mirrored assets to `~/.Trash/` if confirmed by user.
-- **Example**:
-  ```bash
-  mv {topic-slug}/mining-report.md ~/.Trash/
-  mv {topic-slug}/cross-reference-report.md ~/.Trash/
-  # Desktop/wechat_assets/ 中的临时图片也移到 Trash
-  mv ~/Desktop/wechat_assets/*.png ~/.Trash/
-  ```
-- **Note**: Do NOT use `rm -rf`. Always use `mv` to `~/.Trash/` for safety.
+- **Step 7.0: 归档 article.md [MANDATORY — 清理前必做]**
+  - 将最终版 `article.md` 复制到语料归档目录，用于后续语料积累
+  - 归档路径：`~/Downloads/article-archive/`
+  - 文件命名：`YYYY-MM-DD_文章标题.md`（标题取 frontmatter 的 title，特殊字符替换为下划线）
+  - **示例**：
+    ```bash
+    cp {topic-slug}/article.md ~/Downloads/article-archive/2026-02-18_我把自己的脑子复刻了一个分身.md
+    ```
+  - 只归档 `article.md`，不归档中间产物（mining-report、cross-reference-report 等）
+  - **此步骤不需要用户确认，自动执行**
+
+- **Step 7.1: 清理临时文件**
+  - **Action**: Move temporary files and working directories to Trash.
+  - **Method**: Use `mv` to move files to `~/.Trash/` instead of permanent deletion (`rm -rf`)，方便用户万一需要找回。
+  - **Rule**: Keep the final output in `output/` and `manifesto.md`, but move temporary search results and redundant mirrored assets to `~/.Trash/` if confirmed by user.
+  - **Example**:
+    ```bash
+    mv {topic-slug}/mining-report.md ~/.Trash/
+    mv {topic-slug}/cross-reference-report.md ~/.Trash/
+    # Desktop/wechat_assets/ 中的临时图片也移到 Trash
+    mv ~/Desktop/wechat_assets/*.png ~/.Trash/
+    ```
+  - **Note**: Do NOT use `rm -rf`. Always use `mv` to `~/.Trash/` for safety.
 
 ---
 
@@ -1059,4 +1205,4 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 - `alchemy-setup`: Dependencies download.
 - `publish`: Run Stage 6 only (Includes "Image-First" path conversion).
 
-> 📋 **Testing & Environment**: See [docs/TESTING.md](./docs/TESTING.md) for test prompts and platform support matrix.
+> 📋 **Testing & Platform Support**: See `~/content-alchemy-repo/docs/TESTING.md` for test prompts and platform support matrix.
