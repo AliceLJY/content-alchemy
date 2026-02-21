@@ -41,3 +41,6 @@ package-lock.json
 
 # 依赖
 node_modules/
+
+# 外部依赖
+dependencies/
