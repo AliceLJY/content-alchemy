@@ -1,6 +1,7 @@
 [submodule "dependencies/baoyu-skills"]
 	path = dependencies/baoyu-skills
-	url = https://github.com/JimLiu/baoyu-skills.git
+	url = https://github.com/AliceLJY/baoyu-skills.git
+	branch = local-patches
 [submodule "dependencies/nano-banana-pro"]
 	path = dependencies/nano-banana-pro
 	url = https://github.com/YouMind-OpenLab/nano-banana-pro-prompts-recommend-skill.git
