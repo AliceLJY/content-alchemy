@@ -1072,7 +1072,6 @@ AI 喜欢"正确"的表达，人类喜欢"意外"的转折。
 | 17 | matcha-latte | 🍵 抹茶拿铁 | 清新自然 |
 | 18 | sakura-letter | 🌸 樱花信笺 | 柔美感性 |
 | 19 | vibecoding-tech | ⌨️ VibeCoding | 编程极客 |
-| 20 | geek-dark | 🖥️ 极客暗黑 | 科技暗黑 |
 
 **Step 1: 自动选取排版风格（不问用户）**
 
