@@ -330,7 +330,7 @@ When "Revision Iteration Log" exceeds 20 entries:
 **Rules**:
 1. **Punctuation**: 100% full-width Chinese style.
 2. **Cover**: Insert as the first element after frontmatter.
-3. **Signature**: Append from template at `~/.claude/projects/-Users-anxianjingya/memory/signature-template.html`. Use single `<p>` + `<br>` line breaks (not multiple `<p>` -- WeChat forces paragraph spacing). `font-size: 12px; line-height: 1.6; color: #b2b2b2;` on the `<p>`. **Never copy signature from archived articles** (may be old format).
+3. **Signature**: Do NOT add signature in article.md — it is appended automatically by content-publisher at publish time.
 
 ---
 
@@ -382,16 +382,15 @@ Read the complete article and identify:
 
 ### Image Generation Tools
 
-**Priority**: baoyu-danger-gemini-web (free, preferred) -> Gemini API (paid backup) -> Playwright browser (fallback)
+**Priority**: Gemini CLI (free, preferred) -> baoyu-danger-gemini-web (free fallback) -> Playwright browser (last resort)
 
-**Method 1: baoyu-danger-gemini-web** (preferred, free)
+**Method 1: Gemini CLI** (preferred, free)
+- `gemini -p "prompt"` — OAuth authentication, no API key needed
+- Gemini CLI v0.31.0, `/opt/homebrew/bin/gemini`
+
+**Method 2: baoyu-danger-gemini-web** (free fallback)
 - Via `bun scripts/gemini-image-gen.ts`
 - Do NOT invoke `baoyu-danger-gemini-web` as a Claude Code skill -- it's not a registered skill, must go through the script
-
-**Method 2: Gemini API** (when Method 1 fails)
-- Model: `gemini-3-pro-image-preview`
-- Returns base64-encoded images, decode and save
-- Paid but cheap, reliable backup
 
 **Method 3: Playwright browser** (last resort)
 - Use Playwright MCP on Gemini web UI
@@ -408,7 +407,7 @@ Read the complete article and identify:
 |---|-----------|--------|-----------|
 | 1 | **frontmatter complete** | title + author + category all present | Fill in |
 | 2 | **Title not duplicated** | No `# H1` in body | Remove body H1 |
-| 3 | **Signature at end** | `</section>` is last line, no trailing blank lines | Fix |
+| 3 | **No signature in article.md** | article.md must NOT contain signature HTML (content-publisher adds it) | Remove if present |
 | 4 | **Cover image ratio** | Cover exists and is landscape (2.5:1 or 16:9) | Crop or regenerate |
 | 5 | **Image placement** | Cover after title, illustrations at transitions, not piled at end | Adjust positions |
 | 6 | **Chinese punctuation** | No English punctuation in body (except code blocks and URLs) | Replace |
@@ -421,7 +420,7 @@ Read the complete article and identify:
 Pre-publish check:
 1. frontmatter complete
 2. Title not duplicated
-3. Signature end trailing line -> auto-fixed
+3. No signature in article.md -> passed
 4-9. All passed
 
 All passed. Ready for content-publisher.
