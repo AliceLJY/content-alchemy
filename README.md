@@ -80,10 +80,14 @@ content-alchemy/
 |------|------|
 | **content-alchemy** (this) | Research + Writing (Stages 1-5) |
 | [content-publisher](https://github.com/AliceLJY/content-publisher) | Images + Layout + Publishing + Cleanup |
-| [digital-clone-skill](https://github.com/AliceLJY/digital-clone-skill) | Extract writing DNA for personalized output |
-| [openclaw-content-alchemy](https://github.com/AliceLJY/openclaw-content-alchemy) | Standard edition: bot config + 56 art styles |
-| [openclaw-worker](https://github.com/AliceLJY/openclaw-worker) | Bot worker for automated task execution |
-| [openclaw-cli-pipeline](https://github.com/AliceLJY/openclaw-cli-pipeline) | Multi-turn Claude Code orchestration pipeline |
+| [openclaw-worker](https://github.com/AliceLJY/openclaw-worker) | Task API + Docker compose for OpenClaw |
+| [openclaw-content-alchemy](https://github.com/AliceLJY/openclaw-content-alchemy) | Bot-native content pipeline |
+| [openclaw-cli-pipeline](https://github.com/AliceLJY/openclaw-cli-pipeline) | Multi-turn CC orchestration CLI |
+| [openclaw-cli-bridge](https://github.com/AliceLJY/openclaw-cli-bridge) | Three-way bridge: /cc /codex /gemini |
+| [digital-clone-skill](https://github.com/AliceLJY/digital-clone-skill) | Build digital clones from corpus data |
+| [local-memory](https://github.com/AliceLJY/local-memory) | Local AI conversation search (LanceDB + Jina) |
+| [cc-shell](https://github.com/AliceLJY/cc-shell) | Lightweight Claude Code chat UI |
+| [telegram-ai-bridge](https://github.com/AliceLJY/telegram-ai-bridge) | Telegram AI bridge (currently unused) |
 
 > content-alchemy 产出 article.md，content-publisher 负责配图、排版、发布到微信公众号。
 
