@@ -120,7 +120,7 @@ Body starts here. No H1 in body (title comes from frontmatter only).
 
 ### Key References
 
-- Writing persona: `~/.claude/projects/-Users-anxianjingya/memory/writing-persona.md`
+- Writing persona: find `writing-persona.md` in `~/.claude/projects/*/memory/` (auto-detect active project)
 - Style catalog (56 styles): `~/.openclaw-antigravity/workspace/images/style-catalog.md`
 - Style history: `~/.openclaw-antigravity/workspace/images/style-history.txt`
 - Signature: handled by content-publisher (do NOT add in article.md)

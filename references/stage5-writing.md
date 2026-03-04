@@ -10,7 +10,7 @@
 
 **Read `writing-persona.md`'s Quick Calibration block** before writing:
 
-1. Read `~/.claude/projects/-Users-anxianjingya/memory/writing-persona.md`
+1. Find and read `writing-persona.md` from `~/.claude/projects/*/memory/` (auto-detect active project)
 2. **Only the `## Quick Calibration` YAML block** is needed for calibration:
    - `voice_profile`: 5-dimension voice coordinates (formal_casual / serious_playful / technical_simple / reserved_expressive / humble_confident)
    - `core_fingerprints`: 6 core fingerprints (question-first, nested clauses, cross-domain metaphors, hypothetical-open-endings, long-short alternation, lateral comparison)
@@ -382,18 +382,22 @@ Read the complete article and identify:
 
 ### Image Generation Tools
 
-**Priority**: Gemini CLI (free, preferred) -> baoyu-danger-gemini-web (free fallback) -> Playwright browser (last resort)
+**Priority**: gemini-web-image (free, preferred) -> Gemini API (needs key) -> CDP browser (last resort)
 
-**Method 1: Gemini CLI** (preferred, free)
-- `gemini -p "prompt"` — OAuth authentication, no API key needed
-- Gemini CLI v0.31.0, `/opt/homebrew/bin/gemini`
+**Method 1: gemini-web-image** (preferred, free)
+- Via `bun scripts/gemini-image-gen.ts` (auto mode calls this first)
+- Or directly: `bun ~/gemini-web-image/gemini-web-image.ts --prompt "..." --output path.png`
+- Uses saved browser cookies, zero API cost
+- Also available as MCP tool `generate_image` in Claude Code / Gemini CLI / Codex
+- First-time setup: `bun ~/gemini-web-image/gemini-web-image.ts --login`
 
-**Method 2: baoyu-danger-gemini-web** (free fallback)
-- Via `bun scripts/gemini-image-gen.ts`
-- Do NOT invoke `baoyu-danger-gemini-web` as a Claude Code skill -- it's not a registered skill, must go through the script
+**Method 2: Gemini API** (fallback, costs money)
+- Requires `GOOGLE_API_KEY` in `~/.content-publisher/.env`
+- Via `bun scripts/gemini-image-gen.ts --method api`
 
-**Method 3: Playwright browser** (last resort)
-- Use Playwright MCP on Gemini web UI
+**Method 3: CDP browser** (last resort)
+- Via `bun scripts/gemini-image-gen.ts --method cdp`
+- Connects to existing Chrome or launches new instance
 - **Must confirm model is set to Gemini 3 Pro** (not Fast mode)
 - Gemini 3 Fast produces garbled Chinese text in images; only **Pro** renders Chinese correctly
 

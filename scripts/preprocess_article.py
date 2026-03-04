@@ -3,9 +3,10 @@
 Content Alchemy - 文章预处理脚本
 功能：
 1. 将 Markdown 转换为 HTML
-2. CSS 内联化
-3. 占位符转换（[[IMAGE:xxx]] -> <!--IMG:xxx-->）
-4. 中文标点符号规范化
+2. 占位符转换（[[IMAGE:xxx]] -> <!--IMG:xxx-->）
+3. 中文标点符号规范化
+
+Note: CSS inlining is handled downstream by content-publisher's format-wechat.ts
 """
 
 import sys
