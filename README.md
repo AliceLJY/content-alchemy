@@ -83,7 +83,7 @@ content-alchemy/
 | [digital-clone-skill](https://github.com/AliceLJY/digital-clone-skill) | Extract writing DNA for personalized output |
 | [openclaw-content-alchemy](https://github.com/AliceLJY/openclaw-content-alchemy) | Standard edition: bot config + 56 art styles |
 | [openclaw-worker](https://github.com/AliceLJY/openclaw-worker) | Bot worker for automated task execution |
-| [openclaw-cc-pipeline](https://github.com/AliceLJY/openclaw-cc-pipeline) | Multi-turn Claude Code orchestration pipeline |
+| [openclaw-cli-pipeline](https://github.com/AliceLJY/openclaw-cli-pipeline) | Multi-turn Claude Code orchestration pipeline |
 
 > content-alchemy 产出 article.md，content-publisher 负责配图、排版、发布到微信公众号。
 
