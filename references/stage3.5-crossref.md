@@ -128,6 +128,29 @@ Use template `templates/cross-reference-report.md` to generate report:
 - **Low confidence** (contradicting sources / social media) -> Delete or discuss the phenomenon itself
 - **Zero confidence** (AI-generated only) -> **Must delete**
 
+## Step 3.5.6: Adversarial Verification (Optional, for High-Stakes Articles)
+
+> 适用于：核心论点依赖争议性数据、涉及行业内幕、或用户要求高置信度时。
+> 触发条件：Cross-Reference Report 中有 2+ 项 High Risk，或用户说「严格核查」。
+
+使用三 agent 对抗模式验证数据可靠性：
+
+### Round 1: Finder Agent（找漏洞）
+- 倾向性搜索：对 Truth Table 中每条数据尽可能找反例/矛盾/概念混淆
+- 评分：低影响 +1，中影响 +5，关键影响 +10
+- 产出：漏洞清单 + 总分
+
+### Round 2: Adversarial Agent（反驳）
+- 对 Finder 的每条发现尝试反驳（找支撑证据、指出 Finder 的逻辑错误）
+- 成功反驳得对应分数，误判倒扣 2x
+- 产出：反驳报告 + 净分
+
+### Round 3: Referee Agent（裁决）
+- 综合两方输入，逐条裁决：漏洞成立 / 反驳成立 / 需要更多证据
+- 产出：最终裁决表
+
+**实操方式**：用 subagents 并行跑 Finder 和 Adversarial，Referee 汇总后人工抽检。
+
 ## Checkpoint
 
-Present Cross-Reference Report. Also update Truth Table with "Cross-Verification" column. **User must confirm before Stage 4.**
+Present Cross-Reference Report (+ Adversarial Verification if triggered). Also update Truth Table with "Cross-Verification" column. **User must confirm before Stage 4.**
