@@ -1,10 +1,48 @@
 # Content Alchemy
 
+**English** | [简体中文](README_CN.md)
+
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A Claude Code skill that transforms raw ideas into professional articles through a 5-stage semi-automated pipeline.
 
-> 内容炼金术 — 从选题到成稿的 5 阶段半自动写作管线。Claude Code Skill。
+## Tested Environment
+
+- This repository has only been tested in the author's personal Claude Code CLI workflow.
+- macOS
+- Claude Code
+- Bun
+- Python 3
+- Local article output directory on Desktop: `~/Desktop/bot-articles/`
+
+## Compatibility Notes
+
+- This repository is not guaranteed to work on Linux or Windows.
+- Some paths are hardcoded around the author's local workspace conventions.
+- Users may need to replace persona and style asset paths.
+- Downstream publishing depends on `content-publisher`.
+
+## Prerequisites
+
+- Claude Code
+- Bun
+- Python 3
+- A writable `~/Desktop/bot-articles/`
+- Optional local persona and style assets if you want the same workflow quality
+
+## Local Assumptions
+
+- Output directory: `~/Desktop/bot-articles/{topic-slug}/`
+- Persona source: `~/.claude/projects/*/memory/writing-persona.md`
+- Style catalog: `~/.openclaw-antigravity/workspace/images/style-catalog.md`
+- Style history: `~/.openclaw-antigravity/workspace/images/style-history.txt`
+
+## Known Limits
+
+- This is not a one-click article generator.
+- Every stage requires human confirmation.
+- Path assumptions reflect the author's own machine.
+- Publication is handled by another repo: `content-publisher`.
 
 ## What It Does
 
@@ -17,20 +55,16 @@ A Claude Code skill that transforms raw ideas into professional articles through
 | 4 | Refining | `manifesto.md` |
 | 5 | Humanized Article | `article.md` |
 
-Every stage pauses for user confirmation before proceeding. No hallucination — every claim traces back to a verifiable source.
-
-> 每个阶段都有 checkpoint，需要用户确认后才会继续。不会偷偷编造内容。
+Every stage pauses for user confirmation before proceeding. Every claim is expected to trace back to a verifiable source.
 
 ## Why This Is Different
 
 | Problem | Solution |
 |---------|----------|
 | AI makes up data | Source Truth Table forces citations |
-| Source exists but data is wrong | Stage 3.5 Cross-Reference: multi-source verification |
-| Article reads like AI | 7 anti-AI writing principles + 6-dimension scan |
-| Uncertain facts slip through | Confidence self-assessment: uncertain → downgrade or mark [TBD] |
-
-> 不只是"写得像人"，从源头开始防幻觉。事实核查 + 交叉验证 + 置信度自评三重保险。
+| Source exists but data is wrong | Stage 3.5 Cross-Reference adds multi-source verification |
+| Article reads like AI | 7 anti-AI writing principles plus a 6-dimension scan |
+| Uncertain facts slip through | Confidence self-assessment downgrades or marks weak claims |
 
 ## Installation
 
@@ -41,77 +75,73 @@ claude skill add ./content-alchemy
 
 ## Usage
 
-```
+```text
 alchemy AI and loneliness     # Full pipeline from topic
-alchemy-setup                  # Check/download dependencies
+alchemy-setup                 # Check/download dependencies
 ```
 
 Start from any stage:
-- **Topic Mode**: `alchemy [topic]` — full pipeline from Stage 1
-- **Source Mode**: provide transcripts/articles — starts from Stage 3
-- **Draft Mode**: hand off to content-publisher for publishing
 
-> 支持中途跳入：有素材直接从 Stage 3 开始，有成稿直接交给 content-publisher 发布。
+- Topic Mode: `alchemy [topic]` starts from Stage 1
+- Source Mode: provide transcripts or articles to start from Stage 3
+- Draft Mode: hand off to content-publisher when `article.md` already exists
 
 ## Structure
 
-```
+```text
 content-alchemy/
-├── SKILL.md                          # Skill definition (~150 lines)
+├── README.md
+├── README_CN.md
+├── SKILL.md
 ├── references/
-│   ├── stage1-mining.md              # Topic identification + search strategies
-│   ├── stage2-extraction.md          # Multi-channel mining + fallback chain
-│   ├── stage3-analysis.md            # 5-dimension analysis + Truth Table
-│   ├── stage3.5-crossref.md          # Cross-reference verification
-│   ├── stage4-refining.md            # First-principles narrative reconstruction
-│   ├── stage5-writing.md             # Humanized writing + anti-AI principles
-│   ├── source-channels.md            # Search source priority by topic type
-│   └── video-acquisition.md          # 6 video extraction methods + fallback
+│   ├── stage1-mining.md
+│   ├── stage2-extraction.md
+│   ├── stage3-analysis.md
+│   ├── stage3.5-crossref.md
+│   ├── stage4-refining.md
+│   ├── stage5-writing.md
+│   ├── source-channels.md
+│   └── video-acquisition.md
 ├── scripts/
-│   ├── format-text.ts                # Chinese punctuation + spacing formatter
-│   └── preprocess_article.py         # Markdown to HTML preprocessor
-└── templates/
-    └── cross-reference-report.md     # Stage 3.5 report template
+│   ├── format-text.ts
+│   ├── preprocess_article.py
+│   └── sync-codex-skill.sh
+├── templates/
+│   └── cross-reference-report.md
+└── assets/
+    └── wechat_qr.jpg
 ```
 
 ## Ecosystem
 
 | Repo | Role |
 |------|------|
-| **content-alchemy** (this) | Research + Writing (Stages 1-5) |
-| [content-publisher](https://github.com/AliceLJY/content-publisher) | Images + Layout + Publishing + Cleanup |
-| [openclaw-worker](https://github.com/AliceLJY/openclaw-worker) | Task API + Docker compose for OpenClaw |
-| [openclaw-cli-bridge](https://github.com/AliceLJY/openclaw-cli-bridge) | Three-way bridge: /cc /codex /gemini |
+| **content-alchemy** (this repo) | Research and writing, Stages 1-5 |
+| [content-publisher](https://github.com/AliceLJY/content-publisher) | Images, layout, publishing, cleanup |
+| [openclaw-worker](https://github.com/AliceLJY/openclaw-worker) | Task API and Docker Compose for OpenClaw |
+| [openclaw-cli-bridge](https://github.com/AliceLJY/openclaw-cli-bridge) | Three-way bridge for `/cc`, `/codex`, and `/gemini` |
 | [digital-clone-skill](https://github.com/AliceLJY/digital-clone-skill) | Build digital clones from corpus data |
-| [local-memory](https://github.com/AliceLJY/local-memory) | Local AI conversation search (LanceDB + Jina) |
+| [local-memory](https://github.com/AliceLJY/local-memory) | Local AI conversation search |
 | [cc-shell](https://github.com/AliceLJY/cc-shell) | Lightweight Claude Code chat UI |
-| [telegram-ai-bridge](https://github.com/AliceLJY/telegram-ai-bridge) | 3 Telegram bots for Claude / Codex / Gemini via SDK |
-| [telegram-cli-bridge](https://github.com/AliceLJY/telegram-cli-bridge) | Telegram CLI bridge (Gemini CLI path) |
-
-> content-alchemy 产出 article.md，content-publisher 负责配图、排版、发布到微信公众号。
+| [telegram-ai-bridge](https://github.com/AliceLJY/telegram-ai-bridge) | Telegram bots for Claude, Codex, and Gemini |
+| [telegram-cli-bridge](https://github.com/AliceLJY/telegram-cli-bridge) | Telegram CLI bridge for the Gemini CLI path |
 
 ## Version History
 
 | Version | Era | Highlights |
 |---------|-----|------------|
-| v1.0–2.5 | Antigravity | Project inception → 9-stage → 7-stage workflow |
-| v3.1–3.2 | Claude Code (Opus 4.5) | Bug fixes, fallback mechanisms, doc restructuring |
-| v4.0–4.3 | Claude Code (Opus 4.6) | Chrome reuse, Bilibili extraction, Cross-Reference (3.5), 6-dim AI scan |
-| **v5.0** | Claude Code (Opus 4.6) | **Split into content-alchemy + content-publisher**. SKILL.md 1258→210 lines (-83%), progressive reference loading |
-
-> v4.4 以前是单体仓库（已归档为 [content-alchemy-legacy](https://github.com/AliceLJY/content-alchemy-legacy)，tag `v4.4-final`）。v5.0 拆分为写作侧 + 发布侧两个独立项目。
+| v1.0-v2.5 | Antigravity | Project inception, then 9-stage to 7-stage workflow evolution |
+| v3.1-v3.2 | Claude Code (Opus 4.5) | Bug fixes, fallback mechanisms, doc restructuring |
+| v4.0-v4.3 | Claude Code (Opus 4.6) | Chrome reuse, Bilibili extraction, Cross-Reference, 6-dimension AI scan |
+| v5.0 | Claude Code (Opus 4.6) | Split into content-alchemy and content-publisher, with progressive reference loading |
 
 ## Author
 
-Built by **小试AI** ([@AliceLJY](https://github.com/AliceLJY)) · WeChat: **我的AI小木屋**
+Built by **小试AI** ([@AliceLJY](https://github.com/AliceLJY)) for the WeChat public account **我的AI小木屋**.
 
-> 医学出身，文化口工作，AI 野路子。公众号六大板块：AI实操手账 · AI踩坑实录 · AI照见众生 · AI冷眼旁观 · AI胡思乱想 · AI视觉笔记
-
-Six content pillars: **Hands-on AI** · **AI Pitfall Diaries** · **AI & Humanity** · **AI Cold Eye** · **AI Musings** · **AI Visual Notes**
+Six content pillars: **Hands-on AI**, **AI Pitfall Diaries**, **AI and Humanity**, **AI Cold Eye**, **AI Musings**, and **AI Visual Notes**.
 
 <img src="./assets/wechat_qr.jpg" width="200" alt="WeChat QR Code — 我的AI小木屋">
-
----
 
 ## License
 
